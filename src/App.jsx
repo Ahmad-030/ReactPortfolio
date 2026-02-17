@@ -29,6 +29,12 @@ a { color: inherit; text-decoration: none; }
 @keyframes gradient-shift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
 @keyframes orb-drift { 0%{transform:translate(0,0) scale(1)} 33%{transform:translate(60px,-80px) scale(1.1)} 66%{transform:translate(-40px,40px) scale(0.9)} 100%{transform:translate(0,0) scale(1)} }
 @keyframes scanline { 0%{opacity:0;transform:translateY(-100%)} 50%{opacity:1} 100%{opacity:0;transform:translateY(400%)} }
+@keyframes scroll-wheel { 0%{transform:translateY(0);opacity:1} 100%{transform:translateY(10px);opacity:0} }
+@keyframes scroll-ring-expand { 0%{transform:translate(-50%,-50%) scale(0.6);opacity:0.8} 100%{transform:translate(-50%,-50%) scale(2.2);opacity:0} }
+@keyframes scroll-float-up { 0%{opacity:0;transform:translateY(12px) scale(0.6)} 40%{opacity:1} 100%{opacity:0;transform:translateY(-28px) scale(1)} }
+@keyframes scroll-letter-wave { 0%,100%{transform:translateY(0);color:var(--muted)} 50%{transform:translateY(-5px);color:var(--accent)} }
+@keyframes scroll-chevron { 0%{opacity:0;transform:translateY(-6px)} 50%{opacity:1} 100%{opacity:0;transform:translateY(6px)} }
+@keyframes scroll-glow-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(0,229,255,0);opacity:0.4} 50%{box-shadow:0 0 18px 6px rgba(0,229,255,0.25);opacity:1} }
 @keyframes glow-pulse { 0%,100%{box-shadow:0 0 0 3px rgba(0,229,255,0.6),0 0 30px rgba(0,229,255,0.4),0 0 60px rgba(0,229,255,0.2)} 50%{box-shadow:0 0 0 5px rgba(0,229,255,0.8),0 0 50px rgba(0,229,255,0.6),0 0 100px rgba(0,229,255,0.3)} }
 @keyframes photo-border-glow { 0%,100%{border-color:rgba(0,229,255,0.7);box-shadow:0 0 20px rgba(0,229,255,0.4)} 50%{border-color:rgba(0,229,255,1);box-shadow:0 0 40px rgba(0,229,255,0.7)} }
 @keyframes orbit-cw { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
@@ -1437,6 +1443,131 @@ function ContactSection({ copied, onCopyEmail }) {
 }
 
 // ─────────────────────────────────────────────
+//  SCROLL INDICATOR
+// ─────────────────────────────────────────────
+function ScrollIndicator() {
+  const letters = "SCROLL".split("");
+  const particles = Array.from({ length: 6 }, (_, i) => ({
+    angle: (i / 6) * 360,
+    delay: i * 0.28,
+    size: 2.5 + Math.random() * 2,
+  }));
+
+  return (
+    <div style={{
+      position: "absolute",
+      bottom: 32,
+      left: "50%",
+      transform: "translateX(-50%)",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: 10,
+      animation: "fade-in 1s ease 2s both",
+      zIndex: 10,
+      pointerEvents: "none",
+    }}>
+
+      {/* Letter-wave "SCROLL" text */}
+      <div style={{ display: "flex", gap: 3, alignItems: "center" }}>
+        {letters.map((l, i) => (
+          <span key={i} style={{
+            fontSize: 10,
+            fontWeight: 700,
+            letterSpacing: "0.18em",
+            color: "var(--muted)",
+            fontFamily: "var(--font-body)",
+            animation: `scroll-letter-wave 2s ease-in-out ${i * 0.1}s infinite`,
+            display: "inline-block",
+          }}>{l}</span>
+        ))}
+      </div>
+
+      {/* Mouse / scroll box with wheel dot + expanding rings + particles */}
+      <div style={{ position: "relative", width: 52, height: 52, display: "flex", alignItems: "center", justifyContent: "center" }}>
+
+        {/* Expanding ring 1 */}
+        <div style={{
+          position: "absolute", top: "50%", left: "50%",
+          width: 40, height: 40, borderRadius: "50%",
+          border: "1px solid rgba(0,229,255,0.35)",
+          animation: "scroll-ring-expand 2s ease-out 0s infinite",
+          pointerEvents: "none",
+        }} />
+        {/* Expanding ring 2 (offset) */}
+        <div style={{
+          position: "absolute", top: "50%", left: "50%",
+          width: 40, height: 40, borderRadius: "50%",
+          border: "1px solid rgba(0,229,255,0.2)",
+          animation: "scroll-ring-expand 2s ease-out 0.7s infinite",
+          pointerEvents: "none",
+        }} />
+
+        {/* Floating micro-particles around the mouse box */}
+        {particles.map((p, i) => (
+          <div key={i} style={{
+            position: "absolute",
+            top: "50%", left: "50%",
+            width: p.size, height: p.size,
+            borderRadius: "50%",
+            background: "var(--accent)",
+            marginTop: -p.size / 2,
+            marginLeft: -p.size / 2,
+            transform: `translate(${Math.cos(p.angle * Math.PI / 180) * 22}px, ${Math.sin(p.angle * Math.PI / 180) * 22}px)`,
+            animation: `scroll-float-up 2s ease-in-out ${p.delay}s infinite`,
+            opacity: 0,
+            boxShadow: `0 0 6px var(--accent)`,
+            pointerEvents: "none",
+          }} />
+        ))}
+
+        {/* Mouse body */}
+        <div style={{
+          width: 24,
+          height: 36,
+          borderRadius: 12,
+          border: "2px solid rgba(0,229,255,0.6)",
+          background: "rgba(0,229,255,0.04)",
+          backdropFilter: "blur(4px)",
+          display: "flex",
+          justifyContent: "center",
+          paddingTop: 7,
+          animation: "scroll-glow-pulse 2.5s ease-in-out infinite",
+          position: "relative",
+          zIndex: 2,
+        }}>
+          {/* Scroll wheel dot */}
+          <div style={{
+            width: 3,
+            height: 7,
+            borderRadius: 2,
+            background: "var(--accent)",
+            boxShadow: "0 0 8px var(--accent)",
+            animation: "scroll-wheel 1.4s ease-in-out infinite",
+          }} />
+        </div>
+      </div>
+
+      {/* Triple chevrons cascading down */}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
+        {[0, 0.2, 0.4].map((delay, i) => (
+          <svg key={i} width="14" height="8" viewBox="0 0 14 8" fill="none"
+            style={{ animation: `scroll-chevron 1.4s ease-in-out ${delay}s infinite` }}>
+            <polyline points="1,1 7,7 13,1"
+              stroke="var(--accent)"
+              strokeWidth={i === 2 ? 1.5 : 1}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              opacity={0.3 + i * 0.35}
+            />
+          </svg>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
 //  NAV
 // ─────────────────────────────────────────────
 function Nav({ activeSection }) {
@@ -1562,10 +1693,7 @@ export default function Portfolio() {
             </div>
           </div>
         </div>
-        <div style={{ position: "absolute", bottom: 36, left: "50%", transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: 8, color: "var(--muted)", fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", animation: "fade-in 2s ease 1.5s both" }}>
-          <span>Scroll</span>
-          <div style={{ width: 1, height: 50, background: "linear-gradient(to bottom,var(--accent),transparent)", animation: "scanline 2s ease-in-out infinite" }} />
-        </div>
+        <ScrollIndicator />
       </section>
 
       {/* ── ABOUT ── */}
