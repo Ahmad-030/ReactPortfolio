@@ -49,12 +49,27 @@ a { color: inherit; text-decoration: none; }
 @keyframes rec-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
 @keyframes rec-card-glow { 0%,100%{box-shadow:0 0 0 2px rgba(0,229,255,0.25),0 24px 80px rgba(0,229,255,0.1)} 50%{box-shadow:0 0 0 3px rgba(0,229,255,0.5),0 24px 80px rgba(0,229,255,0.22)} }
 
-/* ── CONTINUOUS RAIL ── */
-@keyframes rail-dot-travel { 0%{top:-2%;opacity:0} 6%{opacity:1} 94%{opacity:1} 100%{top:102%;opacity:0} }
-@keyframes rail-node-pulse { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.85} 50%{transform:translate(-50%,-50%) scale(1.35);opacity:1} }
-@keyframes rail-node-ring { 0%{transform:translate(-50%,-50%) scale(1);opacity:0.6} 100%{transform:translate(-50%,-50%) scale(2.2);opacity:0} }
-@keyframes rail-label-in { from{opacity:0;transform:translateX(-8px)} to{opacity:1;transform:translateX(0)} }
-@keyframes rail-glow-breathe { 0%,100%{filter:blur(3px);opacity:0.5} 50%{filter:blur(6px);opacity:0.9} }
+/* ── ADVANCED CONTINUOUS RAIL ── */
+@keyframes rail-ring-expand {
+  0%   { transform: scale(0.7); opacity: 0.85; }
+  100% { transform: scale(2.6); opacity: 0;   }
+}
+@keyframes rail-node-breathe {
+  0%,100% { transform: scale(1);    opacity: 0.9; }
+  50%      { transform: scale(1.45); opacity: 1;  }
+}
+@keyframes rail-glow-breathe {
+  0%,100% { opacity: 0.5; filter: blur(5px);  }
+  50%      { opacity: 1;   filter: blur(10px); }
+}
+@keyframes rail-orb-float {
+  0%,100% { transform: translateY(0)    scale(1);    opacity: 0.22; }
+  50%      { transform: translateY(-8px) scale(1.07); opacity: 0.38; }
+}
+@keyframes rail-label-in {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0);    }
+}
 
 /* ── TESTIMONIALS EXTRA ── */
 @keyframes quote-pulse { 0%,100%{opacity:0.18;transform:scale(1)} 50%{opacity:0.32;transform:scale(1.06)} }
@@ -71,6 +86,15 @@ a { color: inherit; text-decoration: none; }
 @keyframes ripple-out { 0%{transform:scale(0.8);opacity:0.8} 100%{transform:scale(2.5);opacity:0} }
 @keyframes contact-orb { 0%{transform:translate(0,0)} 33%{transform:translate(40px,-30px)} 66%{transform:translate(-30px,20px)} 100%{transform:translate(0,0)} }
 @keyframes bounce-soft { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+
+/* ── QUOTE BANNER EXTRAS ── */
+@keyframes quote-bg-shift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+@keyframes quote-char-drop { from{opacity:0;transform:translateY(-20px) scale(0.8)} to{opacity:1;transform:translateY(0) scale(1)} }
+@keyframes quote-scale-breathe { 0%,100%{transform:scale(1)} 50%{transform:scale(1.01)} }
+@keyframes quote-line-grow { from{transform:scaleX(0)} to{transform:scaleX(1)} }
+@keyframes quote-glow-sweep { from{left:-30%} to{left:110%} }
+@keyframes quote-spark { 0%{opacity:0;transform:translate(-50%,-50%) scale(0)} 40%{opacity:1} 100%{opacity:0;transform:translate(calc(-50% + var(--sx)),calc(-50% + var(--sy))) scale(1.5)} }
+@keyframes rail-diamond-idle { 0%,100%{transform:rotate(45deg) scale(1)} 50%{transform:rotate(45deg) scale(1.2)} }
 `;
 
 // ─────────────────────────────────────────────
@@ -214,6 +238,7 @@ const RECOMMENDATIONS = [
   { name:"Muhammad Faizan", role:"Digital Marketing Expert · SEO Specialist", date:"Oct 20, 2025", color:"#00e5ff", img:"/projects/Profiles/fpic.jpeg", linkedin:"https://www.linkedin.com/in/muhammad-faizan-aa6779370/", text:"I am pleased to recommend Ahmad Asif. He is one of the most skilled and professional App Developers I have had the pleasure of working with. His ability to manage the project from start to finish ensured a smooth and efficient workflow, resulting in a successful delivery. He has my highest recommendation." },
   { name:"Muhammad Rajpoot", role:"Mobile App & Web Full Stack Developer · Flutter", date:"Oct 20, 2025", color:"#22c55e", img:"/projects/Profiles/mpic.jpeg", linkedin:"https://www.linkedin.com/in/muhammad-rajpoot-b63642211/", text:"Working with Ahmad Asif has been an incredible experience! He's a highly skilled Flutter developer with a great eye for detail and design. Ahmad's ability to turn ideas into beautifully functional apps is truly impressive. What stands out most is his dedication — he always goes the extra mile to ensure everything runs smoothly and looks perfect. He's also a great team player who's always ready to help, share his knowledge, and motivate others. His professionalism, creativity, and positive attitude make him a valuable asset to any project or team. Highly recommended!" },
 ];
+
 const CERTIFICATES = [
   { title:"Flutter App Development", issuer:"Edify Institute",      img:"projects/certificates/edify.png",                            color:"#00e5ff", year:"2024", badge:"🏆" },
   { title:"Web Development",         issuer:"Edify Institute",  img:"projects/certificates/Screenshot 2025-08-30 231044.png",     color:"#7c3aed", year:"2024", badge:"🌐" },
@@ -237,234 +262,333 @@ function useReveal(threshold = 0.15) {
 }
 
 // ─────────────────────────────────────────────
-//  CONTINUOUS SIDE RAIL
-//  A single fixed vertical line on the left edge that
-//  runs the entire page height. Node markers with
-//  animated rings sit at each section boundary.
-//  Color + glyph changes per section as you scroll.
+//  ADVANCED CONTINUOUS SIDE RAIL  (v2)
+//  Drop-in replacement — fixed viewport centering,
+//  traveling dot, atmospheric glow orb, ruler ticks,
+//  circular scroll-% indicator, and label cards.
 // ─────────────────────────────────────────────
-const RAIL_SECTIONS = [
-  { id: "home",           color: "#00e5ff", glyph: "⌂",  label: "Home"           },
-  { id: "about",          color: "#7c3aed", glyph: "◈",  label: "About"          },
-  { id: "services",       color: "#f97316", glyph: "◆",  label: "Services"       },
-  { id: "projects",       color: "#22c55e", glyph: "◉",  label: "Projects"       },
-  { id: "testimonials",   color: "#ec4899", glyph: "◎",  label: "Testimonials"   },
-  { id: "certifications", color: "#f59e0b", glyph: "★",  label: "Certifications" },
-  { id: "contact",        color: "#f97316", glyph: "◈",  label: "Contact"        },
+const SECTIONS = [
+  { id:"home",           label:"Home",           icon:"⌂", color:"#00e5ff" },
+  { id:"about",          label:"About",          icon:"◈", color:"#7c3aed" },
+  { id:"services",       label:"Services",       icon:"◆", color:"#f97316" },
+  { id:"projects",       label:"Projects",       icon:"◉", color:"#22c55e" },
+  { id:"testimonials",   label:"Testimonials",   icon:"◎", color:"#ec4899" },
+  { id:"certifications", label:"Certifications", icon:"★", color:"#f59e0b" },
+  { id:"contact",        label:"Contact",        icon:"✦", color:"#00e5ff" },
 ];
 
 function ContinuousRail({ activeSection }) {
-  const [nodePositions, setNodePositions] = useState({});
-  const [dotY, setDotY] = useState(0);
   const [scrollFrac, setScrollFrac] = useState(0);
-  const rafRef = useRef(null);
-  const railRef = useRef(null);
+  const [hovered, setHovered]       = useState(null);
+  const [mounted, setMounted]       = useState(false);
+  const [vh, setVh]                 = useState(0);
 
-  // Compute each section's top-center position relative to the viewport/document
+  // Use window.innerHeight directly — fixed positioning is always relative to viewport
+  useEffect(() => {
+    const measure = () => setVh(window.innerHeight);
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  useEffect(() => { const t = setTimeout(() => setMounted(true), 200); return () => clearTimeout(t); }, []);
+
   useEffect(() => {
     const update = () => {
-      const positions = {};
-      RAIL_SECTIONS.forEach(({ id }) => {
-        const el = document.getElementById(id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          positions[id] = rect.top + window.scrollY;
-        }
-      });
-      setNodePositions(positions);
+      const max = document.body.scrollHeight - window.innerHeight;
+      setScrollFrac(max > 0 ? window.scrollY / max : 0);
     };
+    window.addEventListener("scroll", update, { passive: true });
     update();
-    window.addEventListener("resize", update);
-    // also update after a short delay so sections are fully rendered
-    const t = setTimeout(update, 500);
-    return () => { window.removeEventListener("resize", update); clearTimeout(t); };
+    return () => window.removeEventListener("scroll", update);
   }, []);
 
-  // Track scroll for the traveling dot
-  useEffect(() => {
-    const onScroll = () => {
-      const maxScroll = document.body.scrollHeight - window.innerHeight;
-      setScrollFrac(maxScroll > 0 ? window.scrollY / maxScroll : 0);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const activeIdx = SECTIONS.findIndex(s => s.id === activeSection);
+  const activeSec = SECTIONS[Math.max(0, activeIdx)];
 
-  const activeColor = RAIL_SECTIONS.find(s => s.id === activeSection)?.color ?? "#00e5ff";
-  const RAIL_X = 22; // px from left edge
+  // Fixed layout constants
+  const NAV_H  = 70;   // navbar height
+  const PAD_T  = 20;   // extra top padding after nav
+  const PAD_B  = 60;   // bottom space for the % indicator
+  const LINE_X = 28;   // x-center of the rail line
+
+  // Usable height for the rail (between top padding and bottom padding)
+  const railTop = NAV_H + PAD_T;
+  const railBot = vh - PAD_B;
+  const usableH = Math.max(0, railBot - railTop);
+
+  // Node y positions — evenly distributed across usable height
+  const nodeY = (i) => railTop + (i / (SECTIONS.length - 1)) * usableH;
+
+  // Traveling dot y
+  const dotY = railTop + scrollFrac * usableH;
+
+  if (vh === 0) return null; // wait for measurement
 
   return (
-    <div ref={railRef} style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      width: 80,
-      height: "100vh",
+    <div style={{
+      position:      "fixed",
+      top:           0,
+      left:          0,
+      width:         72,
+      height:        "100vh",
+      zIndex:        500,
       pointerEvents: "none",
-      zIndex: 500,
+      opacity:       mounted ? 1 : 0,
+      transition:    "opacity 0.7s ease",
     }}>
-      {/* ── The line itself ── */}
-      <div style={{
-        position: "absolute",
-        top: 70,          // below nav
-        bottom: 0,
-        left: RAIL_X,
-        width: 2,
-        background: "linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.06) 8%, rgba(255,255,255,0.06) 92%, transparent 100%)",
-        borderRadius: 2,
-      }}>
-        {/* Colored fill layer that grows with scroll */}
-        <div style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: `${scrollFrac * 100}%`,
-          background: `linear-gradient(to bottom, ${activeColor}88, ${activeColor}22)`,
-          borderRadius: 2,
-          transition: "background 0.6s ease, height 0.05s linear",
-        }} />
 
-        {/* Glow blur behind the fill */}
-        <div style={{
-          position: "absolute",
-          top: 0,
-          left: -2,
-          width: 6,
-          height: `${scrollFrac * 100}%`,
-          background: `linear-gradient(to bottom, ${activeColor}55, transparent)`,
-          filter: "blur(4px)",
-          borderRadius: 3,
-          transition: "background 0.6s ease",
-          animation: "rail-glow-breathe 3s ease-in-out infinite",
-        }} />
-      </div>
-
-      {/* ── Traveling dot on the line ── */}
+      {/* Atmospheric glow orb */}
       <div style={{
-        position: "absolute",
-        left: RAIL_X + 1,
-        top: `calc(70px + ${scrollFrac} * (100vh - 70px))`,
-        transform: "translate(-50%, -50%)",
-        width: 8,
-        height: 8,
+        position:     "absolute",
+        left:         LINE_X - 26,
+        top:          dotY - 26,
+        width:        52,
+        height:       52,
         borderRadius: "50%",
-        background: activeColor,
-        boxShadow: `0 0 10px 3px ${activeColor}cc, 0 0 24px 8px ${activeColor}44`,
-        transition: "background 0.6s ease, box-shadow 0.6s ease, top 0.08s linear",
-        zIndex: 4,
+        background:   activeSec.color,
+        filter:       "blur(22px)",
+        transition:   "top 0.1s linear, background 0.6s ease",
+        animation:    "rail-orb-float 4s ease-in-out infinite",
+        pointerEvents:"none",
       }} />
 
-      {/* ── Section node markers ── */}
-      {RAIL_SECTIONS.map(({ id, color, glyph, label }, i) => {
-        const docTop = nodePositions[id] ?? 0;
-        // Map the doc position to a viewport-relative % so nodes
-        // sit at the proportional position along the rail
-        const totalH = document.body?.scrollHeight ?? window.innerHeight;
-        const railH = window.innerHeight - 70;
-        const fracPos = totalH > window.innerHeight
-          ? (docTop / (totalH - window.innerHeight)) * railH
-          : (i / (RAIL_SECTIONS.length - 1)) * railH;
-        const isActive = activeSection === id;
-        const isPast = RAIL_SECTIONS.findIndex(s => s.id === activeSection) > i;
+      {/* Background track */}
+      <div style={{
+        position:     "absolute",
+        top:          railTop,
+        height:       usableH,
+        left:         LINE_X,
+        width:        2,
+        transform:    "translateX(-50%)",
+        background:   "linear-gradient(to bottom, transparent, rgba(255,255,255,0.06) 8%, rgba(255,255,255,0.06) 92%, transparent)",
+        borderRadius: 2,
+      }} />
+
+      {/* Filled progress */}
+      <div style={{
+        position:     "absolute",
+        top:          railTop,
+        left:         LINE_X,
+        width:        2,
+        height:       scrollFrac * usableH,
+        transform:    "translateX(-50%)",
+        background:   `linear-gradient(to bottom, ${activeSec.color}ee, ${activeSec.color}33)`,
+        borderRadius: 2,
+        boxShadow:    `0 0 8px 1px ${activeSec.color}55`,
+        transition:   "height 0.06s linear, background 0.6s ease, box-shadow 0.6s ease",
+      }} />
+
+      {/* Glow blur on progress */}
+      <div style={{
+        position:     "absolute",
+        top:          railTop,
+        left:         LINE_X - 3,
+        width:        8,
+        height:       scrollFrac * usableH,
+        background:   `linear-gradient(to bottom, ${activeSec.color}55, transparent)`,
+        filter:       "blur(5px)",
+        borderRadius: 4,
+        transition:   "height 0.06s linear, background 0.6s ease",
+        animation:    "rail-glow-breathe 3s ease-in-out infinite",
+        pointerEvents:"none",
+      }} />
+
+      {/* Traveling dot — outer ring */}
+      <div style={{
+        position:     "absolute",
+        left:         LINE_X,
+        top:          dotY,
+        transform:    "translate(-50%, -50%)",
+        width:        14, height: 14,
+        borderRadius: "50%",
+        border:       `1.5px solid ${activeSec.color}`,
+        opacity:      0.45,
+        transition:   "top 0.08s linear, border-color 0.6s ease",
+        animation:    "rail-ring-expand 2s ease-out infinite",
+        pointerEvents:"none",
+      }} />
+
+      {/* Traveling dot — core */}
+      <div style={{
+        position:     "absolute",
+        left:         LINE_X,
+        top:          dotY,
+        transform:    "translate(-50%, -50%)",
+        width:        8, height: 8,
+        borderRadius: "50%",
+        background:   activeSec.color,
+        boxShadow:    `0 0 0 2px ${activeSec.color}44, 0 0 16px 5px ${activeSec.color}88`,
+        transition:   "top 0.08s linear, background 0.6s ease, box-shadow 0.6s ease",
+        zIndex:       3,
+        pointerEvents:"none",
+      }} />
+
+      {/* Section nodes */}
+      {SECTIONS.map((sec, i) => {
+        const top      = nodeY(i);
+        const isActive = sec.id === activeSection;
+        const isPast   = i < activeIdx;
+        const isHov    = hovered === sec.id;
+        const nSize    = isActive ? 13 : isPast ? 9 : 7;
 
         return (
-          <div key={id} style={{
-            position: "absolute",
-            left: RAIL_X + 1,
-            top: `calc(70px + ${i / (RAIL_SECTIONS.length - 1)} * (100vh - 120px))`,
-            transform: "translate(-50%, -50%)",
-            zIndex: 5,
-            pointerEvents: "auto",
-          }}>
-            {/* Expanding ring (active only) */}
-            {isActive && (
-              <div style={{
-                position: "absolute",
-                top: "50%", left: "50%",
-                width: 22, height: 22,
+          <div
+            key={sec.id}
+            onMouseEnter={() => setHovered(sec.id)}
+            onMouseLeave={() => setHovered(null)}
+            onClick={() => document.getElementById(sec.id)?.scrollIntoView({ behavior: "smooth" })}
+            style={{
+              position:      "absolute",
+              left:          LINE_X,
+              top:           top,
+              transform:     "translate(-50%, -50%)",
+              zIndex:        5,
+              pointerEvents: "auto",
+              cursor:        "pointer",
+            }}
+          >
+            {/* Rings — active only */}
+            {isActive && [0, 0.55].map((delay, ri) => (
+              <div key={ri} style={{
+                position:     "absolute",
+                top:          "50%", left: "50%",
+                width:        22, height: 22,
                 borderRadius: "50%",
-                border: `1.5px solid ${color}`,
-                animation: "rail-node-ring 1.8s ease-out infinite",
-                opacity: 0,
+                border:       `1px solid ${sec.color}`,
+                animation:    `rail-ring-expand 2s ease-out ${delay}s infinite`,
+                opacity:      0,
+                pointerEvents:"none",
+                marginTop:    -11, marginLeft: -11,
               }} />
-            )}
+            ))}
 
-            {/* Second expanding ring offset */}
-            {isActive && (
-              <div style={{
-                position: "absolute",
-                top: "50%", left: "50%",
-                width: 22, height: 22,
-                borderRadius: "50%",
-                border: `1px solid ${color}88`,
-                animation: "rail-node-ring 1.8s ease-out 0.6s infinite",
-                opacity: 0,
-              }} />
-            )}
-
-            {/* Node core dot */}
+            {/* Node dot */}
             <div style={{
-              width: isActive ? 12 : isPast ? 8 : 6,
-              height: isActive ? 12 : isPast ? 8 : 6,
+              width:        nSize, height: nSize,
               borderRadius: "50%",
-              background: isActive ? color : isPast ? color + "88" : "rgba(255,255,255,0.12)",
-              border: `1.5px solid ${isActive ? color : isPast ? color + "66" : "rgba(255,255,255,0.18)"}`,
-              boxShadow: isActive ? `0 0 10px 3px ${color}aa, 0 0 22px 6px ${color}44` : isPast ? `0 0 4px 2px ${color}44` : "none",
-              transition: "all 0.4s cubic-bezier(0.34,1.56,0.64,1)",
-              animation: isActive ? "rail-node-pulse 2.4s ease-in-out infinite" : "none",
+              background:   isActive ? sec.color : isPast ? `${sec.color}99` : "rgba(255,255,255,0.1)",
+              border:       `1.5px solid ${isActive ? sec.color : isPast ? `${sec.color}66` : isHov ? `${sec.color}88` : "rgba(255,255,255,0.14)"}`,
+              boxShadow:    isActive ? `0 0 0 3px ${sec.color}33, 0 0 18px 5px ${sec.color}66`
+                          : isPast   ? `0 0 6px 2px ${sec.color}44`
+                          : isHov    ? `0 0 8px 3px ${sec.color}55`
+                          : "none",
+              transition:   "all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
+              animation:    isActive ? "rail-node-breathe 2.6s ease-in-out infinite" : "none",
+              position:     "relative", zIndex: 2,
             }} />
 
-            {/* Label (visible on active + hover) */}
-            <div style={{
-              position: "absolute",
-              left: 18,
-              top: "50%",
-              transform: "translateY(-50%)",
-              fontFamily: "var(--font-display)",
-              fontSize: 11,
-              letterSpacing: "0.18em",
-              color: isActive ? color : "transparent",
-              textTransform: "uppercase",
-              whiteSpace: "nowrap",
-              transition: "color 0.4s ease",
-              userSelect: "none",
-              animation: isActive ? "rail-label-in 0.4s ease forwards" : "none",
-              textShadow: isActive ? `0 0 12px ${color}88` : "none",
-            }}>
-              {label}
-            </div>
+            {/* Label card */}
+            {(isActive || isHov) && (
+              <div style={{
+                position:      "absolute",
+                top:           "50%",
+                left:          "calc(100% + 4px)",
+                transform:     "translateY(-50%)",
+                display:       "flex",
+                alignItems:    "center",
+                animation:     "rail-label-in 0.22s ease forwards",
+                pointerEvents: "none",
+                whiteSpace:    "nowrap",
+                zIndex:        10,
+              }}>
+                <div style={{
+                  width:      isActive ? 14 : 10,
+                  height:     1,
+                  background: `linear-gradient(to right, ${sec.color}, ${sec.color}66)`,
+                  marginLeft: 4,
+                  flexShrink: 0,
+                }} />
+                <div style={{
+                  marginLeft:    6,
+                  background:    "linear-gradient(135deg, rgba(8,14,28,0.97), rgba(12,20,40,0.97))",
+                  border:        `1px solid ${sec.color}55`,
+                  borderRadius:  8,
+                  padding:       isActive ? "6px 12px" : "4px 10px",
+                  display:       "flex",
+                  alignItems:    "center",
+                  gap:           7,
+                  backdropFilter:"blur(20px)",
+                  boxShadow:     `0 4px 24px ${sec.color}22, inset 0 1px 0 rgba(255,255,255,0.07)`,
+                }}>
+                  <span style={{ fontSize: isActive ? 11 : 10, color: sec.color, lineHeight: 1, filter: `drop-shadow(0 0 5px ${sec.color})` }}>{sec.icon}</span>
+                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: isActive ? 11 : 10, fontWeight: isActive ? 700 : 600, color: isActive ? "#e8eaf0" : "#6b7a99", letterSpacing: "0.12em", textTransform: "uppercase" }}>{sec.label}</span>
+                  {isActive && <div style={{ width: 5, height: 5, borderRadius: "50%", background: sec.color, boxShadow: `0 0 6px ${sec.color}`, animation: "rail-node-breathe 2s ease-in-out infinite", flexShrink: 0 }} />}
+                </div>
+              </div>
+            )}
+
+            {/* Index number */}
+            {!isActive && !isHov && (
+              <div style={{
+                position:      "absolute",
+                top:           "50%",
+                left:          "calc(100% + 8px)",
+                transform:     "translateY(-50%)",
+                fontFamily:    "'Space Grotesk', sans-serif",
+                fontSize:      9,
+                fontWeight:    700,
+                color:         isPast ? `${sec.color}44` : "rgba(255,255,255,0.08)",
+                letterSpacing: "0.1em",
+                userSelect:    "none",
+                pointerEvents: "none",
+                transition:    "color 0.4s ease",
+              }}>0{i + 1}</div>
+            )}
           </div>
         );
       })}
 
-      {/* ── Decorative curve beside the line (like the Edify screenshot) ── */}
-      <svg
-        width="28"
-        height="100vh"
-        viewBox="0 0 28 800"
-        preserveAspectRatio="none"
-        fill="none"
-        style={{
-          position: "absolute",
-          top: 70,
-          left: RAIL_X + 6,
-          height: "calc(100vh - 70px)",
-          opacity: 0.12,
-          pointerEvents: "none",
-        }}
-      >
-        <path
-          d="M 4 0 C 4 133, 24 200, 24 400 C 24 600, 4 666, 4 800"
-          stroke={activeColor}
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          style={{ transition: "stroke 0.6s ease" }}
-        />
-      </svg>
+      {/* Ruler ticks */}
+      {Array.from({ length: 20 }, (_, i) => {
+        const top     = railTop + (i / 19) * usableH;
+        const isMajor = i % 5 === 0;
+        return (
+          <div key={i} style={{
+            position:     "absolute",
+            top:          top,
+            left:         LINE_X + 2,
+            width:        isMajor ? 7 : 4,
+            height:       1,
+            background:   isMajor ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.04)",
+            borderRadius: 1,
+            pointerEvents:"none",
+          }} />
+        );
+      })}
+
+      {/* Circular % indicator */}
+      <div style={{
+        position:      "absolute",
+        bottom:        12,
+        left:          0,
+        width:         LINE_X * 2,
+        display:       "flex",
+        justifyContent:"center",
+        pointerEvents: "none",
+      }}>
+        <svg width="34" height="34" viewBox="0 0 34 34">
+          <circle cx="17" cy="17" r="12" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1.5" />
+          <circle
+            cx="17" cy="17" r="12"
+            fill="none"
+            stroke={activeSec.color}
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeDasharray={`${2 * Math.PI * 12}`}
+            strokeDashoffset={`${2 * Math.PI * 12 * (1 - scrollFrac)}`}
+            transform="rotate(-90 17 17)"
+            style={{ transition: "stroke-dashoffset 0.1s linear, stroke 0.6s ease" }}
+          />
+          <text x="17" y="17" textAnchor="middle" dominantBaseline="central"
+            fill={activeSec.color} fontSize="6.5"
+            fontFamily="'Space Grotesk', sans-serif" fontWeight="700"
+            style={{ transition: "fill 0.6s ease" }}
+          >{Math.round(scrollFrac * 100)}%</text>
+        </svg>
+      </div>
     </div>
   );
-
 }
 
 // ─────────────────────────────────────────────
@@ -494,7 +618,6 @@ function QuoteBanner() {
         cursor:"default",
       }}>
 
-      {/* Animated bg gradient */}
       <div style={{
         position:"absolute", inset:0,
         background:"linear-gradient(270deg,rgba(0,229,255,0.04),rgba(124,58,237,0.04),rgba(249,115,22,0.04),rgba(0,229,255,0.04))",
@@ -504,7 +627,6 @@ function QuoteBanner() {
         opacity: hov ? 1 : 0.5,
       }} />
 
-      {/* Grid texture */}
       <div style={{
         position:"absolute", inset:0,
         backgroundImage:"linear-gradient(rgba(0,229,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.03) 1px,transparent 1px)",
@@ -512,7 +634,6 @@ function QuoteBanner() {
         pointerEvents:"none",
       }} />
 
-      {/* Diagonal accent lines */}
       {[-1, 0, 1].map((offset, i) => (
         <div key={i} style={{
           position:"absolute", top:0, bottom:0,
@@ -525,7 +646,6 @@ function QuoteBanner() {
         }} />
       ))}
 
-      {/* Glowing sweep on hover */}
       {hov && (
         <div style={{
           position:"absolute", top:0, bottom:0, width:"30%",
@@ -535,10 +655,7 @@ function QuoteBanner() {
         }} />
       )}
 
-      {/* Main content */}
       <div style={{ padding:"72px 8%", textAlign:"center", position:"relative", zIndex:2 }}>
-
-        {/* Pre-label */}
         <div style={{
           display:"inline-flex", alignItems:"center", gap:10,
           marginBottom:24, opacity: v ? 1 : 0,
@@ -549,7 +666,6 @@ function QuoteBanner() {
           <div style={{ width:32, height:1, background:"linear-gradient(to left,transparent,var(--accent))" }} />
         </div>
 
-        {/* Giant quote mark */}
         <div style={{
           position:"absolute", top:12, left:"8%",
           fontFamily:"Georgia,serif", fontSize:160, lineHeight:1,
@@ -560,7 +676,6 @@ function QuoteBanner() {
           opacity: v ? 1 : 0,
         }}>"</div>
 
-        {/* Word-by-word animated heading */}
         <h2 style={{
           fontFamily:"var(--font-display)",
           fontSize:"clamp(32px,5vw,64px)",
@@ -579,7 +694,6 @@ function QuoteBanner() {
               position:"relative",
             }}>
               {word}
-              {/* Underline accent for key words */}
               {accentWords.has(word) && (
                 <div style={{
                   position:"absolute", bottom:-4, left:0, right:0,
@@ -593,7 +707,6 @@ function QuoteBanner() {
           ))}
         </h2>
 
-        {/* Sub-tagline */}
         <p style={{
           color:"var(--muted)", fontSize:14, marginTop:20,
           letterSpacing:"0.05em", fontStyle:"italic",
@@ -604,7 +717,6 @@ function QuoteBanner() {
           Crafting digital experiences that outlast trends.
         </p>
 
-        {/* Horizontal rule with ornament */}
         <div style={{
           display:"flex", alignItems:"center", justifyContent:"center",
           gap:16, marginTop:28,
@@ -621,7 +733,6 @@ function QuoteBanner() {
           <div style={{ flex:1, maxWidth:120, height:1, background:"linear-gradient(to left,transparent,rgba(0,229,255,0.4))" }} />
         </div>
 
-        {/* Floating spark particles */}
         {v && hov && sparks.map((s, i) => (
           <div key={i} style={{
             position:"absolute",
@@ -638,7 +749,6 @@ function QuoteBanner() {
         ))}
       </div>
 
-      {/* Bottom edge glow */}
       <div style={{
         position:"absolute", bottom:0, left:"20%", right:"20%",
         height:1,
@@ -978,6 +1088,7 @@ function ServiceCard({ s, idx }) {
     </div>
   );
 }
+
 // ─────────────────────────────────────────────
 //  SECTION HEADING
 // ─────────────────────────────────────────────
@@ -1007,39 +1118,7 @@ function RecAvatar({ rec }) {
 }
 
 // ─────────────────────────────────────────────
-//  FLOATING TESTIMONIAL PARTICLES
-// ─────────────────────────────────────────────
-function TestiParticles({ color }) {
-  const particles = [
-    { left: "10%", delay: "0s",   size: 5,  dur: "3.2s", px: "20px"  },
-    { left: "25%", delay: "0.6s", size: 4,  dur: "4s",   px: "-15px" },
-    { left: "40%", delay: "1.1s", size: 6,  dur: "3.5s", px: "10px"  },
-    { left: "60%", delay: "0.3s", size: 3,  dur: "4.2s", px: "-25px" },
-    { left: "75%", delay: "0.9s", size: 5,  dur: "3.8s", px: "30px"  },
-    { left: "88%", delay: "1.5s", size: 4,  dur: "3.3s", px: "-10px" },
-  ];
-  return (
-    <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 80, pointerEvents: "none", overflow: "hidden" }}>
-      {particles.map((p, i) => (
-        <div key={i} style={{
-          position: "absolute",
-          bottom: 0,
-          left: p.left,
-          width: p.size,
-          height: p.size,
-          borderRadius: "50%",
-          background: color,
-          "--px": p.px,
-          animation: `testi-particle ${p.dur} ease-out ${p.delay} infinite`,
-          boxShadow: `0 0 6px ${color}`,
-        }} />
-      ))}
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────
-//  TESTIMONIALS SECTION  (enhanced)
+//  TESTIMONIALS SECTION
 // ─────────────────────────────────────────────
 function TestimonialsSection() {
   const [active, setActive] = useState(0);
@@ -1067,13 +1146,10 @@ function TestimonialsSection() {
 
   return (
     <section id="testimonials" style={{ padding: "120px 6%", position: "relative", zIndex: 1, overflow: "hidden" }}>
-
-      {/* Background */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(0,229,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.025) 1px,transparent 1px)", backgroundSize: "52px 52px" }} />
       <div style={{ position: "absolute", top: "5%", left: "3%", width: 380, height: 380, borderRadius: "50%", background: "radial-gradient(circle,rgba(0,229,255,0.04) 0%,transparent 70%)", pointerEvents: "none" }} />
       <div style={{ position: "absolute", bottom: "5%", right: "3%", width: 280, height: 280, borderRadius: "50%", background: "radial-gradient(circle,rgba(124,58,237,0.05) 0%,transparent 70%)", pointerEvents: "none" }} />
 
-      {/* Heading */}
       <div ref={headRef} style={{ textAlign: "center", marginBottom: 56, opacity: headV ? 1 : 0, transform: headV ? "translateY(0)" : "translateY(30px)", transition: "all 0.7s ease" }}>
         <p style={{ color: "var(--accent)", fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase", fontSize: 12, marginBottom: 12 }}>What People Say</p>
         <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(40px,6vw,68px)", letterSpacing: "0.04em", lineHeight: 0.95 }}>
@@ -1083,10 +1159,7 @@ function TestimonialsSection() {
         <div style={{ width: 72, height: 3, background: "linear-gradient(90deg,transparent,var(--accent),transparent)", margin: "16px auto 0", borderRadius: 2 }} />
       </div>
 
-      {/* Main card */}
       <div style={{ maxWidth: 800, margin: "0 auto", position: "relative" }}>
-
-        {/* Big decorative quote */}
         <div style={{ fontFamily: "var(--font-display)", fontSize: 100, color: `${rec.color}20`, lineHeight: 1, position: "absolute", top: -28, left: 32, userSelect: "none", transition: "color 0.4s", zIndex: 0 }}>"</div>
 
         <div style={{
@@ -1102,11 +1175,8 @@ function TestimonialsSection() {
           position: "relative", zIndex: 1,
           animation: "rec-card-glow 4s ease-in-out infinite",
         }}>
-
-          {/* Top accent line */}
           <div style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: "60%", height: 2, background: `linear-gradient(90deg,transparent,${rec.color},transparent)`, borderRadius: 1 }} />
 
-          {/* Profile row */}
           <div style={{ display: "flex", alignItems: "center", gap: 18, marginBottom: 26 }}>
             <RecAvatar rec={rec} />
             <div style={{ flex: 1, minWidth: 0 }}>
@@ -1116,8 +1186,6 @@ function TestimonialsSection() {
                 {[...Array(5)].map((_, i) => <span key={i} style={{ color: "#f59e0b", fontSize: 13 }}>★</span>)}
               </div>
             </div>
-
-            {/* LinkedIn mini btn */}
             <a href={rec.linkedin} target="_blank" rel="noreferrer" data-hover
               style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(0,119,181,0.12)", color: "#38a0d4", border: "1px solid rgba(0,119,181,0.35)", borderRadius: 20, padding: "7px 14px", fontSize: 12, fontWeight: 700, textDecoration: "none", flexShrink: 0, transition: "background 0.2s" }}
               onMouseEnter={e => e.currentTarget.style.background = "rgba(0,119,181,0.25)"}
@@ -1128,21 +1196,14 @@ function TestimonialsSection() {
             </a>
           </div>
 
-          {/* Divider */}
           <div style={{ height: 1, background: `linear-gradient(90deg,${rec.color}55,transparent)`, marginBottom: 24 }} />
+          <p style={{ color: "#b8c8dc", lineHeight: 1.9, fontSize: 15.5, fontStyle: "italic", position: "relative", zIndex: 1 }}>"{rec.text}"</p>
 
-          {/* Quote text */}
-          <p style={{ color: "#b8c8dc", lineHeight: 1.9, fontSize: 15.5, fontStyle: "italic", position: "relative", zIndex: 1 }}>
-            "{rec.text}"
-          </p>
-
-          {/* Footer row */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 28 }}>
             <span style={{ color: "var(--muted)", fontSize: 12, display: "flex", alignItems: "center", gap: 7 }}>
               <span style={{ width: 7, height: 7, borderRadius: "50%", background: rec.color, display: "inline-block", boxShadow: `0 0 8px ${rec.color}` }} />
               {rec.date}
             </span>
-            {/* Prev / Next arrows */}
             <div style={{ display: "flex", gap: 10 }}>
               {[{ fn: prev, label: "‹" }, { fn: next, label: "›" }].map(({ fn, label }, i) => (
                 <button key={i} onClick={fn} data-hover style={{ width: 38, height: 38, borderRadius: "50%", background: "rgba(255,255,255,0.05)", border: `1px solid ${rec.color}44`, color: rec.color, fontSize: 22, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transition: "background 0.2s" }}
@@ -1153,11 +1214,9 @@ function TestimonialsSection() {
             </div>
           </div>
 
-          {/* Bottom accent line */}
           <div style={{ position: "absolute", bottom: 0, left: "15%", right: "15%", height: 2, background: `linear-gradient(90deg,transparent,${rec.color}55,transparent)`, borderRadius: 1 }} />
         </div>
 
-        {/* Progress dots */}
         <div style={{ display: "flex", justifyContent: "center", gap: 8, marginTop: 28 }}>
           {RECOMMENDATIONS.map((r, i) => (
             <button key={i} onClick={() => goTo(i, i > active ? "next" : "prev")} data-hover style={{ width: i === active ? 28 : 8, height: 8, borderRadius: 4, background: i === active ? rec.color : "rgba(255,255,255,0.12)", border: "none", cursor: "pointer", padding: 0, transition: "all 0.35s cubic-bezier(0.34,1.56,0.64,1)", boxShadow: i === active ? `0 0 10px ${rec.color}88` : "none" }} />
@@ -1165,7 +1224,6 @@ function TestimonialsSection() {
         </div>
       </div>
 
-      {/* Thumbnail row */}
       <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap", marginTop: 40, maxWidth: 760, margin: "40px auto 0" }}>
         {RECOMMENDATIONS.map((r, i) => (
           <button key={i} onClick={() => goTo(i, i > active ? "next" : "prev")} data-hover
@@ -1173,13 +1231,9 @@ function TestimonialsSection() {
             onMouseEnter={e => { if (i !== active) e.currentTarget.style.borderColor = `${r.color}44`; }}
             onMouseLeave={e => { if (i !== active) e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)"; }}
           >
-            {/* Thumbnail avatar — initials only (same pattern as main avatar) */}
             <div style={{ width: 36, height: 36, borderRadius: "50%", flexShrink: 0, background: `${r.color}22`, border: `1.5px solid ${r.color}66`, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-display)", fontSize: 16, color: r.color, overflow: "hidden" }}>
-              {/* ── INITIALS (default) ── */}
               <span>{r.initial}</span>
-              {//── PROFILE PHOTO — uncomment below & remove <span> above ──
               <img src={r.img} alt={r.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center top",borderRadius:"50%"}} onError={e=>{e.target.style.display="none";}} />
-              }
             </div>
             <div style={{ textAlign: "left" }}>
               <div style={{ fontWeight: 600, fontSize: 12, color: i === active ? "var(--text)" : "var(--muted)" }}>{r.name.split(" ")[0]}</div>
@@ -1189,7 +1243,6 @@ function TestimonialsSection() {
         ))}
       </div>
 
-      {/* LinkedIn CTA */}
       <div style={{ textAlign: "center", marginTop: 48 }}>
         <a href="https://www.linkedin.com/in/ahmadasif030/details/recommendations/" target="_blank" rel="noreferrer" data-hover
           style={{ display: "inline-flex", alignItems: "center", gap: 10, background: "rgba(0,119,181,0.1)", color: "#38a0d4", border: "1px solid rgba(0,119,181,0.4)", borderRadius: 50, padding: "14px 32px", fontWeight: 700, fontSize: 15, textDecoration: "none", transition: "all 0.25s", backdropFilter: "blur(10px)" }}
@@ -1282,7 +1335,7 @@ function CertificationsSection() {
 }
 
 // ─────────────────────────────────────────────
-//  RIPPLE BUTTON  (contact section)
+//  RIPPLE BUTTON
 // ─────────────────────────────────────────────
 function RippleButton({ children, href, onClick, bgColor, textColor, borderColor, style = {} }) {
   const [ripples, setRipples] = useState([]);
@@ -1298,35 +1351,16 @@ function RippleButton({ children, href, onClick, bgColor, textColor, borderColor
   };
 
   const commonStyle = {
-    position: "relative",
-    overflow: "hidden",
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-    padding: "14px 28px",
-    borderRadius: 50,
-    fontWeight: 700,
-    fontSize: 15,
-    cursor: "pointer",
-    border: borderColor ? `1px solid ${borderColor}` : "none",
-    background: bgColor,
-    color: textColor,
-    textDecoration: "none",
-    transition: "transform 0.15s, box-shadow 0.2s",
-    ...style,
+    position: "relative", overflow: "hidden", display: "inline-flex", alignItems: "center",
+    justifyContent: "center", gap: 8, padding: "14px 28px", borderRadius: 50, fontWeight: 700,
+    fontSize: 15, cursor: "pointer", border: borderColor ? `1px solid ${borderColor}` : "none",
+    background: bgColor, color: textColor, textDecoration: "none",
+    transition: "transform 0.15s, box-shadow 0.2s", ...style,
   };
 
   const handleMouseEnter = e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = `0 12px 36px ${bgColor}55`; };
   const handleMouseLeave = e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; };
-
-  const rippleEl = (
-    <>
-      {ripples.map(rp => (
-        <span key={rp.id} style={{ position: "absolute", left: rp.x, top: rp.y, width: 10, height: 10, borderRadius: "50%", background: "rgba(255,255,255,0.35)", transform: "translate(-50%,-50%)", animation: "ripple-out 0.8s ease forwards", pointerEvents: "none" }} />
-      ))}
-    </>
-  );
+  const rippleEl = (<>{ripples.map(rp => (<span key={rp.id} style={{ position: "absolute", left: rp.x, top: rp.y, width: 10, height: 10, borderRadius: "50%", background: "rgba(255,255,255,0.35)", transform: "translate(-50%,-50%)", animation: "ripple-out 0.8s ease forwards", pointerEvents: "none" }} />))}</>);
 
   if (href) return (
     <a ref={btnRef} href={href} target="_blank" rel="noreferrer" data-hover style={commonStyle}
@@ -1334,7 +1368,6 @@ function RippleButton({ children, href, onClick, bgColor, textColor, borderColor
       {rippleEl}{children}
     </a>
   );
-
   return (
     <button ref={btnRef} data-hover style={commonStyle} onClick={e => { createRipple(e); onClick && onClick(e); }}
       onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
@@ -1344,11 +1377,10 @@ function RippleButton({ children, href, onClick, bgColor, textColor, borderColor
 }
 
 // ─────────────────────────────────────────────
-//  CONTACT SECTION  (enhanced)
+//  CONTACT SECTION
 // ─────────────────────────────────────────────
 function ContactSection({ copied, onCopyEmail }) {
   const [ref, v] = useReveal(0.15);
-
   const floatingEmojis = [
     { emoji: "💬", top: "15%", left: "8%",  anim: "emoji-float-1", dur: "3.8s", delay: "0s",   size: 36 },
     { emoji: "📱", top: "70%", left: "12%", anim: "emoji-float-2", dur: "4.2s", delay: "0.5s", size: 28 },
@@ -1360,116 +1392,33 @@ function ContactSection({ copied, onCopyEmail }) {
 
   return (
     <section id="contact" style={{ padding: "120px 8%", position: "relative", zIndex: 1, textAlign: "center", overflow: "hidden" }}>
-      {/* Atmospheric orbs */}
       <div style={{ position: "absolute", top: "20%", left: "15%", width: 360, height: 360, borderRadius: "50%", background: "radial-gradient(circle,rgba(249,115,22,0.05) 0%,transparent 70%)", pointerEvents: "none", animation: "contact-orb 14s ease-in-out infinite" }} />
       <div style={{ position: "absolute", bottom: "15%", right: "10%", width: 280, height: 280, borderRadius: "50%", background: "radial-gradient(circle,rgba(0,229,255,0.06) 0%,transparent 70%)", pointerEvents: "none", animation: "contact-orb 10s ease-in-out 2s infinite" }} />
-
-      {/* Grid */}
       <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(249,115,22,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(249,115,22,0.015) 1px,transparent 1px)", backgroundSize: "48px 48px", pointerEvents: "none" }} />
-
-      {/* Floating emojis */}
       {floatingEmojis.map((e, i) => (
-        <div key={i} style={{
-          position: "absolute",
-          top: e.top,
-          left: e.left,
-          right: e.right,
-          fontSize: e.size,
-          animation: `${e.anim} ${e.dur} ease-in-out ${e.delay} infinite`,
-          opacity: 0.25,
-          pointerEvents: "none",
-          userSelect: "none",
-          filter: "blur(0.5px)",
-        }}>{e.emoji}</div>
+        <div key={i} style={{ position: "absolute", top: e.top, left: e.left, right: e.right, fontSize: e.size, animation: `${e.anim} ${e.dur} ease-in-out ${e.delay} infinite`, opacity: 0.25, pointerEvents: "none", userSelect: "none", filter: "blur(0.5px)" }}>{e.emoji}</div>
       ))}
 
       <div ref={ref} style={{ maxWidth: 640, margin: "0 auto", position: "relative", zIndex: 1 }}>
-        {/* Animated wave hand */}
-        <div style={{
-          fontSize: 52,
-          marginBottom: 20,
-          display: "inline-block",
-          animation: "bounce-soft 2.5s ease-in-out infinite",
-        }}>👋</div>
-
-        {/* Heading with typing cursor */}
-        <h2 style={{
-          fontFamily: "var(--font-display)",
-          fontSize: "clamp(40px,6vw,66px)",
-          letterSpacing: "0.04em",
-          marginBottom: 16,
-          opacity: v ? 1 : 0,
-          transform: v ? "translateY(0)" : "translateY(30px)",
-          transition: "all 0.7s ease 0.1s",
-        }}>
+        <div style={{ fontSize: 52, marginBottom: 20, display: "inline-block", animation: "bounce-soft 2.5s ease-in-out infinite" }}>👋</div>
+        <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(40px,6vw,66px)", letterSpacing: "0.04em", marginBottom: 16, opacity: v ? 1 : 0, transform: v ? "translateY(0)" : "translateY(30px)", transition: "all 0.7s ease 0.1s" }}>
           Ready to start a project
           <span style={{ color: "var(--accent3)", animation: "typing-cursor 1.1s step-end infinite" }}>_</span>
         </h2>
-
-        <p style={{
-          color: "var(--muted)",
-          lineHeight: 1.8,
-          marginBottom: 16,
-          maxWidth: 480,
-          margin: "0 auto 24px",
-          opacity: v ? 1 : 0,
-          transition: "all 0.7s ease 0.2s",
-        }}>Available for freelance work and collaborations. Drop a message via WhatsApp or Email — I respond within 24 hours.</p>
-
-        {/* Quick stats row */}
-        <div style={{
-          display: "flex",
-          gap: 24,
-          justifyContent: "center",
-          marginBottom: 40,
-          flexWrap: "wrap",
-          opacity: v ? 1 : 0,
-          transition: "all 0.7s ease 0.3s",
-        }}>
-          {[
-            { icon: "⚡", label: "24h Response" },
-            { icon: "🌍", label: "Remote Friendly" },
-            { icon: "🔒", label: "NDA Ready" },
-          ].map(({ icon, label }) => (
+        <p style={{ color: "var(--muted)", lineHeight: 1.8, marginBottom: 16, maxWidth: 480, margin: "0 auto 24px", opacity: v ? 1 : 0, transition: "all 0.7s ease 0.2s" }}>Available for freelance work and collaborations. Drop a message via WhatsApp or Email — I respond within 24 hours.</p>
+        <div style={{ display: "flex", gap: 24, justifyContent: "center", marginBottom: 40, flexWrap: "wrap", opacity: v ? 1 : 0, transition: "all 0.7s ease 0.3s" }}>
+          {[{ icon: "⚡", label: "24h Response" }, { icon: "🌍", label: "Remote Friendly" }, { icon: "🔒", label: "NDA Ready" }].map(({ icon, label }) => (
             <div key={label} style={{ display: "flex", alignItems: "center", gap: 6, background: "rgba(249,115,22,0.06)", border: "1px solid rgba(249,115,22,0.2)", borderRadius: 50, padding: "6px 14px" }}>
               <span style={{ fontSize: 14 }}>{icon}</span>
               <span style={{ color: "var(--muted)", fontSize: 12, fontWeight: 600 }}>{label}</span>
             </div>
           ))}
         </div>
-
-        {/* CTA buttons with ripple */}
-        <div style={{
-          display: "flex",
-          gap: 16,
-          justifyContent: "center",
-          flexWrap: "wrap",
-          marginBottom: 40,
-          opacity: v ? 1 : 0,
-          transform: v ? "translateY(0)" : "translateY(20px)",
-          transition: "all 0.7s ease 0.4s",
-        }}>
-          <RippleButton href="https://wa.me/+923297762280" bgColor="#25D366" textColor="#fff">
-            💬 Chat on WhatsApp
-          </RippleButton>
-          <RippleButton
-            bgColor="var(--card)"
-            textColor="var(--text)"
-            borderColor="var(--border)"
-            onClick={onCopyEmail}
-          >
-            ✉️ {copied ? "Copied! ✓" : "ahmadasif20222@gmail.com"}
-          </RippleButton>
+        <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap", marginBottom: 40, opacity: v ? 1 : 0, transform: v ? "translateY(0)" : "translateY(20px)", transition: "all 0.7s ease 0.4s" }}>
+          <RippleButton href="https://wa.me/+923297762280" bgColor="#25D366" textColor="#fff">💬 Chat on WhatsApp</RippleButton>
+          <RippleButton bgColor="var(--card)" textColor="var(--text)" borderColor="var(--border)" onClick={onCopyEmail}>✉️ {copied ? "Copied! ✓" : "ahmadasif20222@gmail.com"}</RippleButton>
         </div>
-
-        {/* Social links */}
-        <div style={{
-          display: "flex",
-          gap: 12,
-          justifyContent: "center",
-          opacity: v ? 1 : 0,
-          transition: "all 0.7s ease 0.5s",
-        }}>
+        <div style={{ display: "flex", gap: 12, justifyContent: "center", opacity: v ? 1 : 0, transition: "all 0.7s ease 0.5s" }}>
           {[
             { href: "https://www.linkedin.com/in/ahmadasif030/", label: "LinkedIn", color: "#0077b5" },
             { href: "https://github.com/Ahmad-030", label: "GitHub", color: "#f0f6fc" },
@@ -1525,7 +1474,6 @@ export default function Portfolio() {
   const [modalProject, setModalProject] = useState(null);
   const [copied, setCopied] = useState(false);
 
-  // Splash loader
   useEffect(() => {
     let p = 0;
     const iv = setInterval(() => {
@@ -1536,7 +1484,6 @@ export default function Portfolio() {
     return () => clearInterval(iv);
   }, []);
 
-  // Section observer
   useEffect(() => {
     const secs = ["home", "about", "services", "projects", "testimonials", "certifications", "contact"];
     const obs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) setActiveSection(e.target.id); }), { threshold: 0.3 });
@@ -1546,7 +1493,6 @@ export default function Portfolio() {
 
   const copyEmail = () => { navigator.clipboard.writeText("ahmadasif20222@gmail.com"); setCopied(true); setTimeout(() => setCopied(false), 2000); };
 
-  // ── SPLASH ──
   if (showSplash) return (
     <><style>{GLOBAL_STYLE}</style>
       <div style={{ position: "fixed", inset: 0, background: "var(--bg)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", zIndex: 9999, opacity: splashProgress >= 100 ? 0 : 1, transition: "opacity 0.5s ease" }}>
@@ -1571,6 +1517,7 @@ export default function Portfolio() {
       <Cursor />
       <ParticleCanvas />
       <Nav activeSection={activeSection} />
+      {/* ── ADVANCED CONTINUOUS RAIL (v2) ── */}
       <ContinuousRail activeSection={activeSection} />
       {modalProject && <ProjectModal project={modalProject} onClose={() => setModalProject(null)} />}
 
@@ -1578,10 +1525,6 @@ export default function Portfolio() {
       <section id="home" style={{ minHeight: "100vh", display: "flex", alignItems: "center", padding: "0 8%", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: "20%", left: "5%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle,rgba(0,229,255,0.06) 0%,transparent 70%)", pointerEvents: "none" }} />
         <div style={{ flex: 1, maxWidth: 560, animation: "slide-up 1s ease forwards", zIndex: 1 }}>
-          {/* <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)", borderRadius: 50, padding: "6px 16px", marginBottom: 28 }}>
-            <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#22c55e", boxShadow: "0 0 8px #22c55e", animation: "blink 2s ease infinite" }} />
-            <span style={{ color: "#22c55e", fontSize: 13, fontWeight: 500 }}>Available for Projects</span>
-          </div> */}
           <p style={{ color: "var(--muted)", fontSize: 18, marginBottom: 4 }}>Hi, I'm 👋</p>
           <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(72px,10vw,120px)", lineHeight: 0.95, marginBottom: 16, letterSpacing: "0.02em" }}>
             Ahmad
@@ -1589,12 +1532,12 @@ export default function Portfolio() {
           </h1>
           <h2 style={{ fontFamily: "var(--font-body)", fontSize: "clamp(18px,2.5vw,26px)", fontWeight: 600, marginBottom: 20 }}>
             I build <Typewriter words={[
-    "High-Performance Flutter Applications",
-    "Scalable Node.js Backend Architectures",
-    "AI & n8n Automation Systems",
-    "Modern UI/UX Experiences",
-    "Secure Firebase Authentication Flows"
-  ]}  />
+              "High-Performance Flutter Applications",
+              "Scalable Node.js Backend Architectures",
+              "AI & n8n Automation Systems",
+              "Modern UI/UX Experiences",
+              "Secure Firebase Authentication Flows"
+            ]} />
           </h2>
           <p style={{ color: "var(--muted)", lineHeight: 1.8, fontSize: 15, maxWidth: 460, marginBottom: 36 }}>
             Passionate <strong style={{ color: "var(--text)" }}>Full-Stack Developer</strong> specializing in <strong style={{ color: "var(--accent)" }}>Flutter & Dart</strong>, Node.js, MongoDB, Firebase, and AI integration.
@@ -1604,9 +1547,8 @@ export default function Portfolio() {
             <a href="#contact" data-hover style={{ display: "inline-flex", alignItems: "center", background: "transparent", color: "var(--text)", padding: "14px 28px", borderRadius: 50, fontWeight: 600, fontSize: 15, border: "1px solid var(--border)" }}>Hire Me</a>
           </div>
         </div>
-        {/* Orbit */}
         <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", position: "relative", minHeight: 560, zIndex: 1 }}>
-          <OrbitIcon img= "/projects/aaa.png" color="#00e5ff" radius={195} duration={14} clockwise={true} startAngle={0} size={50} />
+          <OrbitIcon img="/projects/aaa.png" color="#00e5ff" radius={195} duration={14} clockwise={true} startAngle={0} size={50} />
           <OrbitIcon icon="🔥" color="#f97316" radius={195} duration={14} clockwise={true} startAngle={90} size={50} />
           <OrbitIcon icon="⚡" color="#22c55e" radius={195} duration={14} clockwise={true} startAngle={180} size={50} />
           <OrbitIcon icon="🤖" color="#7c3aed" radius={195} duration={14} clockwise={true} startAngle={270} size={50} />
