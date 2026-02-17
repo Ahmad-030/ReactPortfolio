@@ -464,6 +464,190 @@ function ContinuousRail({ activeSection }) {
       </svg>
     </div>
   );
+
+}
+
+// ─────────────────────────────────────────────
+//  ANIMATED QUOTE BANNER
+// ─────────────────────────────────────────────
+function QuoteBanner() {
+  const [ref, v] = useReveal(0.3);
+  const [hov, setHov] = useState(false);
+  const words = ["We", "don't", "just", "build", "apps", "—", "we", "build", "trust"];
+  const accentWords = new Set(["build", "trust"]);
+
+  const sparks = Array.from({ length: 12 }, (_, i) => ({
+    angle: (i / 12) * 360,
+    dist: 80 + Math.random() * 60,
+    size: 3 + Math.random() * 4,
+    delay: Math.random() * 0.5,
+  }));
+
+  return (
+    <div ref={ref} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+      style={{
+        position:"relative", zIndex:1,
+        borderTop:"1px solid rgba(255,255,255,0.06)",
+        borderBottom:"1px solid rgba(255,255,255,0.06)",
+        overflow:"hidden",
+        background:"linear-gradient(135deg,rgba(5,8,16,0.95),rgba(8,14,28,0.98))",
+        cursor:"default",
+      }}>
+
+      {/* Animated bg gradient */}
+      <div style={{
+        position:"absolute", inset:0,
+        background:"linear-gradient(270deg,rgba(0,229,255,0.04),rgba(124,58,237,0.04),rgba(249,115,22,0.04),rgba(0,229,255,0.04))",
+        backgroundSize:"400% 400%",
+        animation:"quote-bg-shift 8s ease infinite",
+        transition:"opacity 0.5s",
+        opacity: hov ? 1 : 0.5,
+      }} />
+
+      {/* Grid texture */}
+      <div style={{
+        position:"absolute", inset:0,
+        backgroundImage:"linear-gradient(rgba(0,229,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.03) 1px,transparent 1px)",
+        backgroundSize:"40px 40px",
+        pointerEvents:"none",
+      }} />
+
+      {/* Diagonal accent lines */}
+      {[-1, 0, 1].map((offset, i) => (
+        <div key={i} style={{
+          position:"absolute", top:0, bottom:0,
+          left:`${30 + offset * 20}%`,
+          width:1,
+          background:`linear-gradient(to bottom,transparent,rgba(0,229,255,0.08) 40%,rgba(0,229,255,0.08) 60%,transparent)`,
+          transform:`skewX(-15deg)`,
+          opacity: hov ? 0.8 : 0.3,
+          transition:"opacity 0.6s ease",
+        }} />
+      ))}
+
+      {/* Glowing sweep on hover */}
+      {hov && (
+        <div style={{
+          position:"absolute", top:0, bottom:0, width:"30%",
+          background:"linear-gradient(90deg,transparent,rgba(0,229,255,0.05),transparent)",
+          animation:"quote-glow-sweep 1.2s ease forwards",
+          pointerEvents:"none",
+        }} />
+      )}
+
+      {/* Main content */}
+      <div style={{ padding:"72px 8%", textAlign:"center", position:"relative", zIndex:2 }}>
+
+        {/* Pre-label */}
+        <div style={{
+          display:"inline-flex", alignItems:"center", gap:10,
+          marginBottom:24, opacity: v ? 1 : 0,
+          transition:"opacity 0.6s ease 0.1s",
+        }}>
+          <div style={{ width:32, height:1, background:"linear-gradient(to right,transparent,var(--accent))" }} />
+          <span style={{ color:"var(--accent)", fontSize:11, fontWeight:700, letterSpacing:"0.25em", textTransform:"uppercase" }}>Core Philosophy</span>
+          <div style={{ width:32, height:1, background:"linear-gradient(to left,transparent,var(--accent))" }} />
+        </div>
+
+        {/* Giant quote mark */}
+        <div style={{
+          position:"absolute", top:12, left:"8%",
+          fontFamily:"Georgia,serif", fontSize:160, lineHeight:1,
+          color:"rgba(0,229,255,0.06)",
+          userSelect:"none", pointerEvents:"none",
+          transform: v ? "translateY(0)" : "translateY(-20px)",
+          transition:"transform 1s ease, opacity 1s ease",
+          opacity: v ? 1 : 0,
+        }}>"</div>
+
+        {/* Word-by-word animated heading */}
+        <h2 style={{
+          fontFamily:"var(--font-display)",
+          fontSize:"clamp(32px,5vw,64px)",
+          letterSpacing:"0.04em",
+          lineHeight:1.1,
+          display:"flex", flexWrap:"wrap", justifyContent:"center", gap:"0.3em",
+          animation: v ? "quote-scale-breathe 4s ease-in-out 1.5s infinite" : "none",
+        }}>
+          {words.map((word, i) => (
+            <span key={i} style={{
+              display:"inline-block",
+              opacity: v ? 1 : 0,
+              animation: v ? `quote-char-drop 0.6s cubic-bezier(0.34,1.56,0.64,1) ${0.15 + i * 0.08}s both` : "none",
+              color: accentWords.has(word) ? "var(--accent)" : "var(--text)",
+              textShadow: accentWords.has(word) ? "0 0 40px rgba(0,229,255,0.5)" : "none",
+              position:"relative",
+            }}>
+              {word}
+              {/* Underline accent for key words */}
+              {accentWords.has(word) && (
+                <div style={{
+                  position:"absolute", bottom:-4, left:0, right:0,
+                  height:2,
+                  background:"linear-gradient(90deg,transparent,var(--accent),transparent)",
+                  borderRadius:1,
+                  animation: v ? `quote-line-grow 0.8s ease ${0.5 + i * 0.08}s both` : "none",
+                }} />
+              )}
+            </span>
+          ))}
+        </h2>
+
+        {/* Sub-tagline */}
+        <p style={{
+          color:"var(--muted)", fontSize:14, marginTop:20,
+          letterSpacing:"0.05em", fontStyle:"italic",
+          opacity: v ? 1 : 0,
+          transform: v ? "translateY(0)" : "translateY(10px)",
+          transition:"all 0.7s ease 1s",
+        }}>
+          Crafting digital experiences that outlast trends.
+        </p>
+
+        {/* Horizontal rule with ornament */}
+        <div style={{
+          display:"flex", alignItems:"center", justifyContent:"center",
+          gap:16, marginTop:28,
+          opacity: v ? 1 : 0,
+          transition:"opacity 0.7s ease 1.2s",
+        }}>
+          <div style={{ flex:1, maxWidth:120, height:1, background:"linear-gradient(to right,transparent,rgba(0,229,255,0.4))" }} />
+          <div style={{
+            width:8, height:8, borderRadius:1,
+            background:"var(--accent)", transform:"rotate(45deg)",
+            boxShadow:"0 0 12px var(--accent)",
+            animation: v ? "rail-diamond-idle 2s ease-in-out infinite" : "none",
+          }} />
+          <div style={{ flex:1, maxWidth:120, height:1, background:"linear-gradient(to left,transparent,rgba(0,229,255,0.4))" }} />
+        </div>
+
+        {/* Floating spark particles */}
+        {v && hov && sparks.map((s, i) => (
+          <div key={i} style={{
+            position:"absolute",
+            top:`calc(50% + ${Math.sin(s.angle * Math.PI/180) * s.dist}px)`,
+            left:`calc(50% + ${Math.cos(s.angle * Math.PI/180) * s.dist}px)`,
+            width:s.size, height:s.size, borderRadius:"50%",
+            background:"var(--accent)",
+            opacity:0,
+            "--sx":`${(Math.random()-0.5)*80}px`,
+            "--sy":`${(Math.random()-0.5)*80}px`,
+            animation:`quote-spark 0.8s ease ${s.delay}s forwards`,
+            pointerEvents:"none",
+          }} />
+        ))}
+      </div>
+
+      {/* Bottom edge glow */}
+      <div style={{
+        position:"absolute", bottom:0, left:"20%", right:"20%",
+        height:1,
+        background:`linear-gradient(90deg,transparent,rgba(0,229,255,0.5),transparent)`,
+        opacity: hov ? 1 : 0.3,
+        transition:"opacity 0.5s",
+      }} />
+    </div>
+  );
 }
 
 // ─────────────────────────────────────────────
@@ -1394,10 +1578,10 @@ export default function Portfolio() {
       <section id="home" style={{ minHeight: "100vh", display: "flex", alignItems: "center", padding: "0 8%", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: "20%", left: "5%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle,rgba(0,229,255,0.06) 0%,transparent 70%)", pointerEvents: "none" }} />
         <div style={{ flex: 1, maxWidth: 560, animation: "slide-up 1s ease forwards", zIndex: 1 }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)", borderRadius: 50, padding: "6px 16px", marginBottom: 28 }}>
+          {/* <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)", borderRadius: 50, padding: "6px 16px", marginBottom: 28 }}>
             <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#22c55e", boxShadow: "0 0 8px #22c55e", animation: "blink 2s ease infinite" }} />
             <span style={{ color: "#22c55e", fontSize: 13, fontWeight: 500 }}>Available for Projects</span>
-          </div>
+          </div> */}
           <p style={{ color: "var(--muted)", fontSize: 18, marginBottom: 4 }}>Hi, I'm 👋</p>
           <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(72px,10vw,120px)", lineHeight: 0.95, marginBottom: 16, letterSpacing: "0.02em" }}>
             Ahmad
@@ -1485,11 +1669,7 @@ export default function Portfolio() {
       <TestimonialsSection />
 
       {/* ── QUOTE BANNER ── */}
-      <div style={{ padding: "60px 8%", textAlign: "center", position: "relative", zIndex: 1, borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", background: "var(--surface)" }}>
-        <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(28px,4vw,52px)", letterSpacing: "0.04em", background: "linear-gradient(135deg,var(--text) 0%,var(--accent) 50%,var(--accent2) 100%)", backgroundSize: "200% 200%", animation: "gradient-shift 4s ease infinite", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-          We don't just build apps — we build trust
-        </h2>
-      </div>
+      <QuoteBanner />
 
       {/* ── CERTIFICATIONS ── */}
       <CertificationsSection />
