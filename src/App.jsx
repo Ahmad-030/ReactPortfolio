@@ -519,21 +519,48 @@ function Typewriter({ words }) {
 //  CURSOR
 // ─────────────────────────────────────────────
 function Cursor() {
-  const dot = useRef(null), ring = useRef(null);
+  const dot  = useRef(null);
+  const ring = useRef(null);
   const [h, setH] = useState(false);
-  const pos = useRef({ x:0, y:0 }), rp = useRef({ x:0, y:0 }), raf = useRef(null);
+  const pos = useRef({ x: 0, y: 0 });
+  const rp  = useRef({ x: 0, y: 0 });
+  const raf = useRef(null);
+
   useEffect(() => {
-    const mv = e => { pos.current = { x:e.clientX, y:e.clientY }; if (dot.current) dot.current.style.transform = `translate(${e.clientX-4}px,${e.clientY-4}px)`; };
-    const tk = () => { rp.current.x += (pos.current.x-rp.current.x)*0.12; rp.current.y += (pos.current.y-rp.current.y)*0.12; if (ring.current) ring.current.style.transform = `translate(${rp.current.x-20}px,${rp.current.y-20}px)`; raf.current = requestAnimationFrame(tk); };
-    window.addEventListener("mousemove", mv);
-    document.querySelectorAll("a,button,[data-hover]").forEach(el => { el.addEventListener("mouseenter", () => setH(true)); el.addEventListener("mouseleave", () => setH(false)); });
-    raf.current = requestAnimationFrame(tk);
-    return () => { window.removeEventListener("mousemove", mv); cancelAnimationFrame(raf.current); };
+    const onMove = e => {
+      pos.current = { x: e.clientX, y: e.clientY };
+      if (dot.current)
+        dot.current.style.transform = `translate(${e.clientX - 4}px,${e.clientY - 4}px)`;
+    };
+    const tick = () => {
+      rp.current.x += (pos.current.x - rp.current.x) * 0.12;
+      rp.current.y += (pos.current.y - rp.current.y) * 0.12;
+      if (ring.current)
+        ring.current.style.transform = `translate(${rp.current.x - 20}px,${rp.current.y - 20}px)`;
+      raf.current = requestAnimationFrame(tick);
+    };
+    // ✅ Event delegation — auto-picks up modal buttons/links added after mount
+    const onEnter = e => { if (e.target.closest('a, button, [data-hover]')) setH(true); };
+    const onLeave = e => { if (e.target.closest('a, button, [data-hover]')) setH(false); };
+
+    window.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseover',  onEnter);
+    document.addEventListener('mouseout',   onLeave);
+    raf.current = requestAnimationFrame(tick);
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseover',  onEnter);
+      document.removeEventListener('mouseout',   onLeave);
+      cancelAnimationFrame(raf.current);
+    };
   }, []);
-  return (<>
-    <div ref={dot} style={{ position:"fixed", top:0, left:0, width:8, height:8, background:"var(--accent)", borderRadius:"50%", pointerEvents:"none", zIndex:9999 }} />
-    <div ref={ring} style={{ position:"fixed", top:0, left:0, width:h?56:40, height:h?56:40, border:`2px solid ${h?"var(--accent)":"rgba(0,229,255,0.4)"}`, borderRadius:"50%", pointerEvents:"none", zIndex:9998, transition:"all 0.25s" }} />
-  </>);
+
+  return (
+    <>
+      <div ref={dot} style={{ position:'fixed', top:0, left:0, width:8, height:8, background:'var(--accent)', borderRadius:'50%', pointerEvents:'none', zIndex:9999 }} />
+      <div ref={ring} style={{ position:'fixed', top:0, left:0, width:h?56:40, height:h?56:40, border:`2px solid ${h?'var(--accent)':'rgba(0,229,255,0.4)'}`, borderRadius:'50%', pointerEvents:'none', zIndex:9998, transition:'width 0.25s, height 0.25s, border-color 0.25s' }} />
+    </>
+  );
 }
 
 // ─────────────────────────────────────────────
@@ -792,20 +819,115 @@ function ProjectCard({ p, idx, onOpen, visible }) {
 // ─────────────────────────────────────────────
 //  PROJECT MODAL
 // ─────────────────────────────────────────────
+// ─────────────────────────────────────────────
+//  FIX 1: Replace your Cursor component
+// ─────────────────────────────────────────────
+function Cursor() {
+  const dot  = useRef(null);
+  const ring = useRef(null);
+  const [h, setH] = useState(false);
+  const pos = useRef({ x: 0, y: 0 });
+  const rp  = useRef({ x: 0, y: 0 });
+  const raf = useRef(null);
+
+  useEffect(() => {
+    const onMove = e => {
+      pos.current = { x: e.clientX, y: e.clientY };
+      if (dot.current)
+        dot.current.style.transform = `translate(${e.clientX - 4}px,${e.clientY - 4}px)`;
+    };
+
+    const tick = () => {
+      rp.current.x += (pos.current.x - rp.current.x) * 0.12;
+      rp.current.y += (pos.current.y - rp.current.y) * 0.12;
+      if (ring.current)
+        ring.current.style.transform = `translate(${rp.current.x - 20}px,${rp.current.y - 20}px)`;
+      raf.current = requestAnimationFrame(tick);
+    };
+
+    // Event delegation — automatically catches modal/dynamic elements
+    const onEnter = e => { if (e.target.closest('a, button, [data-hover]')) setH(true); };
+    const onLeave = e => { if (e.target.closest('a, button, [data-hover]')) setH(false); };
+
+    window.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseover',  onEnter);
+    document.addEventListener('mouseout',   onLeave);
+    raf.current = requestAnimationFrame(tick);
+
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseover',  onEnter);
+      document.removeEventListener('mouseout',   onLeave);
+      cancelAnimationFrame(raf.current);
+    };
+  }, []);
+
+  return (
+    <>
+      <div ref={dot} style={{
+        position: 'fixed', top: 0, left: 0,
+        width: 8, height: 8,
+        background: 'var(--accent)', borderRadius: '50%',
+        pointerEvents: 'none', zIndex: 9999,
+      }} />
+      <div ref={ring} style={{
+        position: 'fixed', top: 0, left: 0,
+        width:  h ? 56 : 40,
+        height: h ? 56 : 40,
+        border: `2px solid ${h ? 'var(--accent)' : 'rgba(0,229,255,0.4)'}`,
+        borderRadius: '50%',
+        pointerEvents: 'none', zIndex: 9998,
+        transition: 'width 0.25s, height 0.25s, border-color 0.25s',
+      }} />
+    </>
+  );
+}
+
+
+// ─────────────────────────────────────────────
+//  FIX 2: Replace your ProjectModal component
+//  Only change: removed cursor:"pointer" from overlay div
+//  (body already has cursor:none in global CSS)
+// ─────────────────────────────────────────────
 function ProjectModal({ project, onClose }) {
   const [imgIdx, setImgIdx] = useState(0);
   useEffect(() => {
     setImgIdx(0);
-    const k = e => { if(e.key==="Escape") onClose(); if(e.key==="ArrowRight") setImgIdx(i => (i+1)%project.images.length); if(e.key==="ArrowLeft") setImgIdx(i => (i-1+project.images.length)%project.images.length); };
-    window.addEventListener("keydown", k); document.body.style.overflow="hidden";
-    return () => { window.removeEventListener("keydown", k); document.body.style.overflow=""; };
+    const k = e => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowRight") setImgIdx(i => (i + 1) % project.images.length);
+      if (e.key === "ArrowLeft")  setImgIdx(i => (i - 1 + project.images.length) % project.images.length);
+    };
+    window.addEventListener("keydown", k);
+    document.body.style.overflow = "hidden";
+    return () => { window.removeEventListener("keydown", k); document.body.style.overflow = ""; };
   }, [project]);
+
   const p = project;
   const isRamadan = p.title === "Ramadan Mubarak";
 
   return (
-    <div onClick={onClose} style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.85)", backdropFilter:"blur(12px)", zIndex:10000, display:"flex", alignItems:"center", justifyContent:"center", padding:20, animation:"overlay-in 0.25s ease", cursor:"none" }}>
-      <div onClick={e => e.stopPropagation()} style={{ background:"rgba(8,14,28,0.98)", border:`1px solid ${p.color}44`, borderRadius:24, width:"100%", maxWidth:860, maxHeight:"92vh", overflow:"hidden", display:"flex", flexDirection:"column", animation:"modal-in 0.35s cubic-bezier(0.34,1.56,0.64,1)", boxShadow:`0 40px 120px ${p.color}22` }}>
+    // ✅ KEY FIX: removed cursor:"pointer" — body already has cursor:none globally
+    <div onClick={onClose} style={{
+      position: "fixed", inset: 0,
+      background: "rgba(0,0,0,0.85)",
+      backdropFilter: "blur(12px)",
+      zIndex: 10000,
+      display: "flex", alignItems: "center", justifyContent: "center",
+      padding: 20,
+      animation: "overlay-in 0.25s ease",
+    }}>
+      <div onClick={e => e.stopPropagation()} style={{
+        background: "rgba(8,14,28,0.98)",
+        border: `1px solid ${p.color}44`,
+        borderRadius: 24,
+        width: "100%", maxWidth: 860, maxHeight: "92vh",
+        overflow: "hidden",
+        display: "flex", flexDirection: "column",
+        animation: "modal-in 0.35s cubic-bezier(0.34,1.56,0.64,1)",
+        boxShadow: `0 40px 120px ${p.color}22`,
+      }}>
+        {/* Header */}
         <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"18px 26px", borderBottom:"1px solid rgba(255,255,255,0.07)", flexShrink:0 }}>
           <div style={{ display:"flex", alignItems:"center", gap:14 }}>
             <span style={{ fontSize:26 }}>{p.emoji}</span>
@@ -821,34 +943,50 @@ function ProjectModal({ project, onClose }) {
                 🌙 Live Demo
               </a>
             )}
-            <button onClick={onClose} data-hover style={{ width:36, height:36, borderRadius:"50%", background:"rgba(255,255,255,0.06)", border:"1px solid rgba(255,255,255,0.12)", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", fontSize:18, color:"var(--muted)" }}
+            <button onClick={onClose} data-hover
+              style={{ width:36, height:36, borderRadius:"50%", background:"rgba(255,255,255,0.06)", border:"1px solid rgba(255,255,255,0.12)", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", fontSize:18, color:"var(--muted)" }}
               onMouseEnter={e => { e.currentTarget.style.background="rgba(255,80,80,0.15)"; e.currentTarget.style.color="#f87171"; }}
-              onMouseLeave={e => { e.currentTarget.style.background="rgba(255,255,255,0.06)"; e.currentTarget.style.color="var(--muted)"; }}>✕</button>
+              onMouseLeave={e => { e.currentTarget.style.background="rgba(255,255,255,0.06)"; e.currentTarget.style.color="var(--muted)"; }}>
+              ✕
+            </button>
           </div>
         </div>
+
+        {/* Scrollable body */}
         <div style={{ overflow:"auto", flex:1, padding:"22px 26px", display:"flex", flexDirection:"column", gap:22 }}>
           {/* Preview area */}
           {isRamadan ? (
             <div style={{ borderRadius:14, overflow:"hidden", background:"linear-gradient(135deg,#0d1630,#050a1a)", border:"1px solid rgba(245,185,66,0.3)", height:240, display:"flex", alignItems:"center", justifyContent:"center", position:"relative" }}>
-              {Array.from({length:20},(_,i) => (<div key={i} style={{ position:"absolute", width:2, height:2, borderRadius:"50%", background:"#f9d285", opacity:Math.random()*0.7+0.2, left:`${Math.random()*100}%`, top:`${Math.random()*100}%`, animation:`blink ${2+Math.random()*3}s ease-in-out ${Math.random()*2}s infinite` }} />))}
+              {Array.from({length:20},(_,i) => (
+                <div key={i} style={{ position:"absolute", width:2, height:2, borderRadius:"50%", background:"#f9d285", opacity:Math.random()*0.7+0.2, left:`${Math.random()*100}%`, top:`${Math.random()*100}%`, animation:`blink ${2+Math.random()*3}s ease-in-out ${Math.random()*2}s infinite` }} />
+              ))}
               <div style={{ textAlign:"center", zIndex:2 }}>
                 <div style={{ fontSize:48, marginBottom:8 }}>🌙</div>
-                <div style={{ fontFamily:"Georgia,serif", fontSize:36, background:"linear-gradient(135deg,#c47d10,#f9d285,#fff8e7,#c47d10)", backgroundSize:"200% auto", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", backgroundClip:"text", letterSpacing:"0.06em", animation:"gradient-shift 3s ease infinite" }}>Ramadan Mubarak</div>
+                <div style={{ fontFamily:"Georgia,serif", fontSize:36, background:"linear-gradient(135deg,#c47d10,#f9d285,#fff8e7,#c47d10)", backgroundSize:"200% auto", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", backgroundClip:"text", letterSpacing:"0.06em", animation:"gradient-shift 3s ease infinite" }}>
+                  Ramadan Mubarak
+                </div>
                 <div style={{ color:"rgba(249,210,133,0.6)", fontSize:13, marginTop:8, fontStyle:"italic" }}>Pure HTML · CSS · Vanilla JS</div>
               </div>
             </div>
           ) : p.images.length > 0 ? (
             <div style={{ position:"relative", borderRadius:14, overflow:"hidden", background:"rgba(0,0,0,0.5)", border:"1px solid rgba(255,255,255,0.07)" }}>
               <div style={{ height:300, display:"flex", alignItems:"center", justifyContent:"center" }}>
-                <img src={p.images[imgIdx]} alt={`${p.title} screenshot`} style={{ maxWidth:"100%", maxHeight:"100%", objectFit:"contain" }} onError={e => { e.target.style.display="none"; e.target.parentNode.style.fontSize="70px"; e.target.parentNode.innerHTML=p.emoji; }} />
+                <img src={p.images[imgIdx]} alt={`${p.title} screenshot`}
+                  style={{ maxWidth:"100%", maxHeight:"100%", objectFit:"contain" }}
+                  onError={e => { e.target.style.display="none"; e.target.parentNode.style.fontSize="70px"; e.target.parentNode.innerHTML=p.emoji; }} />
               </div>
               {p.images.length > 1 && (<>
-                <button onClick={() => setImgIdx(i => (i-1+p.images.length)%p.images.length)} data-hover style={{ position:"absolute", left:10, top:"50%", transform:"translateY(-50%)", width:34, height:34, borderRadius:"50%", background:"rgba(5,8,20,0.85)", border:"1px solid rgba(255,255,255,0.15)", cursor:"pointer", fontSize:18, color:"var(--text)", display:"flex", alignItems:"center", justifyContent:"center" }}>‹</button>
-                <button onClick={() => setImgIdx(i => (i+1)%p.images.length)} data-hover style={{ position:"absolute", right:10, top:"50%", transform:"translateY(-50%)", width:34, height:34, borderRadius:"50%", background:"rgba(5,8,20,0.85)", border:"1px solid rgba(255,255,255,0.15)", cursor:"pointer", fontSize:18, color:"var(--text)", display:"flex", alignItems:"center", justifyContent:"center" }}>›</button>
+                <button onClick={() => setImgIdx(i => (i-1+p.images.length)%p.images.length)} data-hover
+                  style={{ position:"absolute", left:10, top:"50%", transform:"translateY(-50%)", width:34, height:34, borderRadius:"50%", background:"rgba(5,8,20,0.85)", border:"1px solid rgba(255,255,255,0.15)", cursor:"pointer", fontSize:18, color:"var(--text)", display:"flex", alignItems:"center", justifyContent:"center" }}>‹</button>
+                <button onClick={() => setImgIdx(i => (i+1)%p.images.length)} data-hover
+                  style={{ position:"absolute", right:10, top:"50%", transform:"translateY(-50%)", width:34, height:34, borderRadius:"50%", background:"rgba(5,8,20,0.85)", border:"1px solid rgba(255,255,255,0.15)", cursor:"pointer", fontSize:18, color:"var(--text)", display:"flex", alignItems:"center", justifyContent:"center" }}>›</button>
               </>)}
               {p.images.length > 1 && (
                 <div style={{ position:"absolute", bottom:10, left:"50%", transform:"translateX(-50%)", display:"flex", gap:6 }}>
-                  {p.images.map((_,i) => <button key={i} onClick={() => setImgIdx(i)} data-hover style={{ width:i===imgIdx?22:7, height:7, borderRadius:4, background:i===imgIdx?p.color:"rgba(255,255,255,0.25)", border:"none", cursor:"pointer", transition:"all 0.3s", padding:0 }} />)}
+                  {p.images.map((_,i) => (
+                    <button key={i} onClick={() => setImgIdx(i)} data-hover
+                      style={{ width:i===imgIdx?22:7, height:7, borderRadius:4, background:i===imgIdx?p.color:"rgba(255,255,255,0.25)", border:"none", cursor:"pointer", transition:"all 0.3s", padding:0 }} />
+                  ))}
                 </div>
               )}
             </div>
@@ -859,8 +997,10 @@ function ProjectModal({ project, onClose }) {
           {p.images.length > 1 && (
             <div style={{ display:"flex", gap:8, overflowX:"auto", paddingBottom:4 }}>
               {p.images.map((img, i) => (
-                <div key={i} onClick={() => setImgIdx(i)} data-hover style={{ flexShrink:0, width:80, height:58, borderRadius:10, overflow:"hidden", border:`2px solid ${i===imgIdx?p.color:"transparent"}`, cursor:"pointer", transition:"border-color 0.2s", background:"rgba(0,0,0,0.4)" }}>
-                  <img src={img} alt="" style={{ width:"100%", height:"100%", objectFit:"cover" }} onError={e => { e.target.parentNode.innerHTML=`<div style='width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:22px'>${p.emoji}</div>`; }} />
+                <div key={i} onClick={() => setImgIdx(i)} data-hover
+                  style={{ flexShrink:0, width:80, height:58, borderRadius:10, overflow:"hidden", border:`2px solid ${i===imgIdx?p.color:"transparent"}`, cursor:"pointer", transition:"border-color 0.2s", background:"rgba(0,0,0,0.4)" }}>
+                  <img src={img} alt="" style={{ width:"100%", height:"100%", objectFit:"cover" }}
+                    onError={e => { e.target.parentNode.innerHTML=`<div style='width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:22px'>${p.emoji}</div>`; }} />
                 </div>
               ))}
             </div>
@@ -868,12 +1008,17 @@ function ProjectModal({ project, onClose }) {
 
           <div>
             <h3 style={{ fontFamily:"var(--font-display)", fontSize:19, letterSpacing:"0.06em", marginBottom:10, color:p.color }}>ABOUT THIS PROJECT</h3>
-            {p.longDesc.split("\n\n").map((para, i) => <p key={i} style={{ color:"#9daec8", lineHeight:1.8, fontSize:14, marginBottom:8 }}>{para}</p>)}
+            {p.longDesc.split("\n\n").map((para, i) => (
+              <p key={i} style={{ color:"#9daec8", lineHeight:1.8, fontSize:14, marginBottom:8 }}>{para}</p>
+            ))}
           </div>
+
           <div>
             <h3 style={{ fontFamily:"var(--font-display)", fontSize:19, letterSpacing:"0.06em", marginBottom:10, color:p.color }}>TECH STACK</h3>
             <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
-              {p.tech.map(t => <span key={t} style={{ background:`${p.color}15`, color:p.color, border:`1px solid ${p.color}44`, borderRadius:8, padding:"5px 14px", fontSize:13, fontWeight:600 }}>{t}</span>)}
+              {p.tech.map(t => (
+                <span key={t} style={{ background:`${p.color}15`, color:p.color, border:`1px solid ${p.color}44`, borderRadius:8, padding:"5px 14px", fontSize:13, fontWeight:600 }}>{t}</span>
+              ))}
             </div>
           </div>
         </div>
@@ -881,7 +1026,6 @@ function ProjectModal({ project, onClose }) {
     </div>
   );
 }
-
 // ─────────────────────────────────────────────
 //  SERVICE CARD
 // ─────────────────────────────────────────────
