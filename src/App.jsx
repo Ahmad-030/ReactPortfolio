@@ -1483,7 +1483,7 @@ export default function Portfolio() {
         {["var(--accent)","var(--accent2)","var(--accent3)"].map((c,i) => (<div key={i} style={{ position:"absolute", width:400, height:400, borderRadius:"50%", background:`radial-gradient(circle,${c} 0%,transparent 70%)`, opacity:0.06, animation:`orb-drift ${8+i*3}s ease-in-out infinite`, animationDelay:`${i*2}s`, top:`${20+i*20}%`, left:`${20+i*20}%` }} />))}
         <div style={{ position:"relative", marginBottom:32, animation:"float 3s ease-in-out infinite" }}>
           <div style={{ width:80, height:80, borderRadius:"50%", background:"var(--card)", border:"2px solid var(--accent)", display:"flex", alignItems:"center", justifyContent:"center", overflow:"hidden", boxShadow:"0 0 30px rgba(0,229,255,0.3)" }}>
-            <img src="/projects/fluttericon.jpg" alt="Flutter" style={{ width:"70%", height:"70%", objectFit:"contain" }} onError={e => { e.target.style.display="none"; e.target.parentNode.innerHTML="<span style='font-size:32px'>📱</span>"; }} />
+            <img src="/projects/aaa.png" alt="Flutter" style={{ width:"70%", height:"70%", objectFit:"contain" }} onError={e => { e.target.style.display="none"; e.target.parentNode.innerHTML="<span style='font-size:32px'>📱</span>"; }} />
           </div>
         </div>
         <h1 style={{ fontFamily:"var(--font-display)", fontSize:40, marginBottom:8, letterSpacing:"0.06em" }}>Ahmad Asif</h1>
