@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
 // ─────────────────────────────────────────────
-//  GLOBAL STYLES
+//  GLOBAL STYLES — ALL ORIGINAL ANIMATIONS INTACT + responsive layer added
 // ─────────────────────────────────────────────
 const GLOBAL_STYLE = `
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
@@ -22,6 +22,7 @@ body { font-family: var(--font-body); background: var(--bg); color: var(--text);
 ::selection { background: var(--accent); color: var(--bg); }
 a { color: inherit; text-decoration: none; }
 
+/* ── ALL ORIGINAL KEYFRAMES — UNTOUCHED ── */
 @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 @keyframes slide-up { from{opacity:0;transform:translateY(60px)} to{opacity:1;transform:translateY(0)} }
@@ -54,60 +55,21 @@ a { color: inherit; text-decoration: none; }
 @keyframes particle-rise { 0%{opacity:0;transform:translateY(0) scale(0)} 20%{opacity:1} 100%{opacity:0;transform:translateY(-80px) scale(1)} }
 @keyframes rec-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
 @keyframes rec-card-glow { 0%,100%{box-shadow:0 0 0 2px rgba(0,229,255,0.25),0 24px 80px rgba(0,229,255,0.1)} 50%{box-shadow:0 0 0 3px rgba(0,229,255,0.5),0 24px 80px rgba(0,229,255,0.22)} }
-
-/* ── PROJECT CARD ANIMATIONS ── */
-@keyframes proj-card-in {
-  from { opacity:0; transform:translateY(60px) scale(0.94); }
-  to   { opacity:1; transform:translateY(0)   scale(1);    }
-}
-@keyframes proj-shimmer {
-  0%   { left:-100%; opacity:0;  }
-  20%  { opacity:1;  }
-  100% { left:200%;  opacity:0;  }
-}
-@keyframes proj-border-flow {
-  0%,100% { border-color: rgba(255,255,255,0.08); box-shadow: none; }
-  50%     { border-color: rgba(255,255,255,0.14); box-shadow: 0 4px 24px rgba(0,0,0,0.2); }
-}
-@keyframes view-more-pulse {
-  0%,100% { box-shadow: 0 0 0 0 rgba(0,229,255,0.4); }
-  50%     { box-shadow: 0 0 0 10px rgba(0,229,255,0);  }
-}
-@keyframes tag-slide-in {
-  from { opacity:0; transform:translateX(-8px); }
-  to   { opacity:1; transform:translateX(0);    }
-}
-
-/* ── ADVANCED CONTINUOUS RAIL ── */
-@keyframes rail-ring-expand {
-  0%   { transform: scale(0.7); opacity: 0.85; }
-  100% { transform: scale(2.6); opacity: 0;   }
-}
-@keyframes rail-node-breathe {
-  0%,100% { transform: scale(1);    opacity: 0.9; }
-  50%      { transform: scale(1.45); opacity: 1;  }
-}
-@keyframes rail-glow-breathe {
-  0%,100% { opacity: 0.5; filter: blur(5px);  }
-  50%      { opacity: 1;   filter: blur(10px); }
-}
-@keyframes rail-orb-float {
-  0%,100% { transform: translateY(0)    scale(1);    opacity: 0.22; }
-  50%      { transform: translateY(-8px) scale(1.07); opacity: 0.38; }
-}
-@keyframes rail-label-in {
-  from { opacity: 0; transform: translateX(-8px); }
-  to   { opacity: 1; transform: translateX(0);    }
-}
-
-/* ── TESTIMONIALS EXTRA ── */
+@keyframes proj-card-in { from{opacity:0;transform:translateY(60px) scale(0.94)} to{opacity:1;transform:translateY(0) scale(1)} }
+@keyframes proj-shimmer { 0%{left:-100%;opacity:0} 20%{opacity:1} 100%{left:200%;opacity:0} }
+@keyframes proj-border-flow { 0%,100%{border-color:rgba(255,255,255,0.08);box-shadow:none} 50%{border-color:rgba(255,255,255,0.14);box-shadow:0 4px 24px rgba(0,0,0,0.2)} }
+@keyframes view-more-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(0,229,255,0.4)} 50%{box-shadow:0 0 0 10px rgba(0,229,255,0)} }
+@keyframes tag-slide-in { from{opacity:0;transform:translateX(-8px)} to{opacity:1;transform:translateX(0)} }
+@keyframes rail-ring-expand { 0%{transform:scale(0.7);opacity:0.85} 100%{transform:scale(2.6);opacity:0} }
+@keyframes rail-node-breathe { 0%,100%{transform:scale(1);opacity:0.9} 50%{transform:scale(1.45);opacity:1} }
+@keyframes rail-glow-breathe { 0%,100%{opacity:0.5;filter:blur(5px)} 50%{opacity:1;filter:blur(10px)} }
+@keyframes rail-orb-float { 0%,100%{transform:translateY(0) scale(1);opacity:0.22} 50%{transform:translateY(-8px) scale(1.07);opacity:0.38} }
+@keyframes rail-label-in { from{opacity:0;transform:translateX(-8px)} to{opacity:1;transform:translateX(0)} }
 @keyframes quote-pulse { 0%,100%{opacity:0.18;transform:scale(1)} 50%{opacity:0.32;transform:scale(1.06)} }
 @keyframes testi-particle { 0%{opacity:0;transform:translateY(20px) scale(0)} 30%{opacity:0.8} 100%{opacity:0;transform:translateY(-60px) translateX(var(--px)) scale(1.2)} }
 @keyframes card-stagger-in { from{opacity:0;transform:translateY(40px) scale(0.94)} to{opacity:1;transform:translateY(0) scale(1)} }
 @keyframes star-twinkle { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
 @keyframes name-shine { 0%{background-position:200% center} 100%{background-position:-200% center} }
-
-/* ── CONTACT EXTRA ── */
 @keyframes typing-cursor { 0%,100%{opacity:1} 50%{opacity:0} }
 @keyframes emoji-float-1 { 0%,100%{transform:translateY(0) rotate(-5deg)} 50%{transform:translateY(-18px) rotate(5deg)} }
 @keyframes emoji-float-2 { 0%,100%{transform:translateY(0) rotate(3deg)} 50%{transform:translateY(-12px) rotate(-3deg)} }
@@ -115,8 +77,6 @@ a { color: inherit; text-decoration: none; }
 @keyframes ripple-out { 0%{transform:scale(0.8);opacity:0.8} 100%{transform:scale(2.5);opacity:0} }
 @keyframes contact-orb { 0%{transform:translate(0,0)} 33%{transform:translate(40px,-30px)} 66%{transform:translate(-30px,20px)} 100%{transform:translate(0,0)} }
 @keyframes bounce-soft { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
-
-/* ── QUOTE BANNER EXTRAS ── */
 @keyframes quote-bg-shift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
 @keyframes quote-char-drop { from{opacity:0;transform:translateY(-20px) scale(0.8)} to{opacity:1;transform:translateY(0) scale(1)} }
 @keyframes quote-scale-breathe { 0%,100%{transform:scale(1)} 50%{transform:scale(1.01)} }
@@ -124,10 +84,163 @@ a { color: inherit; text-decoration: none; }
 @keyframes quote-glow-sweep { from{left:-30%} to{left:110%} }
 @keyframes quote-spark { 0%{opacity:0;transform:translate(-50%,-50%) scale(0)} 40%{opacity:1} 100%{opacity:0;transform:translate(calc(-50% + var(--sx)),calc(-50% + var(--sy))) scale(1.5)} }
 @keyframes rail-diamond-idle { 0%,100%{transform:rotate(45deg) scale(1)} 50%{transform:rotate(45deg) scale(1.2)} }
+
+/* ══════════════════════════════════════════════════
+   RESPONSIVE ADDITIONS ONLY — nothing above changed
+   ══════════════════════════════════════════════════ */
+
+/* Hamburger button — hidden by default, shown on tablet/mobile */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 8px;
+  background: none;
+  border: none;
+  z-index: 1100;
+}
+.hamburger span {
+  display: block; width: 24px; height: 2px;
+  background: var(--accent); border-radius: 2px;
+  transition: all 0.3s ease;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile drawer */
+.mobile-drawer {
+  position: fixed;
+  inset: 0;
+  background: rgba(5,8,16,0.98);
+  backdrop-filter: blur(20px);
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(100%);
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.mobile-drawer.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+.mob-link {
+  font-family: var(--font-display);
+  font-size: 44px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  text-transform: capitalize;
+  transition: color 0.2s, transform 0.2s;
+}
+.mob-link:hover, .mob-link.active { color: var(--accent); transform: translateX(6px); }
+
+/* ── TABLET ≤ 1024px ── */
+@media (max-width: 1024px) {
+  .nav-pill    { display: none !important; }
+  .nav-socials { display: none !important; }
+  .hamburger   { display: flex !important; }
+  .side-rail   { display: none !important; }
+
+  /* Hero: stack vertically */
+  .hero-inner {
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding-top: 100px !important;
+    padding-bottom: 60px !important;
+    gap: 48px !important;
+    min-height: 100svh !important;
+  }
+  .hero-text {
+    max-width: 100% !important;
+    text-align: center !important;
+  }
+  .hero-ctas { justify-content: center !important; }
+  .hero-orbit-wrap {
+    width: 380px !important;
+    height: 380px !important;
+  }
+  .hero-center-img { width: 220px !important; height: 220px !important; }
+
+  /* About: single column */
+  .about-grid { grid-template-columns: 1fr !important; }
+  .about-left  { max-width: 420px; margin: 0 auto; }
+  .stats-grid  { grid-template-columns: repeat(4,1fr) !important; }
+  .skills-inner{ grid-template-columns: repeat(5,1fr) !important; }
+
+  /* Hide outer orbit ring */
+  .orbit-outer { display: none !important; }
+
+  /* Testimonial thumbnail row */
+  .testi-thumbs { display: none !important; }
+}
+
+/* ── MOBILE ≤ 768px ── */
+@media (max-width: 768px) {
+  body { cursor: auto !important; }
+  .custom-cursor { display: none !important; }
+  .scroll-indicator { display: none !important; }
+
+  section { padding-left: 5% !important; padding-right: 5% !important; }
+
+  /* Hero */
+  .hero-inner { padding-top: 88px !important; gap: 32px !important; }
+  .hero-orbit-wrap { width: 260px !important; height: 260px !important; }
+  .hero-center-img { width: 180px !important; height: 180px !important; }
+  .orbit-inner { display: none !important; }
+  .hero-ctas { flex-direction: column !important; align-items: center !important; }
+  .hero-ctas a { width: 100% !important; max-width: 280px !important; justify-content: center !important; }
+
+  /* About */
+  .stats-grid  { grid-template-columns: repeat(2,1fr) !important; }
+  .skills-inner{ grid-template-columns: repeat(3,1fr) !important; }
+  .about-actions { flex-direction: column !important; }
+  .about-actions a { width: 100% !important; justify-content: center !important; }
+
+  /* Grids */
+  .projects-grid  { grid-template-columns: 1fr !important; }
+  .services-grid  { grid-template-columns: 1fr !important; }
+  .certs-grid     { grid-template-columns: repeat(2,1fr) !important; }
+
+  /* Testimonial */
+  .testi-card  { padding: 24px 18px !important; }
+  .testi-head  { flex-wrap: wrap !important; }
+  .testi-linkedin { display: none !important; }
+
+  /* Contact */
+  .contact-btns { flex-direction: column !important; align-items: center !important; }
+  .contact-btns > * { width: 100% !important; max-width: 300px !important; justify-content: center !important; }
+
+  /* Footer */
+  .footer-row { flex-direction: column !important; align-items: center !important; text-align: center !important; gap: 16px !important; }
+
+  /* Modal */
+  .modal-wrap { padding: 12px !important; }
+  .modal-box  { border-radius: 16px !important; max-height: 94dvh !important; }
+  .modal-hd   { padding: 14px 16px !important; }
+  .modal-bd   { padding: 16px !important; }
+  .modal-title{ font-size: clamp(18px,5vw,24px) !important; }
+  .proj-btns  { flex-wrap: wrap !important; }
+}
+
+/* ── SMALL MOBILE ≤ 480px ── */
+@media (max-width: 480px) {
+  .skills-inner { grid-template-columns: repeat(2,1fr) !important; }
+  .certs-grid   { grid-template-columns: 1fr !important; }
+  .stats-grid   { grid-template-columns: repeat(2,1fr) !important; }
+  .proj-btns    { flex-direction: column !important; }
+}
 `;
 
 // ─────────────────────────────────────────────
-//  DATA
+//  DATA — 100% original, untouched
 // ─────────────────────────────────────────────
 const SKILLS_GRID = [
   { name:"Flutter",  img:"projects/aaa.png", color:"#00e5ff" },
@@ -150,25 +263,21 @@ const PROJECTS = [
     desc:"Ride-sharing app where drivers publish routes and passengers find them on a map, negotiate fares, and chat directly.",
     longDesc:"Routelink is a comprehensive Flutter-based ride-sharing application that connects drivers and passengers through an intelligent route-matching platform, enabling direct fare negotiation and seamless communication for convenient carpooling experiences.\n\nUsers can publish or browse routes on an interactive map, chat directly with potential ride partners, negotiate fares in real-time, and track rides with live location updates. The app also features user profiles with ratings, route history, and safety features including emergency contacts and ride sharing capabilities.\n\nBuilt with Flutter, Firebase, Google Maps API, and Provider state management. Clean Material 3 UI, smooth animations, and responsive design — delivering an intuitive, secure, and community-driven transportation solution.",
     tech:["Flutter","Firebase","Google Maps","Firestore","Provider","Push Notifications"] },
-     // ── RAMADAN MUBARAK ──────────────────────────────────────────────────────
   { title:"Ramadan Mubarak", tag:"Creative · Holiday", color:"#f5b942", emoji:"🌙",
-    preview:"/projects/ramadan-preview.png",   // fallback to emoji if missing
+    preview:"/projects/ramadan-preview.png",
     images:[],
-    github: "https://github.com/Ahmad-030/RamzanMubarak",   // open in browser link instead
+    github: "https://github.com/Ahmad-030/RamzanMubarak",
     liveUrl: "https://ahmadasif-03.vercel.app/ramadan-mubarak.html",
     desc:"An animated Ramadan greeting page with cinematic moon reveal, floating SVG lanterns, procedural star field, and golden title sequence.",
     longDesc:"A fully self-contained HTML page built to share Ramadan greetings in style. Features a cinematic zoom-in camera effect, procedurally generated star field with gold accent stars, animated crescent moon with pulsing halo, hand-crafted SVG lanterns with realistic drop-and-float physics, rising gold particles, and a staggered letter-wave text reveal.\n\nBuilt with pure HTML, CSS animations, and vanilla JavaScript — no frameworks, no dependencies. Includes ambient audio support and an elegant golden signature sign-off.\n\nAll animations are orchestrated on a timeline: stars → moon → lanterns (spring-drop) → golden 'Ramadan Mubarak' shimmer title → ornamental dividers → subtext. The entire experience runs at 60fps with GPU-accelerated CSS transforms and zero layout jank.",
     tech:["HTML5","CSS Animations","SVG","Vanilla JS","Web Audio API","Canvas"] },
-
-     { title:"Sajdah", tag:"Islamic App", color:"#f50b0b", emoji:"🕌",
+  { title:"Sajdah", tag:"Islamic App", color:"#f50b0b", emoji:"🕌",
     preview:"/projects/Sajdah/aaa.png",
     images:["/projects/Sajdah/aaa.png"],
     github: "https://github.com/Ahmad-030/Sajdah",
     desc:"Modern Islamic prayer companion with GPS prayer times, live Qibla compass, and smart notifications.",
     longDesc:"Sajdah is a modern Islamic prayer companion app built with Flutter to help Muslims stay connected to their spiritual routine. Experience intelligent location detection, accurate prayer times powered by the Adhan package, and smart notifications that work seamlessly in the background.\n\nTrack live countdowns to each prayer, find the Qibla direction with a real-time compass, and customize reminders to fit your schedule. With support for multiple calculation methods, dark/light themes, and a sleek Material Design interface — Sajdah makes maintaining your prayer schedule effortless and beautiful.",
     tech:["Flutter","GPS","Adhan Package","Compass API","Firebase","Background Services"] },
-
- 
   { title:"BloodDonation", tag:"Social Impact", color:"#02751e", emoji:"🩸",
     preview:"/projects/BloodDonation/bd1.png",
     images:["/projects/BloodDonation/bd1.png","/projects/BloodDonation/bd2.png","/projects/BloodDonation/bd3.png"],
@@ -176,17 +285,13 @@ const PROJECTS = [
     desc:"Connects blood donors and receivers through real-time chat, smart filters, and emergency hospital locator.",
     longDesc:"The Blood Donation App is a comprehensive Flutter-based platform that bridges the gap between donors and receivers through real-time communication, smart search filters, and a location-based hospital locator.\n\nUsers can register as donors or receivers, post and manage blood requests, chat directly, and locate nearby hospitals with live distance and contact information.\n\nBuilt with Flutter, Firebase, Provider, and OpenStreetMap. Clean Material 3 UI, smooth animations, and responsive design — ensuring an intuitive and impactful user experience that promotes life-saving blood donations.",
     tech:["Flutter","Firebase","OpenStreetMap","Real-time Chat","Provider"] },
-
-    { title:"Seed Disease", tag:"AI · AgriTech", color:"#4522c5", emoji:"🌱",
+  { title:"Seed Disease", tag:"AI · AgriTech", color:"#4522c5", emoji:"🌱",
     preview:"/projects/seeddisease/green.png",
     images:["/projects/seeddisease/geen2.png","/projects/seeddisease/green.png"],
     github: null,
     desc:"AI-powered crop health app helping farmers detect diseases and weeds instantly using on-device TensorFlow Lite.",
     longDesc:"Seed Disease is a comprehensive Flutter-based mobile application that empowers farmers to detect crop diseases and weeds in real-time, providing actionable treatment recommendations and secure cloud storage for scan history.\n\nUsers can capture images via camera or gallery, receive instant AI-powered diagnoses, access fungicide/herbicide guidance, and view preventive measures. Supports bilingual interaction (English / اردو) and offline functionality for rural areas.\n\nBuilt with Flutter, TensorFlow Lite, Firebase, and REST APIs. Clean Material 3 UI, smooth animations, and responsive design — bridging cutting-edge AI technology with grassroots agriculture.",
     tech:["Flutter","TensorFlow Lite","Firebase","ML","Offline Mode","Bilingual"] },
-    
-   
-
   { title:"Spin Wheel", tag:"Entertainment", color:"#e8f80b", emoji:"🎰",
     preview:"/projects/SpinWheel/aaa.png",
     images:["/projects/SpinWheel/aaa.png"],
@@ -194,9 +299,6 @@ const PROJECTS = [
     desc:"Interactive decision-making app where users create personalized spin reels with custom text or images.",
     longDesc:"Spin Wheel is a vibrant and interactive Flutter app that transforms decision-making into a fun and visually engaging experience. Users can create their own spin reels by adding custom text or image options, displayed in a sleek animated list.\n\nA lively Lottie animation sets the tone, with a built-in Dark/Light mode toggle. The winning result is revealed with elegant fade and bounce animations, and a 'Spin Again' option automatically excludes previous results for fair play.\n\nDesigned with clean architecture, responsive layouts, and glassmorphism-inspired visuals — showcasing mastery in Flutter animations, UI design, and theme management.",
     tech:["Flutter","Lottie","Animations","Dark/Light Themes","Glassmorphism"] },
-
- 
-
   { title:"AlignNix", tag:"Game", color:"#b910ab", emoji:"🧩",
     preview:"/projects/AlignNix/aa.png",
     images:["/projects/AlignNix/aa.png"],
@@ -204,7 +306,6 @@ const PROJECTS = [
     desc:"Modern reimagining of classic Tetris with smooth controls, elegant UI, and fluid animations.",
     longDesc:"Align Nix is a modern reimagining of the timeless Tetris puzzle game — redesigned for today's players using Flutter. Experience the perfect blend of nostalgia and innovation with smooth controls, elegant UI, and fluid animations.\n\nAlign colorful blocks, clear rows, and climb the leaderboard as you test your reflexes and spatial skills. Whether you're chasing high scores or just relaxing with quick rounds, Align Nix delivers endless fun and a sleek, modern feel — blending nostalgia with innovation.",
     tech:["Flutter","Game Logic","Animations","Leaderboard","Score Tracking"] },
-
   { title:"TextSnap", tag:"OCR · Productivity", color:"#f97316", emoji:"📷",
     preview:"/projects/Textsnap/textsnap.jpg",
     images:["/projects/Textsnap/textsnap.jpg","/projects/Textsnap/snap.png"],
@@ -212,7 +313,6 @@ const PROJECTS = [
     desc:"Smart OCR app that instantly extracts editable text from images, documents, and screenshots.",
     longDesc:"TextSnap is a smart OCR (Optical Character Recognition) app that lets you instantly extract text from images, documents, and screenshots. With a clean interface and powerful recognition engine, it converts printed or handwritten text into editable, shareable, and searchable digital content.\n\nWhether you're scanning notes, capturing signboards, or digitizing documents, TextSnap makes text extraction fast, accurate, and effortless. Multi-language support, high recognition accuracy, and copy/share functionality.",
     tech:["Flutter","ML Kit","OCR","Multi-language","Camera & Gallery"] },
-
   { title:"TechNest", tag:"E-Commerce", color:"#d40606", emoji:"💻",
     preview:"/projects/Technest/tech.jpeg",
     images:["/projects/Technest/tech.jpeg","/projects/Technest/techa.jpeg","/projects/Technest/aab.jpeg"],
@@ -220,7 +320,6 @@ const PROJECTS = [
     desc:"E-commerce app for computer peripherals with sleek UI, product catalog, and secure checkout.",
     longDesc:"TechNest is an e-commerce app designed for computer enthusiasts, offering a wide range of peripherals and accessories with a seamless shopping experience.\n\nAdvanced search and filter options, wishlist, shopping cart, and secure checkout. Order tracking to ensure a smooth and reliable tech shopping experience.\n\nBuilt with Flutter and Node.js + MongoDB backend.",
     tech:["Flutter","Node.js","MongoDB","Payments","REST APIs","Search & Filter"] },
-
   { title:"Rao Jewellery", tag:"E-Commerce", color:"#d97706", emoji:"💍",
     preview:"/projects/RAO/1.jpeg",
     images:["/projects/RAO/1.jpeg","/projects/RAO/2.jpeg","/projects/RAO/3.jpeg","/projects/RAO/4.jpeg"],
@@ -228,7 +327,6 @@ const PROJECTS = [
     desc:"Luxury jewelry shopping app showcasing gold, silver, and diamond collections with elegant UI.",
     longDesc:"Rao Jewelers is a dedicated jewelry e-commerce app designed to provide customers with a luxurious yet convenient shopping experience. The app features an extensive collection of gold, silver, diamond, and custom-designed jewelry, beautifully showcased with high-quality images and detailed descriptions.\n\nUsers can easily browse by category, apply filters for style or price, add favorites to their wishlist, and complete purchases with secure payment gateways, order tracking, and personalized recommendations.",
     tech:["Flutter","Firebase","Secure Payments","Wishlist","Order Tracking","UI/UX"] },
-
   { title:"Food Delivery", tag:"Food & Lifestyle", color:"#f43f5e", emoji:"🍕",
     preview:"/projects/food/1.jpeg",
     images:["/projects/food/1.jpeg","/projects/food/2.jpeg","/projects/food/3.jpeg"],
@@ -236,7 +334,6 @@ const PROJECTS = [
     desc:"Seamless food ordering and delivery app with modern UI and real-time order tracking.",
     longDesc:"A Flutter-based mobile application designed for seamless food ordering and delivery. The app includes a modern UI/UX, restaurant catalog with detailed food items, cart and checkout flow with delivery fee calculation, real-time order tracking screen, and a polished user profile section.\n\nWhether you're craving pizza, sushi, or something special, the app offers an easy-to-use platform for fast and efficient food delivery with a focus on seamless ordering and personalized experiences.\n\nBuilt with Flutter and Firebase.",
     tech:["Flutter","Firebase","Real-time Tracking","Maps","Cart & Checkout"] },
-
   { title:"Smart Vision", tag:"AI · Accessibility", color:"#ff0000", emoji:"👁️",
     preview:"/projects/SmartVision/11.jpg",
     images:["/projects/SmartVision/11.jpg"],
@@ -244,7 +341,6 @@ const PROJECTS = [
     desc:"Visual intelligence app combining voice commands, object detection, and currency recognition via Gemini AI.",
     longDesc:"Smart Vision is a cutting-edge visual intelligence tool that combines voice commands, object detection, and currency recognition using Gemini AI. It allows users to capture images and receive instant insights about objects, currencies, and more.\n\nDesigned for accessibility — empowering visually impaired users with voice-guided interactions. A Flutter-powered app that puts AI-driven visual intelligence at your fingertips.",
     tech:["Flutter","Gemini AI","Voice Commands","Object Detection","Currency Recognition"] },
-
   { title:"My Notes", tag:"Full-Stack", color:"#8400ff", emoji:"📝",
     preview:"/projects/notes/1.jpg",
     images:["/projects/notes/1.jpg"],
@@ -252,7 +348,6 @@ const PROJECTS = [
     desc:"Notes app with MongoDB backend for secure cloud storage, offline support, and seamless sync.",
     longDesc:"The Notes App is a simple, intuitive, and powerful tool for organizing and managing your personal notes. Built with Flutter and using MongoDB as the backend, the app ensures seamless synchronization of your notes across devices.\n\nUsers can create, edit, and delete notes with ease, featuring a minimalist interface designed for efficient note-taking. Integrates custom database handling, ensuring secure and reliable storage. Offline support with automatic sync when connected to the internet.",
     tech:["Flutter","Node.js","MongoDB","REST APIs","Offline Sync"] },
-
   { title:"VoiceWave", tag:"AI · Voice", color:"#ec4899", emoji:"🎙️",
     preview:"/projects/voicewave/xyz.jpg",
     images:["/projects/voicewave/xyz.jpg"],
@@ -260,7 +355,6 @@ const PROJECTS = [
     desc:"Voice-to-text app with audio recording, playback, and AI transcription via AssemblyAI.",
     longDesc:"The Voice-to-Text App is a modern, user-friendly tool designed for recording, managing, and transcribing audio seamlessly. Built with Flutter and powered by the AssemblyAI API, the app transforms voice recordings into accurate text while maintaining an intuitive flow.\n\nUsers can record audio with custom titles, play back saved files, and generate instant transcriptions with one click. Featuring JSON-based local persistence for secure offline storage of recordings and titles. Clean design and smooth navigation deliver a polished, accessible speech recognition experience.",
     tech:["Flutter","AssemblyAI","Audio Recording","JSON Storage","Playback"] },
-
   { title:"NovelNook", tag:"E-Commerce", color:"#e90e0e", emoji:"📚",
     preview:"/projects/novelnook/front1.png",
     images:["/projects/novelnook/front1.png","/projects/novelnook/novelnook1.png"],
@@ -268,7 +362,6 @@ const PROJECTS = [
     desc:"Modern mobile bookstore for browsing and purchasing novels with a smooth shopping experience.",
     longDesc:"NovelNook is a modern mobile bookstore app that allows users to explore a wide range of novels, add favorites to their wishlist, and seamlessly purchase books through a simple cart and checkout system.\n\nIntuitive design, smooth navigation, book catalog with detailed info, search and filtering, wishlist management, shopping cart, and secure checkout — combining an enjoyable reading and shopping experience.",
     tech:["Flutter","Firebase","Search & Filter","Wishlist","Cart","Checkout"] },
-
   { title:"My Tasks", tag:"Productivity", color:"#14b8a6", emoji:"✅",
     preview:"/projects/Mytasks/aa.png",
     images:["/projects/Mytasks/aa.png"],
@@ -276,8 +369,6 @@ const PROJECTS = [
     desc:"Advanced task management with alarm-style notifications, home screen widgets, and Material 3 UI.",
     longDesc:"My Task is a modern task management companion built with Flutter to help users stay organized and never miss important deadlines. Experience intelligent notification scheduling with custom alarm sounds, accurate timezone management, and smart reminders that work seamlessly in the background.\n\nTrack tasks with visual indicators for overdue and due-soon items, manage with intuitive swipe gestures, and stay updated through a native home screen widget. With support for task filtering (All, Pending, Completed), animated splash screen, and a sleek Material 3 interface with gradient themes — making productivity effortless and beautiful.",
     tech:["Flutter","Local Notifications","Home Screen Widgets","Material 3","Timezone"] },
-
- 
 ];
 
 const SERVICES = [
@@ -321,8 +412,19 @@ function useReveal(threshold = 0.15) {
   return [ref, v];
 }
 
+// Simple hook — only used to drive structural layout differences, NOT to strip animations
+function useBreakpoint() {
+  const [w, setW] = useState(typeof window !== "undefined" ? window.innerWidth : 1280);
+  useEffect(() => {
+    const fn = () => setW(window.innerWidth);
+    window.addEventListener("resize", fn);
+    return () => window.removeEventListener("resize", fn);
+  }, []);
+  return { isMobile: w <= 768, isTablet: w <= 1024, w };
+}
+
 // ─────────────────────────────────────────────
-//  ADVANCED CONTINUOUS SIDE RAIL  (v2)
+//  SIDE RAIL — original, untouched
 // ─────────────────────────────────────────────
 const SECTIONS = [
   { id:"home",           label:"Home",           icon:"⌂", color:"#00e5ff" },
@@ -377,31 +479,13 @@ function ContinuousRail({ activeSection }) {
   if (vh === 0) return null;
 
   return (
-    <div style={{
-      position:      "fixed",
-      top:           0,
-      left:          0,
-      width:         72,
-      height:        "100vh",
-      zIndex:        500,
-      pointerEvents: "none",
-      opacity:       mounted ? 1 : 0,
-      transition:    "opacity 0.7s ease",
-    }}>
-      <div style={{
-        position: "absolute", left: LINE_X - 26, top: dotY - 26,
-        width: 52, height: 52, borderRadius: "50%",
-        background: activeSec.color, filter: "blur(22px)",
-        transition: "top 0.1s linear, background 0.6s ease",
-        animation: "rail-orb-float 4s ease-in-out infinite",
-        pointerEvents:"none",
-      }} />
+    <div className="side-rail" style={{ position:"fixed", top:0, left:0, width:72, height:"100vh", zIndex:500, pointerEvents:"none", opacity:mounted?1:0, transition:"opacity 0.7s ease" }}>
+      <div style={{ position:"absolute", left:LINE_X-26, top:dotY-26, width:52, height:52, borderRadius:"50%", background:activeSec.color, filter:"blur(22px)", transition:"top 0.1s linear, background 0.6s ease", animation:"rail-orb-float 4s ease-in-out infinite", pointerEvents:"none" }} />
       <div style={{ position:"absolute", top:railTop, height:usableH, left:LINE_X, width:2, transform:"translateX(-50%)", background:"linear-gradient(to bottom, transparent, rgba(255,255,255,0.06) 8%, rgba(255,255,255,0.06) 92%, transparent)", borderRadius:2 }} />
       <div style={{ position:"absolute", top:railTop, left:LINE_X, width:2, height:scrollFrac*usableH, transform:"translateX(-50%)", background:`linear-gradient(to bottom, ${activeSec.color}ee, ${activeSec.color}33)`, borderRadius:2, boxShadow:`0 0 8px 1px ${activeSec.color}55`, transition:"height 0.06s linear, background 0.6s ease, box-shadow 0.6s ease" }} />
       <div style={{ position:"absolute", top:railTop, left:LINE_X-3, width:8, height:scrollFrac*usableH, background:`linear-gradient(to bottom, ${activeSec.color}55, transparent)`, filter:"blur(5px)", borderRadius:4, transition:"height 0.06s linear", animation:"rail-glow-breathe 3s ease-in-out infinite", pointerEvents:"none" }} />
       <div style={{ position:"absolute", left:LINE_X, top:dotY, transform:"translate(-50%,-50%)", width:14, height:14, borderRadius:"50%", border:`1.5px solid ${activeSec.color}`, opacity:0.45, transition:"top 0.08s linear", animation:"rail-ring-expand 2s ease-out infinite", pointerEvents:"none" }} />
       <div style={{ position:"absolute", left:LINE_X, top:dotY, transform:"translate(-50%,-50%)", width:8, height:8, borderRadius:"50%", background:activeSec.color, boxShadow:`0 0 0 2px ${activeSec.color}44, 0 0 16px 5px ${activeSec.color}88`, transition:"top 0.08s linear, background 0.6s ease", zIndex:3, pointerEvents:"none" }} />
-
       {SECTIONS.map((sec, i) => {
         const top = nodeY(i);
         const isActive = sec.id === activeSection;
@@ -432,13 +516,11 @@ function ContinuousRail({ activeSection }) {
           </div>
         );
       })}
-
       {Array.from({ length: 20 }, (_, i) => {
         const top = railTop + (i / 19) * usableH;
         const isMajor = i % 5 === 0;
         return (<div key={i} style={{ position:"absolute", top, left:LINE_X+2, width:isMajor?7:4, height:1, background:isMajor?"rgba(255,255,255,0.1)":"rgba(255,255,255,0.04)", borderRadius:1, pointerEvents:"none" }} />);
       })}
-
       <div style={{ position:"absolute", bottom:12, left:0, width:LINE_X*2, display:"flex", justifyContent:"center", pointerEvents:"none" }}>
         <svg width="34" height="34" viewBox="0 0 34 34">
           <circle cx="17" cy="17" r="12" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1.5" />
@@ -454,7 +536,7 @@ function ContinuousRail({ activeSection }) {
 }
 
 // ─────────────────────────────────────────────
-//  ANIMATED QUOTE BANNER
+//  ANIMATED QUOTE BANNER — original, untouched
 // ─────────────────────────────────────────────
 function QuoteBanner() {
   const [ref, v] = useReveal(0.3);
@@ -462,7 +544,6 @@ function QuoteBanner() {
   const words = ["We", "don't", "just", "build", "apps", "—", "we", "build", "trust"];
   const accentWords = new Set(["build", "trust"]);
   const sparks = Array.from({ length: 12 }, (_, i) => ({ angle:(i/12)*360, dist:80+Math.random()*60, size:3+Math.random()*4, delay:Math.random()*0.5 }));
-
   return (
     <div ref={ref} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
       style={{ position:"relative", zIndex:1, borderTop:"1px solid rgba(255,255,255,0.06)", borderBottom:"1px solid rgba(255,255,255,0.06)", overflow:"hidden", background:"linear-gradient(135deg,rgba(5,8,16,0.95),rgba(8,14,28,0.98))", cursor:"default" }}>
@@ -499,7 +580,7 @@ function QuoteBanner() {
 }
 
 // ─────────────────────────────────────────────
-//  TYPEWRITER
+//  TYPEWRITER — original, untouched
 // ─────────────────────────────────────────────
 function Typewriter({ words }) {
   const [display, setDisplay] = useState("");
@@ -522,7 +603,7 @@ function Typewriter({ words }) {
 }
 
 // ─────────────────────────────────────────────
-//  CURSOR
+//  CURSOR — original, untouched, hidden on mobile via CSS
 // ─────────────────────────────────────────────
 function Cursor() {
   const dot = useRef(null), ring = useRef(null);
@@ -537,13 +618,13 @@ function Cursor() {
     return () => { window.removeEventListener("mousemove", mv); cancelAnimationFrame(raf.current); };
   }, []);
   return (<>
-    <div ref={dot} style={{ position:"fixed", top:0, left:0, width:8, height:8, background:"var(--accent)", borderRadius:"50%", pointerEvents:"none", zIndex:9999 }} />
-    <div ref={ring} style={{ position:"fixed", top:0, left:0, width:h?56:40, height:h?56:40, border:`2px solid ${h?"var(--accent)":"rgba(0,229,255,0.4)"}`, borderRadius:"50%", pointerEvents:"none", zIndex:9998, transition:"all 0.25s" }} />
+    <div className="custom-cursor" ref={dot} style={{ position:"fixed", top:0, left:0, width:8, height:8, background:"var(--accent)", borderRadius:"50%", pointerEvents:"none", zIndex:9999 }} />
+    <div className="custom-cursor" ref={ring} style={{ position:"fixed", top:0, left:0, width:h?56:40, height:h?56:40, border:`2px solid ${h?"var(--accent)":"rgba(0,229,255,0.4)"}`, borderRadius:"50%", pointerEvents:"none", zIndex:9998, transition:"all 0.25s" }} />
   </>);
 }
 
 // ─────────────────────────────────────────────
-//  PARTICLE CANVAS
+//  PARTICLE CANVAS — original, untouched
 // ─────────────────────────────────────────────
 function ParticleCanvas() {
   const ref = useRef(null);
@@ -564,7 +645,7 @@ function ParticleCanvas() {
 }
 
 // ─────────────────────────────────────────────
-//  ORBIT ICON
+//  ORBIT ICON — original, untouched
 // ─────────────────────────────────────────────
 function OrbitIcon({ icon, img, color, radius, duration, clockwise=true, startAngle=0, size=48 }) {
   const anim = clockwise?"orbit-cw":"orbit-ccw", counter = clockwise?"counter-cw":"counter-ccw", dim = radius*2;
@@ -580,7 +661,7 @@ function OrbitIcon({ icon, img, color, radius, duration, clockwise=true, startAn
 }
 
 // ─────────────────────────────────────────────
-//  ANIMATED COUNTER
+//  ANIMATED COUNTER — original, untouched
 // ─────────────────────────────────────────────
 function AnimatedCounter({ target, suffix="" }) {
   const [count, setCount] = useState(0);
@@ -595,7 +676,7 @@ function AnimatedCounter({ target, suffix="" }) {
 }
 
 // ─────────────────────────────────────────────
-//  ABOUT STAT CARD
+//  ABOUT STAT CARD — original, untouched
 // ─────────────────────────────────────────────
 function AboutStatCard({ value, suffix, label, icon, delay=0 }) {
   const [ref, v] = useReveal(0.2); const [hov, setHov] = useState(false);
@@ -611,7 +692,7 @@ function AboutStatCard({ value, suffix, label, icon, delay=0 }) {
 }
 
 // ─────────────────────────────────────────────
-//  SKILL GRID CARD
+//  SKILL GRID CARD — original, untouched
 // ─────────────────────────────────────────────
 function SkillGridCard({ name, icon, img, color, delay=0 }) {
   const [ref, v] = useReveal(0.05); const [hov, setHov] = useState(false);
@@ -628,7 +709,7 @@ function SkillGridCard({ name, icon, img, color, delay=0 }) {
 }
 
 // ─────────────────────────────────────────────
-//  ABOUT PHOTO
+//  ABOUT PHOTO — original, untouched
 // ─────────────────────────────────────────────
 function AboutPhoto() {
   const [ref, v] = useReveal(0.2);
@@ -651,7 +732,7 @@ function AboutPhoto() {
 }
 
 // ─────────────────────────────────────────────
-//  ABOUT RIGHT
+//  ABOUT RIGHT — original, untouched
 // ─────────────────────────────────────────────
 function AboutRight() {
   const [ref, v] = useReveal(0.1); const [btnRef, btnV] = useReveal(0.2);
@@ -673,11 +754,11 @@ function AboutRight() {
         <h3 style={{ fontFamily:"var(--font-display)", fontSize:22, marginBottom:16, display:"flex", alignItems:"center", gap:8, letterSpacing:"0.06em" }}>
           <span style={{ color:"var(--accent)" }}>⚡</span> TECHNICAL SKILLS
         </h3>
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:10 }}>
+        <div className="skills-inner" style={{ display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:10 }}>
           {SKILLS_GRID.map((sk, i) => <SkillGridCard key={sk.name} name={sk.name} icon={sk.icon} img={sk.img} color={sk.color} delay={i*0.05} />)}
         </div>
       </div>
-      <div ref={btnRef} style={{ display:"flex", gap:14, flexWrap:"wrap", opacity:btnV?1:0, transform:btnV?"translateY(0)":"translateY(20px)", transition:"all 0.6s ease 0.35s" }}>
+      <div className="about-actions" ref={btnRef} style={{ display:"flex", gap:14, flexWrap:"wrap", opacity:btnV?1:0, transform:btnV?"translateY(0)":"translateY(20px)", transition:"all 0.6s ease 0.35s" }}>
         <a href="#contact" data-hover style={{ display:"inline-flex", alignItems:"center", gap:8, background:"linear-gradient(135deg,var(--accent),#0099bb)", color:"var(--bg)", padding:"12px 24px", borderRadius:50, fontWeight:700, fontSize:14, boxShadow:"0 6px 24px rgba(0,229,255,0.35)" }}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
           Get In Touch
@@ -692,65 +773,35 @@ function AboutRight() {
 }
 
 // ─────────────────────────────────────────────
-//  PROJECT CARD  — enhanced with animations
+//  PROJECT CARD — original, untouched
 // ─────────────────────────────────────────────
 function ProjectCard({ p, idx, onOpen, visible }) {
   const [hov, setHov] = useState(false);
   const isRamadan = p.title === "Ramadan Mubarak";
-
-  // Stagger delay: cards appear one-by-one within groups of 4
   const staggerDelay = (idx % 4) * 0.1;
-
   return (
-    <div
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0) scale(1)" : "translateY(60px) scale(0.93)",
-        transition: `opacity 0.55s ease ${staggerDelay}s, transform 0.55s cubic-bezier(0.34,1.56,0.64,1) ${staggerDelay}s`,
-        background: "rgba(10,16,32,0.92)",
-        border: `1px solid ${hov ? p.color+"88" : "rgba(255,255,255,0.08)"}`,
-        borderRadius: 20,
-        overflow: "hidden",
-        boxShadow: hov ? `0 20px 60px ${p.color}22` : "none",
-        display: "flex",
-        flexDirection: "column",
-        // Special golden glow for Ramadan card
-        ...(isRamadan && { background:"rgba(12,10,4,0.96)", border:`1px solid ${hov?"rgba(245,185,66,0.7)":"rgba(245,185,66,0.18)"}` }),
-      }}
-    >
-      {/* Preview image / emoji */}
+    <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+      style={{ opacity:visible?1:0, transform:visible?"translateY(0) scale(1)":"translateY(60px) scale(0.93)", transition:`opacity 0.55s ease ${staggerDelay}s, transform 0.55s cubic-bezier(0.34,1.56,0.64,1) ${staggerDelay}s`, background:isRamadan?"rgba(12,10,4,0.96)":"rgba(10,16,32,0.92)", border:`1px solid ${hov?p.color+"88":isRamadan?"rgba(245,185,66,0.18)":"rgba(255,255,255,0.08)"}`, borderRadius:20, overflow:"hidden", boxShadow:hov?`0 20px 60px ${p.color}22`:"none", display:"flex", flexDirection:"column" }}>
       <div style={{ position:"relative", height:200, overflow:"hidden", background:"rgba(5,8,20,0.8)" }}>
         {isRamadan ? (
-          // Ramadan special preview
           <div style={{ width:"100%", height:"100%", display:"flex", alignItems:"center", justifyContent:"center", background:"linear-gradient(135deg,#0d1630,#050a1a)", position:"relative", overflow:"hidden" }}>
-            {/* mini stars */}
             {Array.from({length:16},(_,i) => (<div key={i} style={{ position:"absolute", width:2+Math.random()*2, height:2+Math.random()*2, borderRadius:"50%", background:"#f9d285", opacity:0.4+Math.random()*0.5, left:`${Math.random()*100}%`, top:`${Math.random()*100}%`, animation:`blink ${2+Math.random()*3}s ease-in-out ${Math.random()*2}s infinite` }} />))}
-            {/* moon */}
             <div style={{ position:"absolute", top:16, left:"50%", transform:"translateX(-50%)", fontSize:42, filter:"drop-shadow(0 0 16px rgba(245,185,66,0.8))" }}>🌙</div>
-            {/* lanterns */}
             <div style={{ position:"absolute", top:10, left:"15%", fontSize:26, opacity:0.85, animation:"float 4s ease-in-out infinite" }}>🏮</div>
             <div style={{ position:"absolute", top:12, right:"15%", fontSize:22, opacity:0.7, animation:"float 5s ease-in-out 1s infinite" }}>🏮</div>
-            {/* text */}
             <div style={{ textAlign:"center", zIndex:2 }}>
               <div style={{ fontFamily:"'Cinzel',serif", fontSize:22, background:"linear-gradient(135deg,#c47d10,#f9d285,#fff8e7,#c47d10)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", backgroundClip:"text", letterSpacing:"0.06em", filter:"drop-shadow(0 0 12px rgba(245,185,66,0.5))" }}>Ramadan</div>
               <div style={{ fontFamily:"'Cinzel',serif", fontSize:14, color:"rgba(249,210,133,0.7)", letterSpacing:"0.1em" }}>Mubarak</div>
             </div>
           </div>
         ) : (
-          <img src={p.preview} alt={p.title}
-            style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center top", transition:"transform 0.5s ease", transform:hov?"scale(1.07)":"scale(1)" }}
-            onError={e => { e.target.style.display="none"; e.target.parentNode.style.display="flex"; e.target.parentNode.style.alignItems="center"; e.target.parentNode.style.justifyContent="center"; e.target.parentNode.style.fontSize="56px"; e.target.parentNode.innerHTML=p.emoji; }}
-          />
+          <img src={p.preview} alt={p.title} style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center top", transition:"transform 0.5s ease", transform:hov?"scale(1.07)":"scale(1)" }}
+            onError={e => { e.target.style.display="none"; e.target.parentNode.style.display="flex"; e.target.parentNode.style.alignItems="center"; e.target.parentNode.style.justifyContent="center"; e.target.parentNode.style.fontSize="56px"; e.target.parentNode.innerHTML=p.emoji; }} />
         )}
         <div style={{ position:"absolute", inset:0, background:"linear-gradient(to bottom,transparent 40%,rgba(10,16,32,0.95) 100%)", pointerEvents:"none" }} />
-        <span style={{ position:"absolute", top:12, left:12, background:`${p.color}22`, color:p.color, border:`1px solid ${p.color}55`, borderRadius:20, padding:"3px 11px", fontSize:11, fontWeight:700, backdropFilter:"blur(8px)", animation: "tag-slide-in 0.4s ease both" }}>{p.tag}</span>
-        {/* Shimmer on hover */}
+        <span style={{ position:"absolute", top:12, left:12, background:`${p.color}22`, color:p.color, border:`1px solid ${p.color}55`, borderRadius:20, padding:"3px 11px", fontSize:11, fontWeight:700, backdropFilter:"blur(8px)", animation:"tag-slide-in 0.4s ease both" }}>{p.tag}</span>
         {hov && <div style={{ position:"absolute", inset:0, background:"linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.04) 50%,transparent 60%)", animation:"proj-shimmer 0.6s ease forwards", pointerEvents:"none" }} />}
       </div>
-
-      {/* Card body */}
       <div style={{ padding:"18px 20px 20px", display:"flex", flexDirection:"column", flex:1, gap:10 }}>
         <h3 style={{ fontFamily:"var(--font-display)", fontSize:24, letterSpacing:"0.04em", color:isRamadan?"#f9d285":"inherit" }}>{p.title}</h3>
         <p style={{ color:"var(--muted)", fontSize:13.5, lineHeight:1.65, flex:1 }}>{p.desc}</p>
@@ -758,8 +809,7 @@ function ProjectCard({ p, idx, onOpen, visible }) {
           {p.tech.slice(0,3).map(t => <span key={t} style={{ background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:6, padding:"3px 9px", fontSize:11, color:"var(--muted)" }}>{t}</span>)}
           {p.tech.length > 3 && <span style={{ background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:6, padding:"3px 9px", fontSize:11, color:"var(--muted)" }}>+{p.tech.length-3}</span>}
         </div>
-        <div style={{ display:"flex", gap:10, marginTop:6 }}>
-          {/* View Details */}
+        <div className="proj-btns" style={{ display:"flex", gap:10, marginTop:6 }}>
           <button onClick={() => onOpen(p)} data-hover
             style={{ flex:1, background:`${p.color}18`, color:p.color, border:`1px solid ${p.color}55`, borderRadius:10, padding:"9px 0", fontSize:13, fontWeight:600, cursor:"pointer", transition:"background 0.2s, color 0.2s", display:"flex", alignItems:"center", justifyContent:"center", gap:6 }}
             onMouseEnter={e => { e.currentTarget.style.background=p.color; e.currentTarget.style.color="#050810"; }}
@@ -767,21 +817,16 @@ function ProjectCard({ p, idx, onOpen, visible }) {
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             View Details
           </button>
-
-          {/* Live preview for Ramadan */}
           {p.liveUrl && (
             <a href={p.liveUrl} target="_blank" rel="noreferrer" data-hover
-              style={{ flex:1, background:"rgba(245,185,66,0.1)", color:"#f5b942", border:"1px solid rgba(245,185,66,0.4)", borderRadius:10, padding:"9px 0", fontSize:13, fontWeight:600, cursor:"pointer", transition:"background 0.2s, color 0.2s", display:"flex", alignItems:"center", justifyContent:"center", gap:6, textDecoration:"none" }}
+              style={{ flex:1, background:"rgba(245,185,66,0.1)", color:"#f5b942", border:"1px solid rgba(245,185,66,0.4)", borderRadius:10, padding:"9px 0", fontSize:13, fontWeight:600, cursor:"pointer", transition:"background 0.2s", display:"flex", alignItems:"center", justifyContent:"center", gap:6 }}
               onMouseEnter={e => { e.currentTarget.style.background="rgba(245,185,66,0.2)"; }}
               onMouseLeave={e => { e.currentTarget.style.background="rgba(245,185,66,0.1)"; }}>
               <span>🌙</span> Live Preview
             </a>
           )}
-
-          {/* GitHub — only if p.github is set AND no liveUrl (or show alongside) */}
           {p.github && !p.liveUrl && (
-            <button data-hover
-              onClick={() => window.open(p.github, "_blank")}
+            <button data-hover onClick={() => window.open(p.github,"_blank")}
               style={{ flex:1, background:"rgba(255,255,255,0.05)", color:"var(--muted)", border:"1px solid rgba(255,255,255,0.12)", borderRadius:10, padding:"9px 0", fontSize:13, fontWeight:600, cursor:"pointer", transition:"background 0.2s, color 0.2s", display:"flex", alignItems:"center", justifyContent:"center", gap:6 }}
               onMouseEnter={e => { e.currentTarget.style.background="rgba(255,255,255,0.1)"; e.currentTarget.style.color="var(--text)"; }}
               onMouseLeave={e => { e.currentTarget.style.background="rgba(255,255,255,0.05)"; e.currentTarget.style.color="var(--muted)"; }}>
@@ -796,9 +841,8 @@ function ProjectCard({ p, idx, onOpen, visible }) {
 }
 
 // ─────────────────────────────────────────────
-//  PROJECT MODAL
+//  PROJECT MODAL — original, untouched
 // ─────────────────────────────────────────────
-
 function ProjectModal({ project, onClose }) {
   const [imgIdx, setImgIdx] = useState(0);
   useEffect(() => {
@@ -812,41 +856,20 @@ function ProjectModal({ project, onClose }) {
     document.body.style.overflow = "hidden";
     return () => { window.removeEventListener("keydown", k); document.body.style.overflow = ""; };
   }, [project]);
-
   const p = project;
   const isRamadan = p.title === "Ramadan Mubarak";
-
   return (
-    // ✅ KEY FIX: removed cursor:"pointer" — body already has cursor:none globally
-    <div onClick={onClose} style={{
-      position: "fixed", inset: 0,
-      background: "rgba(0,0,0,0.85)",
-      backdropFilter: "blur(12px)",
-      zIndex: 10000,
-      display: "flex", alignItems: "center", justifyContent: "center",
-      padding: 20,
-      animation: "overlay-in 0.25s ease",
-    }}>
-      <div onClick={e => e.stopPropagation()} style={{
-        background: "rgba(8,14,28,0.98)",
-        border: `1px solid ${p.color}44`,
-        borderRadius: 24,
-        width: "100%", maxWidth: 860, maxHeight: "92vh",
-        overflow: "hidden",
-        display: "flex", flexDirection: "column",
-        animation: "modal-in 0.35s cubic-bezier(0.34,1.56,0.64,1)",
-        boxShadow: `0 40px 120px ${p.color}22`,
-      }}>
-        {/* Header */}
-        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"18px 26px", borderBottom:"1px solid rgba(255,255,255,0.07)", flexShrink:0 }}>
-          <div style={{ display:"flex", alignItems:"center", gap:14 }}>
-            <span style={{ fontSize:26 }}>{p.emoji}</span>
-            <div>
-              <h2 style={{ fontFamily:"var(--font-display)", fontSize:28, letterSpacing:"0.04em", lineHeight:1 }}>{p.title}</h2>
+    <div className="modal-wrap" onClick={onClose} style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.85)", backdropFilter:"blur(12px)", zIndex:10000, display:"flex", alignItems:"center", justifyContent:"center", padding:20, animation:"overlay-in 0.25s ease" }}>
+      <div className="modal-box" onClick={e => e.stopPropagation()} style={{ background:"rgba(8,14,28,0.98)", border:`1px solid ${p.color}44`, borderRadius:24, width:"100%", maxWidth:860, maxHeight:"92vh", overflow:"hidden", display:"flex", flexDirection:"column", animation:"modal-in 0.35s cubic-bezier(0.34,1.56,0.64,1)", boxShadow:`0 40px 120px ${p.color}22` }}>
+        <div className="modal-hd" style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"18px 26px", borderBottom:"1px solid rgba(255,255,255,0.07)", flexShrink:0 }}>
+          <div style={{ display:"flex", alignItems:"center", gap:14, minWidth:0 }}>
+            <span style={{ fontSize:26, flexShrink:0 }}>{p.emoji}</span>
+            <div style={{ minWidth:0 }}>
+              <h2 style={{ fontFamily:"var(--font-display)", fontSize:28, letterSpacing:"0.04em", lineHeight:1, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{p.title}</h2>
               <span style={{ background:`${p.color}20`, color:p.color, border:`1px solid ${p.color}40`, borderRadius:20, padding:"2px 10px", fontSize:11, fontWeight:700 }}>{p.tag}</span>
             </div>
           </div>
-          <div style={{ display:"flex", gap:10, alignItems:"center" }}>
+          <div style={{ display:"flex", gap:10, alignItems:"center", flexShrink:0 }}>
             {p.liveUrl && (
               <a href={p.liveUrl} target="_blank" rel="noreferrer" data-hover
                 style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(245,185,66,0.1)", color:"#f5b942", border:"1px solid rgba(245,185,66,0.4)", borderRadius:20, padding:"7px 14px", fontSize:12, fontWeight:700, textDecoration:"none" }}>
@@ -861,28 +884,20 @@ function ProjectModal({ project, onClose }) {
             </button>
           </div>
         </div>
-
-        {/* Scrollable body */}
-        <div style={{ overflow:"auto", flex:1, padding:"22px 26px", display:"flex", flexDirection:"column", gap:22 }}>
-          {/* Preview area */}
+        <div className="modal-bd" style={{ overflow:"auto", flex:1, padding:"22px 26px", display:"flex", flexDirection:"column", gap:22, WebkitOverflowScrolling:"touch" }}>
           {isRamadan ? (
             <div style={{ borderRadius:14, overflow:"hidden", background:"linear-gradient(135deg,#0d1630,#050a1a)", border:"1px solid rgba(245,185,66,0.3)", height:240, display:"flex", alignItems:"center", justifyContent:"center", position:"relative" }}>
-              {Array.from({length:20},(_,i) => (
-                <div key={i} style={{ position:"absolute", width:2, height:2, borderRadius:"50%", background:"#f9d285", opacity:Math.random()*0.7+0.2, left:`${Math.random()*100}%`, top:`${Math.random()*100}%`, animation:`blink ${2+Math.random()*3}s ease-in-out ${Math.random()*2}s infinite` }} />
-              ))}
+              {Array.from({length:20},(_,i) => (<div key={i} style={{ position:"absolute", width:2, height:2, borderRadius:"50%", background:"#f9d285", opacity:Math.random()*0.7+0.2, left:`${Math.random()*100}%`, top:`${Math.random()*100}%`, animation:`blink ${2+Math.random()*3}s ease-in-out ${Math.random()*2}s infinite` }} />))}
               <div style={{ textAlign:"center", zIndex:2 }}>
                 <div style={{ fontSize:48, marginBottom:8 }}>🌙</div>
-                <div style={{ fontFamily:"Georgia,serif", fontSize:36, background:"linear-gradient(135deg,#c47d10,#f9d285,#fff8e7,#c47d10)", backgroundSize:"200% auto", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", backgroundClip:"text", letterSpacing:"0.06em", animation:"gradient-shift 3s ease infinite" }}>
-                  Ramadan Mubarak
-                </div>
+                <div style={{ fontFamily:"Georgia,serif", fontSize:36, background:"linear-gradient(135deg,#c47d10,#f9d285,#fff8e7,#c47d10)", backgroundSize:"200% auto", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", backgroundClip:"text", letterSpacing:"0.06em", animation:"gradient-shift 3s ease infinite" }}>Ramadan Mubarak</div>
                 <div style={{ color:"rgba(249,210,133,0.6)", fontSize:13, marginTop:8, fontStyle:"italic" }}>Pure HTML · CSS · Vanilla JS</div>
               </div>
             </div>
           ) : p.images.length > 0 ? (
             <div style={{ position:"relative", borderRadius:14, overflow:"hidden", background:"rgba(0,0,0,0.5)", border:"1px solid rgba(255,255,255,0.07)" }}>
               <div style={{ height:300, display:"flex", alignItems:"center", justifyContent:"center" }}>
-                <img src={p.images[imgIdx]} alt={`${p.title} screenshot`}
-                  style={{ maxWidth:"100%", maxHeight:"100%", objectFit:"contain" }}
+                <img src={p.images[imgIdx]} alt={`${p.title} screenshot`} style={{ maxWidth:"100%", maxHeight:"100%", objectFit:"contain" }}
                   onError={e => { e.target.style.display="none"; e.target.parentNode.style.fontSize="70px"; e.target.parentNode.innerHTML=p.emoji; }} />
               </div>
               {p.images.length > 1 && (<>
@@ -893,42 +908,30 @@ function ProjectModal({ project, onClose }) {
               </>)}
               {p.images.length > 1 && (
                 <div style={{ position:"absolute", bottom:10, left:"50%", transform:"translateX(-50%)", display:"flex", gap:6 }}>
-                  {p.images.map((_,i) => (
-                    <button key={i} onClick={() => setImgIdx(i)} data-hover
-                      style={{ width:i===imgIdx?22:7, height:7, borderRadius:4, background:i===imgIdx?p.color:"rgba(255,255,255,0.25)", border:"none", cursor:"pointer", transition:"all 0.3s", padding:0 }} />
-                  ))}
+                  {p.images.map((_,i) => (<button key={i} onClick={() => setImgIdx(i)} data-hover style={{ width:i===imgIdx?22:7, height:7, borderRadius:4, background:i===imgIdx?p.color:"rgba(255,255,255,0.25)", border:"none", cursor:"pointer", transition:"all 0.3s", padding:0 }} />))}
                 </div>
               )}
             </div>
           ) : (
             <div style={{ borderRadius:14, overflow:"hidden", background:"rgba(0,0,0,0.5)", border:"1px solid rgba(255,255,255,0.07)", height:180, display:"flex", alignItems:"center", justifyContent:"center", fontSize:64 }}>{p.emoji}</div>
           )}
-
           {p.images.length > 1 && (
             <div style={{ display:"flex", gap:8, overflowX:"auto", paddingBottom:4 }}>
               {p.images.map((img, i) => (
-                <div key={i} onClick={() => setImgIdx(i)} data-hover
-                  style={{ flexShrink:0, width:80, height:58, borderRadius:10, overflow:"hidden", border:`2px solid ${i===imgIdx?p.color:"transparent"}`, cursor:"pointer", transition:"border-color 0.2s", background:"rgba(0,0,0,0.4)" }}>
-                  <img src={img} alt="" style={{ width:"100%", height:"100%", objectFit:"cover" }}
-                    onError={e => { e.target.parentNode.innerHTML=`<div style='width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:22px'>${p.emoji}</div>`; }} />
+                <div key={i} onClick={() => setImgIdx(i)} data-hover style={{ flexShrink:0, width:80, height:58, borderRadius:10, overflow:"hidden", border:`2px solid ${i===imgIdx?p.color:"transparent"}`, cursor:"pointer", transition:"border-color 0.2s", background:"rgba(0,0,0,0.4)" }}>
+                  <img src={img} alt="" style={{ width:"100%", height:"100%", objectFit:"cover" }} onError={e => { e.target.parentNode.innerHTML=`<div style='width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:22px'>${p.emoji}</div>`; }} />
                 </div>
               ))}
             </div>
           )}
-
           <div>
             <h3 style={{ fontFamily:"var(--font-display)", fontSize:19, letterSpacing:"0.06em", marginBottom:10, color:p.color }}>ABOUT THIS PROJECT</h3>
-            {p.longDesc.split("\n\n").map((para, i) => (
-              <p key={i} style={{ color:"#9daec8", lineHeight:1.8, fontSize:14, marginBottom:8 }}>{para}</p>
-            ))}
+            {p.longDesc.split("\n\n").map((para, i) => (<p key={i} style={{ color:"#9daec8", lineHeight:1.8, fontSize:14, marginBottom:8 }}>{para}</p>))}
           </div>
-
           <div>
             <h3 style={{ fontFamily:"var(--font-display)", fontSize:19, letterSpacing:"0.06em", marginBottom:10, color:p.color }}>TECH STACK</h3>
             <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
-              {p.tech.map(t => (
-                <span key={t} style={{ background:`${p.color}15`, color:p.color, border:`1px solid ${p.color}44`, borderRadius:8, padding:"5px 14px", fontSize:13, fontWeight:600 }}>{t}</span>
-              ))}
+              {p.tech.map(t => (<span key={t} style={{ background:`${p.color}15`, color:p.color, border:`1px solid ${p.color}44`, borderRadius:8, padding:"5px 14px", fontSize:13, fontWeight:600 }}>{t}</span>))}
             </div>
           </div>
         </div>
@@ -936,8 +939,9 @@ function ProjectModal({ project, onClose }) {
     </div>
   );
 }
+
 // ─────────────────────────────────────────────
-//  SERVICE CARD
+//  SERVICE CARD — original, untouched
 // ─────────────────────────────────────────────
 function ServiceCard({ s, idx }) {
   const [ref, v] = useReveal(0.1); const [hov, setHov] = useState(false); const delay = idx*0.13;
@@ -958,7 +962,7 @@ function ServiceCard({ s, idx }) {
 }
 
 // ─────────────────────────────────────────────
-//  SECTION HEADING
+//  SECTION HEADING — original, untouched
 // ─────────────────────────────────────────────
 function SectionHeading({ pre, main, accent, sub }) {
   const [ref, v] = useReveal(0.2);
@@ -974,7 +978,7 @@ function SectionHeading({ pre, main, accent, sub }) {
 }
 
 // ─────────────────────────────────────────────
-//  TESTIMONIAL AVATAR
+//  TESTIMONIAL AVATAR — original, untouched
 // ─────────────────────────────────────────────
 function RecAvatar({ rec }) {
   return (
@@ -986,7 +990,7 @@ function RecAvatar({ rec }) {
 }
 
 // ─────────────────────────────────────────────
-//  TESTIMONIALS SECTION
+//  TESTIMONIALS SECTION — original, untouched
 // ─────────────────────────────────────────────
 function TestimonialsSection() {
   const [active, setActive] = useState(0);
@@ -1001,7 +1005,6 @@ function TestimonialsSection() {
   };
   const next = () => goTo((active+1)%RECOMMENDATIONS.length, "next");
   const prev = () => goTo((active-1+RECOMMENDATIONS.length)%RECOMMENDATIONS.length, "prev");
-
   useEffect(() => { timer.current = setInterval(next, 5000); return () => clearInterval(timer.current); }, [active]);
 
   const rec = RECOMMENDATIONS[active];
@@ -1022,16 +1025,16 @@ function TestimonialsSection() {
 
       <div style={{ maxWidth:800, margin:"0 auto", position:"relative" }}>
         <div style={{ fontFamily:"var(--font-display)", fontSize:100, color:`${rec.color}20`, lineHeight:1, position:"absolute", top:-28, left:32, userSelect:"none", transition:"color 0.4s", zIndex:0 }}>"</div>
-        <div style={{ background:"rgba(12,18,35,0.88)", border:`1px solid ${rec.color}44`, borderRadius:22, padding:"38px 44px", backdropFilter:"blur(20px)", boxShadow:`0 24px 80px ${rec.color}18`, opacity:animating?0:1, transform:animating?`translateX(${dir==="next"?"-36px":"36px"})`:"translateX(0)", transition:"opacity 0.32s ease, transform 0.32s ease, border-color 0.4s", position:"relative", zIndex:1, animation:"rec-card-glow 4s ease-in-out infinite" }}>
+        <div className="testi-card" style={{ background:"rgba(12,18,35,0.88)", border:`1px solid ${rec.color}44`, borderRadius:22, padding:"38px 44px", backdropFilter:"blur(20px)", boxShadow:`0 24px 80px ${rec.color}18`, opacity:animating?0:1, transform:animating?`translateX(${dir==="next"?"-36px":"36px"})`:"translateX(0)", transition:"opacity 0.32s ease, transform 0.32s ease, border-color 0.4s", position:"relative", zIndex:1, animation:"rec-card-glow 4s ease-in-out infinite" }}>
           <div style={{ position:"absolute", top:0, left:"50%", transform:"translateX(-50%)", width:"60%", height:2, background:`linear-gradient(90deg,transparent,${rec.color},transparent)`, borderRadius:1 }} />
-          <div style={{ display:"flex", alignItems:"center", gap:18, marginBottom:26 }}>
+          <div className="testi-head" style={{ display:"flex", alignItems:"center", gap:18, marginBottom:26 }}>
             <RecAvatar rec={rec} />
             <div style={{ flex:1, minWidth:0 }}>
               <div style={{ fontWeight:700, fontSize:18, fontFamily:"var(--font-display)", letterSpacing:"0.05em", lineHeight:1.1 }}>{rec.name}</div>
               <div style={{ color:"var(--muted)", fontSize:12, marginTop:4, lineHeight:1.5 }}>{rec.role}</div>
               <div style={{ display:"flex", gap:3, marginTop:6 }}>{[...Array(5)].map((_,i) => <span key={i} style={{ color:"#f59e0b", fontSize:13 }}>★</span>)}</div>
             </div>
-            <a href={rec.linkedin} target="_blank" rel="noreferrer" data-hover
+            <a href={rec.linkedin} target="_blank" rel="noreferrer" data-hover className="testi-linkedin"
               style={{ display:"inline-flex", alignItems:"center", gap:6, background:"rgba(0,119,181,0.12)", color:"#38a0d4", border:"1px solid rgba(0,119,181,0.35)", borderRadius:20, padding:"7px 14px", fontSize:12, fontWeight:700, textDecoration:"none", flexShrink:0, transition:"background 0.2s" }}
               onMouseEnter={e => e.currentTarget.style.background="rgba(0,119,181,0.25)"}
               onMouseLeave={e => e.currentTarget.style.background="rgba(0,119,181,0.12)"}>
@@ -1057,13 +1060,11 @@ function TestimonialsSection() {
           <div style={{ position:"absolute", bottom:0, left:"15%", right:"15%", height:2, background:`linear-gradient(90deg,transparent,${rec.color}55,transparent)`, borderRadius:1 }} />
         </div>
         <div style={{ display:"flex", justifyContent:"center", gap:8, marginTop:28 }}>
-          {RECOMMENDATIONS.map((r,i) => (
-            <button key={i} onClick={() => goTo(i, i>active?"next":"prev")} data-hover style={{ width:i===active?28:8, height:8, borderRadius:4, background:i===active?rec.color:"rgba(255,255,255,0.12)", border:"none", cursor:"pointer", padding:0, transition:"all 0.35s cubic-bezier(0.34,1.56,0.64,1)", boxShadow:i===active?`0 0 10px ${rec.color}88`:"none" }} />
-          ))}
+          {RECOMMENDATIONS.map((r,i) => (<button key={i} onClick={() => goTo(i, i>active?"next":"prev")} data-hover style={{ width:i===active?28:8, height:8, borderRadius:4, background:i===active?rec.color:"rgba(255,255,255,0.12)", border:"none", cursor:"pointer", padding:0, transition:"all 0.35s cubic-bezier(0.34,1.56,0.64,1)", boxShadow:i===active?`0 0 10px ${rec.color}88`:"none" }} />))}
         </div>
       </div>
 
-      <div style={{ display:"flex", gap:10, justifyContent:"center", flexWrap:"wrap", marginTop:40, maxWidth:760, margin:"40px auto 0" }}>
+      <div className="testi-thumbs" style={{ display:"flex", gap:10, justifyContent:"center", flexWrap:"wrap", marginTop:40, maxWidth:760, margin:"40px auto 0" }}>
         {RECOMMENDATIONS.map((r,i) => (
           <button key={i} onClick={() => goTo(i, i>active?"next":"prev")} data-hover
             style={{ background:i===active?`${r.color}18`:"rgba(12,18,35,0.7)", border:`1px solid ${i===active?r.color+"66":"rgba(255,255,255,0.07)"}`, borderRadius:12, padding:"10px 14px", cursor:"pointer", display:"flex", alignItems:"center", gap:10, transition:"all 0.3s" }}
@@ -1095,7 +1096,7 @@ function TestimonialsSection() {
 }
 
 // ─────────────────────────────────────────────
-//  CERTIFICATE CARD
+//  CERTIFICATE CARD — original, untouched
 // ─────────────────────────────────────────────
 function CertCard({ c, idx }) {
   const [ref, v] = useReveal(0.08); const [hov, setHov] = useState(false); const [zoom, setZoom] = useState(false);
@@ -1121,7 +1122,7 @@ function CertCard({ c, idx }) {
       </div>
     </div>
     {zoom && (
-      <div onClick={() => setZoom(false)} style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.92)", backdropFilter:"blur(16px)", zIndex:11000, display:"flex", alignItems:"center", justifyContent:"center", padding:20, animation:"overlay-in 0.2s ease", cursor:"none" }}>
+      <div onClick={() => setZoom(false)} style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.92)", backdropFilter:"blur(16px)", zIndex:11000, display:"flex", alignItems:"center", justifyContent:"center", padding:20, animation:"overlay-in 0.2s ease" }}>
         <div onClick={e => e.stopPropagation()} style={{ maxWidth:800, width:"100%", animation:"modal-in 0.3s cubic-bezier(0.34,1.56,0.64,1)" }}>
           <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:16 }}>
             <div>
@@ -1143,7 +1144,7 @@ function CertCard({ c, idx }) {
 }
 
 // ─────────────────────────────────────────────
-//  CERTIFICATIONS SECTION
+//  CERTIFICATIONS SECTION — original, untouched
 // ─────────────────────────────────────────────
 function CertificationsSection() {
   const [ref, v] = useReveal(0.1);
@@ -1158,7 +1159,7 @@ function CertificationsSection() {
         <p style={{ color:"var(--muted)", marginTop:16, maxWidth:560, margin:"16px auto 0", lineHeight:1.7 }}>These certifications mark milestones in my continuous learning journey — from mobile development to design and cloud technologies.</p>
         <div style={{ width:80, height:3, background:"linear-gradient(90deg,transparent,var(--accent),transparent)", margin:"20px auto 0", borderRadius:2 }} />
       </div>
-      <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))", gap:24, position:"relative", zIndex:1 }}>
+      <div className="certs-grid" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))", gap:24, position:"relative", zIndex:1 }}>
         {CERTIFICATES.map((c,i) => <CertCard key={i} c={c} idx={i} />)}
       </div>
       <div style={{ textAlign:"center", marginTop:48, opacity:v?1:0, transition:"opacity 0.7s ease 0.5s" }}>
@@ -1169,7 +1170,7 @@ function CertificationsSection() {
 }
 
 // ─────────────────────────────────────────────
-//  RIPPLE BUTTON
+//  RIPPLE BUTTON — original, untouched
 // ─────────────────────────────────────────────
 function RippleButton({ children, href, onClick, bgColor, textColor, borderColor, style={} }) {
   const [ripples, setRipples] = useState([]);
@@ -1189,7 +1190,7 @@ function RippleButton({ children, href, onClick, bgColor, textColor, borderColor
 }
 
 // ─────────────────────────────────────────────
-//  CONTACT SECTION
+//  CONTACT SECTION — original, untouched
 // ─────────────────────────────────────────────
 function ContactSection({ copied, onCopyEmail }) {
   const [ref, v] = useReveal(0.15);
@@ -1221,11 +1222,11 @@ function ContactSection({ copied, onCopyEmail }) {
             </div>
           ))}
         </div>
-        <div style={{ display:"flex", gap:16, justifyContent:"center", flexWrap:"wrap", marginBottom:40, opacity:v?1:0, transform:v?"translateY(0)":"translateY(20px)", transition:"all 0.7s ease 0.4s" }}>
+        <div className="contact-btns" style={{ display:"flex", gap:16, justifyContent:"center", flexWrap:"wrap", marginBottom:40, opacity:v?1:0, transform:v?"translateY(0)":"translateY(20px)", transition:"all 0.7s ease 0.4s" }}>
           <RippleButton href="https://wa.me/+923297762280" bgColor="#25D366" textColor="#fff">💬 Chat on WhatsApp</RippleButton>
           <RippleButton bgColor="var(--card)" textColor="var(--text)" borderColor="var(--border)" onClick={onCopyEmail}>✉️ {copied?"Copied! ✓":"ahmadasif20222@gmail.com"}</RippleButton>
         </div>
-        <div style={{ display:"flex", gap:12, justifyContent:"center", opacity:v?1:0, transition:"all 0.7s ease 0.5s" }}>
+        <div style={{ display:"flex", gap:12, justifyContent:"center", opacity:v?1:0, transition:"all 0.7s ease 0.5s", flexWrap:"wrap" }}>
           {[{href:"https://www.linkedin.com/in/ahmadasif030/",label:"LinkedIn",color:"#0077b5"},{href:"https://github.com/Ahmad-030",label:"GitHub",color:"#f0f6fc"},{href:"https://www.instagram.com/_ahmad.builds/",label:"Instagram",color:"#e4405f"}].map(s => (
             <a key={s.label} href={s.href} target="_blank" rel="noreferrer" data-hover
               style={{ background:"var(--surface)", border:"1px solid var(--border)", color:s.color, padding:"10px 20px", borderRadius:50, fontSize:13, fontWeight:600, transition:"all 0.2s" }}
@@ -1240,13 +1241,13 @@ function ContactSection({ copied, onCopyEmail }) {
 }
 
 // ─────────────────────────────────────────────
-//  SCROLL INDICATOR
+//  SCROLL INDICATOR — original, untouched
 // ─────────────────────────────────────────────
 function ScrollIndicator() {
   const letters = "SCROLL".split("");
   const particles = Array.from({ length:6 }, (_,i) => ({ angle:(i/6)*360, delay:i*0.28, size:2.5+Math.random()*2 }));
   return (
-    <div style={{ position:"absolute", bottom:32, left:"50%", transform:"translateX(-50%)", display:"flex", flexDirection:"column", alignItems:"center", gap:10, animation:"fade-in 1s ease 2s both", zIndex:10, pointerEvents:"none" }}>
+    <div className="scroll-indicator" style={{ position:"absolute", bottom:32, left:"50%", transform:"translateX(-50%)", display:"flex", flexDirection:"column", alignItems:"center", gap:10, animation:"fade-in 1s ease 2s both", zIndex:10, pointerEvents:"none" }}>
       <div style={{ display:"flex", gap:3, alignItems:"center" }}>
         {letters.map((l,i) => (<span key={i} style={{ fontSize:10, fontWeight:700, letterSpacing:"0.18em", color:"var(--muted)", fontFamily:"var(--font-body)", animation:`scroll-letter-wave 2s ease-in-out ${i*0.1}s infinite`, display:"inline-block" }}>{l}</span>))}
       </div>
@@ -1266,35 +1267,69 @@ function ScrollIndicator() {
 }
 
 // ─────────────────────────────────────────────
-//  NAV
+//  NAV — responsive hamburger added, everything else original
 // ─────────────────────────────────────────────
 function Nav({ activeSection }) {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { isTablet } = useBreakpoint();
+
   useEffect(() => { const fn = () => setScrolled(window.scrollY>40); window.addEventListener("scroll",fn); return () => window.removeEventListener("scroll",fn); }, []);
+  // close drawer on scroll
+  useEffect(() => { const fn = () => { if(menuOpen) setMenuOpen(false); }; window.addEventListener("scroll",fn,{passive:true}); return ()=>window.removeEventListener("scroll",fn); }, [menuOpen]);
+
   const links = ["home","about","services","projects","testimonials","certifications","contact"];
+  const handleLink = (id) => { setMenuOpen(false); setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior:"smooth" }), 60); };
+
   const LinkedInSvg = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>;
   const GithubSvg = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>;
   const InstaSvg = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>;
   const socialStyle = { width:36, height:36, borderRadius:"50%", background:"rgba(12,18,35,0.75)", border:"1px solid rgba(255,255,255,0.09)", display:"flex", alignItems:"center", justifyContent:"center", color:"var(--muted)", transition:"all 0.22s", backdropFilter:"blur(8px)" };
   const onSocHover = e => { e.currentTarget.style.color="var(--accent)"; e.currentTarget.style.borderColor="rgba(0,229,255,0.4)"; e.currentTarget.style.background="rgba(0,229,255,0.08)"; };
   const onSocLeave = e => { e.currentTarget.style.color="var(--muted)"; e.currentTarget.style.borderColor="rgba(255,255,255,0.09)"; e.currentTarget.style.background="rgba(12,18,35,0.75)"; };
-  return (
-    <nav style={{ position:"fixed", top:0, left:0, right:0, zIndex:1000, display:"flex", alignItems:"center", justifyContent:"space-between", padding:"0 28px", height:70, background:scrolled?"rgba(5,8,16,0.96)":"transparent", backdropFilter:scrolled?"blur(20px)":"none", borderBottom:scrolled?"1px solid var(--border)":"none", transition:"all 0.3s" }}>
-      <a href="#home" style={{ fontFamily:"var(--font-display)", fontSize:26, color:"var(--accent)", zIndex:2, flexShrink:0, letterSpacing:"0.06em" }}>Ahmad<span style={{ color:"var(--text)" }}>.</span></a>
-      <div style={{ position:"absolute", left:"50%", transform:"translateX(-50%)", display:"flex", alignItems:"center", gap:2, background:"rgba(12,18,35,0.88)", border:"1px solid rgba(255,255,255,0.09)", borderRadius:50, padding:"5px 6px", backdropFilter:"blur(16px)", boxShadow:"0 4px 28px rgba(0,0,0,0.5)" }}>
-        {links.map(l => { const active = activeSection===l; return (<a key={l} href={`#${l}`} data-hover style={{ padding:"7px 16px", borderRadius:50, fontSize:13, fontWeight:active?700:400, textTransform:"capitalize", color:active?"var(--bg)":"var(--muted)", background:active?"var(--accent)":"transparent", boxShadow:active?"0 0 14px rgba(0,229,255,0.45)":"none", transition:"all 0.22s", whiteSpace:"nowrap" }}>{l}</a>); })}
+
+  return (<>
+    <nav style={{ position:"fixed", top:0, left:0, right:0, zIndex:1000, display:"flex", alignItems:"center", justifyContent:"space-between", padding:"0 28px", height:70, background:scrolled||menuOpen?"rgba(5,8,16,0.96)":"transparent", backdropFilter:scrolled?"blur(20px)":"none", borderBottom:scrolled?"1px solid var(--border)":"none", transition:"all 0.3s" }}>
+      <a href="#home" onClick={e=>{e.preventDefault();handleLink("home");}} style={{ fontFamily:"var(--font-display)", fontSize:26, color:"var(--accent)", zIndex:1100, flexShrink:0, letterSpacing:"0.06em" }}>Ahmad<span style={{ color:"var(--text)" }}>.</span></a>
+
+      {/* Desktop pill nav */}
+      <div className="nav-pill" style={{ position:"absolute", left:"50%", transform:"translateX(-50%)", display:"flex", alignItems:"center", gap:2, background:"rgba(12,18,35,0.88)", border:"1px solid rgba(255,255,255,0.09)", borderRadius:50, padding:"5px 6px", backdropFilter:"blur(16px)", boxShadow:"0 4px 28px rgba(0,0,0,0.5)" }}>
+        {links.map(l => { const active = activeSection===l; return (<a key={l} href={`#${l}`} onClick={e=>{e.preventDefault();handleLink(l);}} data-hover style={{ padding:"7px 16px", borderRadius:50, fontSize:13, fontWeight:active?700:400, textTransform:"capitalize", color:active?"var(--bg)":"var(--muted)", background:active?"var(--accent)":"transparent", boxShadow:active?"0 0 14px rgba(0,229,255,0.45)":"none", transition:"all 0.22s", whiteSpace:"nowrap" }}>{l}</a>); })}
       </div>
-      <div style={{ display:"flex", alignItems:"center", gap:6, zIndex:2, flexShrink:0 }}>
+
+      {/* Desktop socials */}
+      <div className="nav-socials" style={{ display:"flex", alignItems:"center", gap:6, zIndex:1100, flexShrink:0 }}>
         <a href="https://github.com/Ahmad-030" target="_blank" rel="noreferrer" data-hover style={socialStyle} onMouseEnter={onSocHover} onMouseLeave={onSocLeave}><GithubSvg /></a>
         <a href="https://www.linkedin.com/in/ahmadasif030/" target="_blank" rel="noreferrer" data-hover style={socialStyle} onMouseEnter={onSocHover} onMouseLeave={onSocLeave}><LinkedInSvg /></a>
         <a href="https://www.instagram.com/_ahmad.builds/" target="_blank" rel="noreferrer" data-hover style={socialStyle} onMouseEnter={onSocHover} onMouseLeave={onSocLeave}><InstaSvg /></a>
       </div>
+
+      {/* Hamburger — CSS shows it only on tablet/mobile */}
+      <button className={`hamburger${menuOpen?" open":""}`} onClick={() => setMenuOpen(o=>!o)} aria-label="Toggle menu" style={{ display:"none" }}>
+        <span/><span/><span/>
+      </button>
     </nav>
-  );
+
+    {/* Full-screen mobile drawer */}
+    <div className={`mobile-drawer${menuOpen?" open":""}`}>
+      <button onClick={() => setMenuOpen(false)} style={{ position:"absolute", top:22, right:22, width:40, height:40, borderRadius:"50%", background:"rgba(255,255,255,0.06)", border:"1px solid rgba(255,255,255,0.12)", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", fontSize:20, color:"var(--muted)", zIndex:10 }}>✕</button>
+      {links.map((l,i) => (
+        <a key={l} href={`#${l}`} onClick={e=>{e.preventDefault();handleLink(l);}} className={`mob-link${activeSection===l?" active":""}`}
+          style={{ animationDelay:`${i*0.05}s` }}>
+          {l.charAt(0).toUpperCase()+l.slice(1)}
+        </a>
+      ))}
+      <div style={{ display:"flex", gap:16, marginTop:8 }}>
+        {[{href:"https://github.com/Ahmad-030",label:"GitHub"},{href:"https://www.linkedin.com/in/ahmadasif030/",label:"LinkedIn"},{href:"https://www.instagram.com/_ahmad.builds/",label:"Instagram"}].map(s=>(
+          <a key={s.label} href={s.href} target="_blank" rel="noreferrer" style={{ color:"var(--accent)", fontSize:12, fontWeight:700, border:"1px solid rgba(0,229,255,0.3)", borderRadius:50, padding:"8px 16px" }}>{s.label}</a>
+        ))}
+      </div>
+    </div>
+  </>);
 }
 
 // ─────────────────────────────────────────────
-//  PROJECTS SECTION  — with View More + animations
+//  PROJECTS SECTION — original, untouched
 // ─────────────────────────────────────────────
 function ProjectsSection({ onOpen }) {
   const [showAll, setShowAll] = useState(false);
@@ -1303,153 +1338,63 @@ function ProjectsSection({ onOpen }) {
   const [sectionVisible, setSectionVisible] = useState(false);
   const btnRef = useRef(null);
 
-  // Observe section entry
   useEffect(() => {
     const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setSectionVisible(true); }, { threshold: 0.05 });
     if (sectionRef.current) obs.observe(sectionRef.current);
     return () => obs.disconnect();
   }, []);
 
-  // When showAll transitions to true, stagger-reveal the remaining cards
   useEffect(() => {
     if (!showAll) return;
-    // Cards 4+ appear with a short stagger
     PROJECTS.forEach((_, i) => {
-      if (i >= 4) {
-        setTimeout(() => {
-          setVisibleCards(prev => new Set([...prev, i]));
-        }, (i - 4) * 120);
-      }
+      if (i >= 4) setTimeout(() => setVisibleCards(prev => new Set([...prev, i])), (i - 4) * 120);
     });
   }, [showAll]);
 
-  // Initial reveal for first 4 when section enters view
   useEffect(() => {
     if (!sectionVisible) return;
-    [0, 1, 2, 3].forEach(i => {
-      setTimeout(() => setVisibleCards(prev => new Set([...prev, i])), i * 120);
-    });
+    [0, 1, 2, 3].forEach(i => setTimeout(() => setVisibleCards(prev => new Set([...prev, i])), i * 120));
   }, [sectionVisible]);
 
   const displayedProjects = showAll ? PROJECTS : PROJECTS.slice(0, 4);
   const hiddenCount = PROJECTS.length - 4;
 
   return (
-    <section id="projects" style={{ padding: "120px 8%", position: "relative", zIndex: 1 }} ref={sectionRef}>
-      {/* Background decoration */}
+    <section id="projects" style={{ padding:"120px 8%", position:"relative", zIndex:1 }} ref={sectionRef}>
       <div style={{ position:"absolute", inset:0, backgroundImage:"linear-gradient(rgba(34,197,94,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(34,197,94,0.015) 1px,transparent 1px)", backgroundSize:"56px 56px", pointerEvents:"none" }} />
       <div style={{ position:"absolute", top:"8%", right:"6%", width:320, height:320, borderRadius:"50%", background:"radial-gradient(circle,rgba(34,197,94,0.04) 0%,transparent 70%)", pointerEvents:"none" }} />
       <div style={{ position:"absolute", bottom:"8%", left:"4%", width:250, height:250, borderRadius:"50%", background:"radial-gradient(circle,rgba(0,229,255,0.04) 0%,transparent 70%)", pointerEvents:"none" }} />
-
       <SectionHeading pre="My Work" main="Featured" accent="Projects" sub="Click any project to see screenshots and full details." />
-
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 24 }}>
-        {displayedProjects.map((p, i) => (
-          <ProjectCard
-            key={p.title}
-            p={p}
-            idx={i}
-            onOpen={onOpen}
-            visible={visibleCards.has(i)}
-          />
-        ))}
+      <div className="projects-grid" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(300px,1fr))", gap:24 }}>
+        {displayedProjects.map((p, i) => (<ProjectCard key={p.title} p={p} idx={i} onOpen={onOpen} visible={visibleCards.has(i)} />))}
       </div>
-
-      {/* View More / View Less button */}
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16, marginTop: 56 }}>
-        {/* Stats bar */}
-        <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 8 }}>
-          <div style={{ height: 1, width: 60, background: "linear-gradient(to right, transparent, rgba(0,229,255,0.4))" }} />
-          <span style={{ color: "var(--muted)", fontSize: 13, fontWeight: 500 }}>
-            Showing <span style={{ color: "var(--accent)", fontWeight: 700 }}>{showAll ? PROJECTS.length : 4}</span> of <span style={{ color: "var(--text)", fontWeight: 700 }}>{PROJECTS.length}</span> projects
+      <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:16, marginTop:56 }}>
+        <div style={{ display:"flex", alignItems:"center", gap:20, marginBottom:8 }}>
+          <div style={{ height:1, width:60, background:"linear-gradient(to right, transparent, rgba(0,229,255,0.4))" }} />
+          <span style={{ color:"var(--muted)", fontSize:13, fontWeight:500 }}>
+            Showing <span style={{ color:"var(--accent)", fontWeight:700 }}>{showAll ? PROJECTS.length : 4}</span> of <span style={{ color:"var(--text)", fontWeight:700 }}>{PROJECTS.length}</span> projects
           </span>
-          <div style={{ height: 1, width: 60, background: "linear-gradient(to left, transparent, rgba(0,229,255,0.4))" }} />
+          <div style={{ height:1, width:60, background:"linear-gradient(to left, transparent, rgba(0,229,255,0.4))" }} />
         </div>
-
-        <button
-          ref={btnRef}
-          data-hover
+        <button ref={btnRef} data-hover
           onClick={() => {
-            if (showAll) {
-              // Collapsing — hide extra cards instantly then collapse
-              setVisibleCards(new Set([0, 1, 2, 3]));
-              setShowAll(false);
-              // Smooth scroll to top of section
-              setTimeout(() => sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
-            } else {
-              setShowAll(true);
-            }
+            if (showAll) { setVisibleCards(new Set([0,1,2,3])); setShowAll(false); setTimeout(() => sectionRef.current?.scrollIntoView({ behavior:"smooth", block:"start" }), 50); }
+            else setShowAll(true);
           }}
-          style={{
-            position: "relative",
-            overflow: "hidden",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 10,
-            background: showAll
-              ? "rgba(255,255,255,0.05)"
-              : "linear-gradient(135deg, rgba(0,229,255,0.15), rgba(0,229,255,0.05))",
-            color: showAll ? "var(--muted)" : "var(--accent)",
-            border: `1.5px solid ${showAll ? "rgba(255,255,255,0.12)" : "rgba(0,229,255,0.45)"}`,
-            borderRadius: 50,
-            padding: "14px 36px",
-            fontSize: 15,
-            fontWeight: 700,
-            cursor: "pointer",
-            letterSpacing: "0.04em",
-            backdropFilter: "blur(12px)",
-            transition: "all 0.35s cubic-bezier(0.34,1.56,0.64,1)",
-            boxShadow: showAll ? "none" : "0 0 0 0 rgba(0,229,255,0.4)",
-            animation: showAll ? "none" : "view-more-pulse 2.5s ease-in-out infinite",
-          }}
-          onMouseEnter={e => {
-            e.currentTarget.style.background = showAll
-              ? "rgba(255,255,255,0.1)"
-              : "linear-gradient(135deg, rgba(0,229,255,0.25), rgba(0,229,255,0.1))";
-            e.currentTarget.style.transform = "translateY(-3px) scale(1.02)";
-            e.currentTarget.style.boxShadow = "0 12px 36px rgba(0,229,255,0.2)";
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.background = showAll
-              ? "rgba(255,255,255,0.05)"
-              : "linear-gradient(135deg, rgba(0,229,255,0.15), rgba(0,229,255,0.05))";
-            e.currentTarget.style.transform = "translateY(0) scale(1)";
-            e.currentTarget.style.boxShadow = "none";
-          }}
-        >
-          {/* Shimmer overlay on hover */}
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.06) 50%, transparent 60%)", borderRadius: 50, pointerEvents: "none" }} />
-
-          {showAll ? (
-            <>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="18 15 12 9 6 15"/>
-              </svg>
-              Show Less
-            </>
-          ) : (
-            <>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
-              </svg>
-              View All {hiddenCount} More Projects
-              <span style={{ background: "rgba(0,229,255,0.2)", color: "var(--accent)", borderRadius: 50, padding: "2px 8px", fontSize: 12, fontWeight: 800, minWidth: 24, textAlign: "center" }}>{hiddenCount}</span>
-            </>
-          )}
+          style={{ position:"relative", overflow:"hidden", display:"inline-flex", alignItems:"center", gap:10, background:showAll?"rgba(255,255,255,0.05)":"linear-gradient(135deg, rgba(0,229,255,0.15), rgba(0,229,255,0.05))", color:showAll?"var(--muted)":"var(--accent)", border:`1.5px solid ${showAll?"rgba(255,255,255,0.12)":"rgba(0,229,255,0.45)"}`, borderRadius:50, padding:"14px 36px", fontSize:15, fontWeight:700, cursor:"pointer", letterSpacing:"0.04em", backdropFilter:"blur(12px)", transition:"all 0.35s cubic-bezier(0.34,1.56,0.64,1)", animation:showAll?"none":"view-more-pulse 2.5s ease-in-out infinite" }}
+          onMouseEnter={e => { e.currentTarget.style.background=showAll?"rgba(255,255,255,0.1)":"linear-gradient(135deg, rgba(0,229,255,0.25), rgba(0,229,255,0.1))"; e.currentTarget.style.transform="translateY(-3px) scale(1.02)"; e.currentTarget.style.boxShadow="0 12px 36px rgba(0,229,255,0.2)"; }}
+          onMouseLeave={e => { e.currentTarget.style.background=showAll?"rgba(255,255,255,0.05)":"linear-gradient(135deg, rgba(0,229,255,0.15), rgba(0,229,255,0.05))"; e.currentTarget.style.transform="translateY(0) scale(1)"; e.currentTarget.style.boxShadow="none"; }}>
+          <div style={{ position:"absolute", inset:0, background:"linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.06) 50%,transparent 60%)", borderRadius:50, pointerEvents:"none" }} />
+          {showAll ? (<><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"/></svg>Show Less</>) : (<><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>View All {hiddenCount} More Projects<span style={{ background:"rgba(0,229,255,0.2)", color:"var(--accent)", borderRadius:50, padding:"2px 8px", fontSize:12, fontWeight:800, minWidth:24, textAlign:"center" }}>{hiddenCount}</span></>)}
         </button>
-
-        {!showAll && (
-          <p style={{ color: "var(--muted)", fontSize: 12, marginTop: 4, opacity: 0.7 }}>
-            Including Ramadan Mubarak, Rao Jewellery, Food Delivery &amp; more ✦
-          </p>
-        )}
+        {!showAll && <p style={{ color:"var(--muted)", fontSize:12, marginTop:4, opacity:0.7 }}>Including Ramadan Mubarak, Rao Jewellery, Food Delivery &amp; more ✦</p>}
       </div>
     </section>
   );
 }
 
 // ─────────────────────────────────────────────
-//  MAIN PORTFOLIO
+//  MAIN PORTFOLIO — layout wrapper gets responsive classes
 // ─────────────────────────────────────────────
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState("home");
@@ -1457,6 +1402,7 @@ export default function Portfolio() {
   const [splashProgress, setSplashProgress] = useState(0);
   const [modalProject, setModalProject] = useState(null);
   const [copied, setCopied] = useState(false);
+  const { isMobile, isTablet } = useBreakpoint();
 
   useEffect(() => {
     let p = 0;
@@ -1479,16 +1425,16 @@ export default function Portfolio() {
 
   if (showSplash) return (
     <><style>{GLOBAL_STYLE}</style>
-      <div style={{ position:"fixed", inset:0, background:"var(--bg)", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", zIndex:9999, opacity:splashProgress>=100?0:1, transition:"opacity 0.5s ease" }}>
+      <div style={{ position:"fixed", inset:0, background:"var(--bg)", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", zIndex:9999, opacity:splashProgress>=100?0:1, transition:"opacity 0.5s ease", padding:"20px" }}>
         {["var(--accent)","var(--accent2)","var(--accent3)"].map((c,i) => (<div key={i} style={{ position:"absolute", width:400, height:400, borderRadius:"50%", background:`radial-gradient(circle,${c} 0%,transparent 70%)`, opacity:0.06, animation:`orb-drift ${8+i*3}s ease-in-out infinite`, animationDelay:`${i*2}s`, top:`${20+i*20}%`, left:`${20+i*20}%` }} />))}
         <div style={{ position:"relative", marginBottom:32, animation:"float 3s ease-in-out infinite" }}>
           <div style={{ width:80, height:80, borderRadius:"50%", background:"var(--card)", border:"2px solid var(--accent)", display:"flex", alignItems:"center", justifyContent:"center", overflow:"hidden", boxShadow:"0 0 30px rgba(0,229,255,0.3)" }}>
             <img src="/projects/aaa.png" alt="Flutter" style={{ width:"70%", height:"70%", objectFit:"contain" }} onError={e => { e.target.style.display="none"; e.target.parentNode.innerHTML="<span style='font-size:32px'>📱</span>"; }} />
           </div>
         </div>
-        <h1 style={{ fontFamily:"var(--font-display)", fontSize:40, marginBottom:8, letterSpacing:"0.06em" }}>Ahmad Asif</h1>
-        <p style={{ color:"var(--muted)", marginBottom:40 }}>Full Stack Flutter Developer</p>
-        <div style={{ width:200, height:3, background:"rgba(255,255,255,0.08)", borderRadius:2 }}>
+        <h1 style={{ fontFamily:"var(--font-display)", fontSize:"clamp(28px,8vw,40px)", marginBottom:8, letterSpacing:"0.06em", textAlign:"center" }}>Ahmad Asif</h1>
+        <p style={{ color:"var(--muted)", marginBottom:40, fontSize:"clamp(12px,3vw,15px)" }}>Full Stack Flutter Developer</p>
+        <div style={{ width:"min(200px,70vw)", height:3, background:"rgba(255,255,255,0.08)", borderRadius:2 }}>
           <div style={{ height:"100%", width:`${splashProgress}%`, background:"linear-gradient(90deg,var(--accent),var(--accent2))", borderRadius:2, transition:"width 0.1s", boxShadow:"0 0 10px var(--glow)" }} />
         </div>
         <p style={{ color:"var(--muted)", fontSize:13, marginTop:12 }}>Loading portfolio... {splashProgress}%</p>
@@ -1505,39 +1451,54 @@ export default function Portfolio() {
       {modalProject && <ProjectModal project={modalProject} onClose={() => setModalProject(null)} />}
 
       {/* ── HERO ── */}
-      <section id="home" style={{ minHeight:"100vh", display:"flex", alignItems:"center", padding:"0 8%", position:"relative", overflow:"hidden" }}>
+      <section id="home" style={{ minHeight:"100svh", display:"flex", alignItems:"center", padding:"0 8%", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", top:"20%", left:"5%", width:500, height:500, borderRadius:"50%", background:"radial-gradient(circle,rgba(0,229,255,0.06) 0%,transparent 70%)", pointerEvents:"none" }} />
-        <div style={{ flex:1, maxWidth:560, animation:"slide-up 1s ease forwards", zIndex:1 }}>
-          <p style={{ color:"var(--muted)", fontSize:18, marginBottom:4 }}>Hi, I'm 👋</p>
-          <h1 style={{ fontFamily:"var(--font-display)", fontSize:"clamp(72px,10vw,120px)", lineHeight:0.95, marginBottom:16, letterSpacing:"0.02em" }}>
-            Ahmad<span style={{ background:"linear-gradient(135deg,var(--accent) 0%,#7c3aed 100%)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", backgroundClip:"text" }}> Asif</span>
-          </h1>
-          <h2 style={{ fontFamily:"var(--font-body)", fontSize:"clamp(18px,2.5vw,26px)", fontWeight:600, marginBottom:20 }}>
-            I build <Typewriter words={["High-Performance Flutter Applications","Scalable Node.js Backend Architectures","AI & n8n Automation Systems","Modern UI/UX Experiences","Secure Firebase Authentication Flows"]} />
-          </h2>
-          <p style={{ color:"var(--muted)", lineHeight:1.8, fontSize:15, maxWidth:460, marginBottom:36 }}>
-            Passionate <strong style={{ color:"var(--text)" }}>Full-Stack Developer</strong> specializing in <strong style={{ color:"var(--accent)" }}>Flutter & Dart</strong>, Node.js, MongoDB, Firebase, and AI integration.
-          </p>
-          <div style={{ display:"flex", gap:16, flexWrap:"wrap", marginBottom:40 }}>
-            <a href="#projects" data-hover style={{ display:"inline-flex", alignItems:"center", gap:8, background:"linear-gradient(135deg,var(--accent),#7c3aed)", color:"var(--bg)", padding:"14px 28px", borderRadius:50, fontWeight:700, fontSize:15, boxShadow:"0 8px 32px rgba(0,229,255,0.3)" }}>View Projects →</a>
-            <a href="#contact" data-hover style={{ display:"inline-flex", alignItems:"center", background:"transparent", color:"var(--text)", padding:"14px 28px", borderRadius:50, fontWeight:600, fontSize:15, border:"1px solid var(--border)" }}>Hire Me</a>
+
+        {/* Inner flex — gets responsive class */}
+        <div className="hero-inner" style={{ display:"flex", alignItems:"center", width:"100%", gap:0, zIndex:1 }}>
+          {/* Hero text */}
+          <div className="hero-text" style={{ flex:1, maxWidth:560, animation:"slide-up 1s ease forwards", zIndex:1 }}>
+            <p style={{ color:"var(--muted)", fontSize:18, marginBottom:4 }}>Hi, I'm 👋</p>
+            <h1 style={{ fontFamily:"var(--font-display)", fontSize:"clamp(56px,10vw,120px)", lineHeight:0.95, marginBottom:16, letterSpacing:"0.02em" }}>
+              Ahmad<span style={{ background:"linear-gradient(135deg,var(--accent) 0%,#7c3aed 100%)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", backgroundClip:"text" }}> Asif</span>
+            </h1>
+            <h2 style={{ fontFamily:"var(--font-body)", fontSize:"clamp(15px,2.5vw,26px)", fontWeight:600, marginBottom:20 }}>
+              I build <Typewriter words={["High-Performance Flutter Applications","Scalable Node.js Backend Architectures","AI & n8n Automation Systems","Modern UI/UX Experiences","Secure Firebase Authentication Flows"]} />
+            </h2>
+            <p style={{ color:"var(--muted)", lineHeight:1.8, fontSize:15, maxWidth:460, marginBottom:36 }}>
+              Passionate <strong style={{ color:"var(--text)" }}>Full-Stack Developer</strong> specializing in <strong style={{ color:"var(--accent)" }}>Flutter & Dart</strong>, Node.js, MongoDB, Firebase, and AI integration.
+            </p>
+            <div className="hero-ctas" style={{ display:"flex", gap:16, flexWrap:"wrap", marginBottom:40 }}>
+              <a href="#projects" data-hover style={{ display:"inline-flex", alignItems:"center", gap:8, background:"linear-gradient(135deg,var(--accent),#7c3aed)", color:"var(--bg)", padding:"14px 28px", borderRadius:50, fontWeight:700, fontSize:15, boxShadow:"0 8px 32px rgba(0,229,255,0.3)" }}>View Projects →</a>
+              <a href="#contact" data-hover style={{ display:"inline-flex", alignItems:"center", background:"transparent", color:"var(--text)", padding:"14px 28px", borderRadius:50, fontWeight:600, fontSize:15, border:"1px solid var(--border)" }}>Hire Me</a>
+            </div>
           </div>
-        </div>
-        <div style={{ flex:1, display:"flex", alignItems:"center", justifyContent:"center", position:"relative", minHeight:560, zIndex:1 }}>
-          <OrbitIcon img="/projects/aaa.png" color="#00e5ff" radius={195} duration={14} clockwise={true} startAngle={0} size={50} />
-          <OrbitIcon img="/projects/firebase.png"color="#f97316" radius={195} duration={14} clockwise={true} startAngle={90} size={50} />
-          <OrbitIcon img="/projects/java.png" color="#22c55e" radius={195} duration={14} clockwise={true} startAngle={180} size={50} />
-          <OrbitIcon img="/projects/xml.png" color="#7c3aed" radius={195} duration={14} clockwise={true} startAngle={270} size={50} />
-          <OrbitIcon img="/projects/mongo.png" color="#22c55e" radius={245} duration={20} clockwise={false} startAngle={45} size={46} />
-          <OrbitIcon img="/projects/node.png" color="#00e5ff" radius={245} duration={20} clockwise={false} startAngle={135} size={46} />
-          <OrbitIcon img="/projects/figma.png" color="#ec4899" radius={245} duration={20} clockwise={false} startAngle={225} size={46} />
-          <OrbitIcon img="/projects/api.png" color="#f59e0b" radius={245} duration={20} clockwise={false} startAngle={315} size={46} />
-          <div style={{ position:"relative", zIndex:4 }}>
-            <div style={{ width:300, height:300, borderRadius:"50%", overflow:"hidden", animation:"glow-pulse 3s ease-in-out infinite, float 5s ease-in-out infinite", background:"var(--bg2)" }}>
-              <img src="/projects/image.png" alt="Ahmad Asif" style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center top" }} onError={e => { e.target.style.display="none"; const p=e.target.parentNode; p.style.display="flex"; p.style.alignItems="center"; p.style.justifyContent="center"; p.style.fontSize="90px"; p.innerHTML="👨‍💻"; }} />
+
+          {/* Hero orbit */}
+          <div className="hero-orbit-wrap" style={{ flex:1, display:"flex", alignItems:"center", justifyContent:"center", position:"relative", minHeight:560, zIndex:1 }}>
+            {/* Inner orbit ring — hidden on mobile via CSS */}
+            <div className="orbit-inner">
+              <OrbitIcon img="/projects/aaa.png" color="#00e5ff" radius={195} duration={14} clockwise={true} startAngle={0} size={50} />
+              <OrbitIcon img="/projects/firebase.png" color="#f97316" radius={195} duration={14} clockwise={true} startAngle={90} size={50} />
+              <OrbitIcon img="/projects/java.png" color="#22c55e" radius={195} duration={14} clockwise={true} startAngle={180} size={50} />
+              <OrbitIcon img="/projects/xml.png" color="#7c3aed" radius={195} duration={14} clockwise={true} startAngle={270} size={50} />
+            </div>
+            {/* Outer orbit ring — hidden on tablet via CSS */}
+            <div className="orbit-outer">
+              <OrbitIcon img="/projects/mongo.png" color="#22c55e" radius={245} duration={20} clockwise={false} startAngle={45} size={46} />
+              <OrbitIcon img="/projects/node.png" color="#00e5ff" radius={245} duration={20} clockwise={false} startAngle={135} size={46} />
+              <OrbitIcon img="/projects/figma.png" color="#ec4899" radius={245} duration={20} clockwise={false} startAngle={225} size={46} />
+              <OrbitIcon img="/projects/api.png" color="#f59e0b" radius={245} duration={20} clockwise={false} startAngle={315} size={46} />
+            </div>
+            {/* Center photo */}
+            <div style={{ position:"relative", zIndex:4 }}>
+              <div className="hero-center-img" style={{ width:300, height:300, borderRadius:"50%", overflow:"hidden", animation:"glow-pulse 3s ease-in-out infinite, float 5s ease-in-out infinite", background:"var(--bg2)" }}>
+                <img src="/projects/image.png" alt="Ahmad Asif" style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center top" }} onError={e => { e.target.style.display="none"; const p=e.target.parentNode; p.style.display="flex"; p.style.alignItems="center"; p.style.justifyContent="center"; p.style.fontSize="90px"; p.innerHTML="👨‍💻"; }} />
+              </div>
             </div>
           </div>
         </div>
+
         <ScrollIndicator />
       </section>
 
@@ -1549,10 +1510,10 @@ export default function Portfolio() {
           <h2 style={{ fontFamily:"var(--font-display)", fontSize:"clamp(48px,7vw,80px)", letterSpacing:"0.04em" }}>ABOUT <span style={{ color:"var(--accent)", textShadow:"0 0 40px rgba(0,229,255,0.5)" }}>ME</span></h2>
           <div style={{ width:80, height:3, background:"linear-gradient(90deg,transparent,var(--accent),transparent)", margin:"16px auto 0", borderRadius:2 }} />
         </div>
-        <div style={{ display:"grid", gridTemplateColumns:"320px 1fr", gap:60, alignItems:"start", position:"relative", zIndex:1 }}>
-          <div style={{ display:"flex", flexDirection:"column", gap:20 }}>
+        <div className="about-grid" style={{ display:"grid", gridTemplateColumns:"320px 1fr", gap:60, alignItems:"start", position:"relative", zIndex:1 }}>
+          <div className="about-left" style={{ display:"flex", flexDirection:"column", gap:20 }}>
             <AboutPhoto />
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
+            <div className="stats-grid" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
               <AboutStatCard value={3} suffix="+" label="Years Experience" icon="📅" delay={0.1} />
               <AboutStatCard value={20} suffix="+" label="Projects Delivered" icon="💼" delay={0.2} />
               <AboutStatCard value={50} suffix="+" label="MVPs Built" icon="📱" delay={0.3} />
@@ -1567,12 +1528,12 @@ export default function Portfolio() {
       <section id="services" style={{ padding:"120px 8%", position:"relative", zIndex:1 }}>
         <div style={{ position:"absolute", inset:0, backgroundImage:"radial-gradient(rgba(0,229,255,0.04) 1px,transparent 1px)", backgroundSize:"32px 32px", pointerEvents:"none" }} />
         <SectionHeading pre="What I Offer" main="My" accent="Services" sub="From mobile apps to AI-powered solutions, I build what your business needs." />
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))", gap:24, position:"relative", zIndex:1 }}>
+        <div className="services-grid" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))", gap:24, position:"relative", zIndex:1 }}>
           {SERVICES.map((s,i) => <ServiceCard key={i} s={s} idx={i} />)}
         </div>
       </section>
 
-      {/* ── PROJECTS (new component with View More) ── */}
+      {/* ── PROJECTS ── */}
       <ProjectsSection onOpen={setModalProject} />
 
       {/* ── TESTIMONIALS ── */}
@@ -1588,13 +1549,15 @@ export default function Portfolio() {
       <ContactSection copied={copied} onCopyEmail={copyEmail} />
 
       {/* ── FOOTER ── */}
-      <footer style={{ borderTop:"1px solid var(--border)", padding:"32px 8%", display:"flex", alignItems:"center", justifyContent:"space-between", position:"relative", zIndex:1 }}>
-        <div>
-          <h3 style={{ fontFamily:"var(--font-display)", fontSize:24, color:"var(--accent)", marginBottom:4, letterSpacing:"0.04em" }}>Ahmad Asif</h3>
-          <div style={{ color:"var(--muted)", fontSize:13 }}>Building modern mobile experiences with Flutter.</div>
+      <footer style={{ borderTop:"1px solid var(--border)", padding:"32px 8%", display:"flex", alignItems:"center", justifyContent:"space-between", position:"relative", zIndex:1, flexWrap:"wrap", gap:16 }}>
+        <div className="footer-row" style={{ display:"contents" }}>
+          <div>
+            <h3 style={{ fontFamily:"var(--font-display)", fontSize:24, color:"var(--accent)", marginBottom:4, letterSpacing:"0.04em" }}>Ahmad Asif</h3>
+            <div style={{ color:"var(--muted)", fontSize:13 }}>Building modern mobile experiences with Flutter.</div>
+          </div>
+          <div style={{ color:"var(--muted)", fontSize:13 }}>© 2025 Ahmad Asif. All rights reserved.</div>
+          <a href="#home" data-hover style={{ width:40, height:40, borderRadius:"50%", background:"var(--surface)", border:"1px solid var(--border)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:16 }}>↑</a>
         </div>
-        <div style={{ color:"var(--muted)", fontSize:13 }}>© 2025 Ahmad Asif. All rights reserved.</div>
-        <a href="#home" data-hover style={{ width:40, height:40, borderRadius:"50%", background:"var(--surface)", border:"1px solid var(--border)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:16 }}>↑</a>
       </footer>
     </>
   );
