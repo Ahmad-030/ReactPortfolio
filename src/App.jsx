@@ -519,48 +519,21 @@ function Typewriter({ words }) {
 //  CURSOR
 // ─────────────────────────────────────────────
 function Cursor() {
-  const dot  = useRef(null);
-  const ring = useRef(null);
+  const dot = useRef(null), ring = useRef(null);
   const [h, setH] = useState(false);
-  const pos = useRef({ x: 0, y: 0 });
-  const rp  = useRef({ x: 0, y: 0 });
-  const raf = useRef(null);
-
+  const pos = useRef({ x:0, y:0 }), rp = useRef({ x:0, y:0 }), raf = useRef(null);
   useEffect(() => {
-    const onMove = e => {
-      pos.current = { x: e.clientX, y: e.clientY };
-      if (dot.current)
-        dot.current.style.transform = `translate(${e.clientX - 4}px,${e.clientY - 4}px)`;
-    };
-    const tick = () => {
-      rp.current.x += (pos.current.x - rp.current.x) * 0.12;
-      rp.current.y += (pos.current.y - rp.current.y) * 0.12;
-      if (ring.current)
-        ring.current.style.transform = `translate(${rp.current.x - 20}px,${rp.current.y - 20}px)`;
-      raf.current = requestAnimationFrame(tick);
-    };
-    // ✅ Event delegation — auto-picks up modal buttons/links added after mount
-    const onEnter = e => { if (e.target.closest('a, button, [data-hover]')) setH(true); };
-    const onLeave = e => { if (e.target.closest('a, button, [data-hover]')) setH(false); };
-
-    window.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseover',  onEnter);
-    document.addEventListener('mouseout',   onLeave);
-    raf.current = requestAnimationFrame(tick);
-    return () => {
-      window.removeEventListener('mousemove', onMove);
-      document.removeEventListener('mouseover',  onEnter);
-      document.removeEventListener('mouseout',   onLeave);
-      cancelAnimationFrame(raf.current);
-    };
+    const mv = e => { pos.current = { x:e.clientX, y:e.clientY }; if (dot.current) dot.current.style.transform = `translate(${e.clientX-4}px,${e.clientY-4}px)`; };
+    const tk = () => { rp.current.x += (pos.current.x-rp.current.x)*0.12; rp.current.y += (pos.current.y-rp.current.y)*0.12; if (ring.current) ring.current.style.transform = `translate(${rp.current.x-20}px,${rp.current.y-20}px)`; raf.current = requestAnimationFrame(tk); };
+    window.addEventListener("mousemove", mv);
+    document.querySelectorAll("a,button,[data-hover]").forEach(el => { el.addEventListener("mouseenter", () => setH(true)); el.addEventListener("mouseleave", () => setH(false)); });
+    raf.current = requestAnimationFrame(tk);
+    return () => { window.removeEventListener("mousemove", mv); cancelAnimationFrame(raf.current); };
   }, []);
-
-  return (
-    <>
-      <div ref={dot} style={{ position:'fixed', top:0, left:0, width:8, height:8, background:'var(--accent)', borderRadius:'50%', pointerEvents:'none', zIndex:9999 }} />
-      <div ref={ring} style={{ position:'fixed', top:0, left:0, width:h?56:40, height:h?56:40, border:`2px solid ${h?'var(--accent)':'rgba(0,229,255,0.4)'}`, borderRadius:'50%', pointerEvents:'none', zIndex:9998, transition:'width 0.25s, height 0.25s, border-color 0.25s' }} />
-    </>
-  );
+  return (<>
+    <div ref={dot} style={{ position:"fixed", top:0, left:0, width:8, height:8, background:"var(--accent)", borderRadius:"50%", pointerEvents:"none", zIndex:9999 }} />
+    <div ref={ring} style={{ position:"fixed", top:0, left:0, width:h?56:40, height:h?56:40, border:`2px solid ${h?"var(--accent)":"rgba(0,229,255,0.4)"}`, borderRadius:"50%", pointerEvents:"none", zIndex:9998, transition:"all 0.25s" }} />
+  </>);
 }
 
 // ─────────────────────────────────────────────
@@ -819,76 +792,7 @@ function ProjectCard({ p, idx, onOpen, visible }) {
 // ─────────────────────────────────────────────
 //  PROJECT MODAL
 // ─────────────────────────────────────────────
-// ─────────────────────────────────────────────
-//  FIX 1: Replace your Cursor component
-// ─────────────────────────────────────────────
-function Cursor() {
-  const dot  = useRef(null);
-  const ring = useRef(null);
-  const [h, setH] = useState(false);
-  const pos = useRef({ x: 0, y: 0 });
-  const rp  = useRef({ x: 0, y: 0 });
-  const raf = useRef(null);
 
-  useEffect(() => {
-    const onMove = e => {
-      pos.current = { x: e.clientX, y: e.clientY };
-      if (dot.current)
-        dot.current.style.transform = `translate(${e.clientX - 4}px,${e.clientY - 4}px)`;
-    };
-
-    const tick = () => {
-      rp.current.x += (pos.current.x - rp.current.x) * 0.12;
-      rp.current.y += (pos.current.y - rp.current.y) * 0.12;
-      if (ring.current)
-        ring.current.style.transform = `translate(${rp.current.x - 20}px,${rp.current.y - 20}px)`;
-      raf.current = requestAnimationFrame(tick);
-    };
-
-    // Event delegation — automatically catches modal/dynamic elements
-    const onEnter = e => { if (e.target.closest('a, button, [data-hover]')) setH(true); };
-    const onLeave = e => { if (e.target.closest('a, button, [data-hover]')) setH(false); };
-
-    window.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseover',  onEnter);
-    document.addEventListener('mouseout',   onLeave);
-    raf.current = requestAnimationFrame(tick);
-
-    return () => {
-      window.removeEventListener('mousemove', onMove);
-      document.removeEventListener('mouseover',  onEnter);
-      document.removeEventListener('mouseout',   onLeave);
-      cancelAnimationFrame(raf.current);
-    };
-  }, []);
-
-  return (
-    <>
-      <div ref={dot} style={{
-        position: 'fixed', top: 0, left: 0,
-        width: 8, height: 8,
-        background: 'var(--accent)', borderRadius: '50%',
-        pointerEvents: 'none', zIndex: 9999,
-      }} />
-      <div ref={ring} style={{
-        position: 'fixed', top: 0, left: 0,
-        width:  h ? 56 : 40,
-        height: h ? 56 : 40,
-        border: `2px solid ${h ? 'var(--accent)' : 'rgba(0,229,255,0.4)'}`,
-        borderRadius: '50%',
-        pointerEvents: 'none', zIndex: 9998,
-        transition: 'width 0.25s, height 0.25s, border-color 0.25s',
-      }} />
-    </>
-  );
-}
-
-
-// ─────────────────────────────────────────────
-//  FIX 2: Replace your ProjectModal component
-//  Only change: removed cursor:"pointer" from overlay div
-//  (body already has cursor:none in global CSS)
-// ─────────────────────────────────────────────
 function ProjectModal({ project, onClose }) {
   const [imgIdx, setImgIdx] = useState(0);
   useEffect(() => {
