@@ -640,7 +640,7 @@ function AboutPhoto() {
       })}
       <div style={{ width:"100%", aspectRatio:"4/5", borderRadius:14, overflow:"hidden", border:"2px solid rgba(0,229,255,0.65)", animation:"photo-border-glow 3s ease-in-out infinite, about-float 6s ease-in-out infinite", background:"var(--bg2)", position:"relative" }}>
         <div style={{ position:"absolute", bottom:0, left:0, right:0, height:"30%", background:"linear-gradient(to top,var(--bg2),transparent)", pointerEvents:"none", zIndex:2 }} />
-        <img src="public/projects/unnamed.jpg" alt="Ahmad Asif" style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center top" }} onError={e => { e.target.style.display="none"; e.target.parentNode.style.fontSize="70px"; e.target.parentNode.style.display="flex"; e.target.parentNode.style.alignItems="center"; e.target.parentNode.style.justifyContent="center"; e.target.parentNode.innerHTML="👨‍💻"; }} />
+        <img src="/projects/unnamed.jpg" alt="Ahmad Asif" style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center top" }} onError={e => { e.target.style.display="none"; e.target.parentNode.style.fontSize="70px"; e.target.parentNode.style.display="flex"; e.target.parentNode.style.alignItems="center"; e.target.parentNode.style.justifyContent="center"; e.target.parentNode.innerHTML="👨‍💻"; }} />
         <div style={{ position:"absolute", bottom:0, left:"50%", transform:"translateX(-50%)", width:"55%", height:3, background:"var(--accent)", boxShadow:"0 0 20px var(--accent)", borderRadius:2, zIndex:3 }} />
       </div>
       <div style={{ textAlign:"center", marginTop:14 }}>
@@ -1483,7 +1483,7 @@ export default function Portfolio() {
         {["var(--accent)","var(--accent2)","var(--accent3)"].map((c,i) => (<div key={i} style={{ position:"absolute", width:400, height:400, borderRadius:"50%", background:`radial-gradient(circle,${c} 0%,transparent 70%)`, opacity:0.06, animation:`orb-drift ${8+i*3}s ease-in-out infinite`, animationDelay:`${i*2}s`, top:`${20+i*20}%`, left:`${20+i*20}%` }} />))}
         <div style={{ position:"relative", marginBottom:32, animation:"float 3s ease-in-out infinite" }}>
           <div style={{ width:80, height:80, borderRadius:"50%", background:"var(--card)", border:"2px solid var(--accent)", display:"flex", alignItems:"center", justifyContent:"center", overflow:"hidden", boxShadow:"0 0 30px rgba(0,229,255,0.3)" }}>
-            <img src="public/projects/fluttericon.jpg" alt="Flutter" style={{ width:"70%", height:"70%", objectFit:"contain" }} onError={e => { e.target.style.display="none"; e.target.parentNode.innerHTML="<span style='font-size:32px'>📱</span>"; }} />
+            <img src="/projects/fluttericon.jpg" alt="Flutter" style={{ width:"70%", height:"70%", objectFit:"contain" }} onError={e => { e.target.style.display="none"; e.target.parentNode.innerHTML="<span style='font-size:32px'>📱</span>"; }} />
           </div>
         </div>
         <h1 style={{ fontFamily:"var(--font-display)", fontSize:40, marginBottom:8, letterSpacing:"0.06em" }}>Ahmad Asif</h1>
@@ -1534,7 +1534,7 @@ export default function Portfolio() {
           <OrbitIcon img="/projects/api.png" color="#f59e0b" radius={245} duration={20} clockwise={false} startAngle={315} size={46} />
           <div style={{ position:"relative", zIndex:4 }}>
             <div style={{ width:300, height:300, borderRadius:"50%", overflow:"hidden", animation:"glow-pulse 3s ease-in-out infinite, float 5s ease-in-out infinite", background:"var(--bg2)" }}>
-              <img src="public/projects/image.png" alt="Ahmad Asif" style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center top" }} onError={e => { e.target.style.display="none"; const p=e.target.parentNode; p.style.display="flex"; p.style.alignItems="center"; p.style.justifyContent="center"; p.style.fontSize="90px"; p.innerHTML="👨‍💻"; }} />
+              <img src="/projects/image.png" alt="Ahmad Asif" style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center top" }} onError={e => { e.target.style.display="none"; const p=e.target.parentNode; p.style.display="flex"; p.style.alignItems="center"; p.style.justifyContent="center"; p.style.fontSize="90px"; p.innerHTML="👨‍💻"; }} />
             </div>
           </div>
         </div>
