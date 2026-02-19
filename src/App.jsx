@@ -1290,7 +1290,7 @@ function Nav({ activeSection }) {
 
   return (<>
     <nav style={{ position:"fixed", top:0, left:0, right:0, zIndex:1000, display:"flex", alignItems:"center", justifyContent:"space-between", padding:"0 28px", height:70, background:scrolled||menuOpen?"rgba(5,8,16,0.96)":"transparent", backdropFilter:scrolled?"blur(20px)":"none", borderBottom:scrolled?"1px solid var(--border)":"none", transition:"all 0.3s" }}>
-      <a href="#home" onClick={e=>{e.preventDefault();handleLink("home");}} style={{ fontFamily:"var(--font-display)", fontSize:26, color:"var(--accent)", zIndex:1100, flexShrink:0, letterSpacing:"0.06em" }}>Ahmad<span style={{ color:"var(--text)" }}>.</span></a>
+      <a href="#home" onClick={e=>{e.preventDefault();handleLink("home");}} style={{ fontFamily:"var(--font-display)", fontSize:26, color:"var(--accent)", zIndex:1100, flexShrink:0, letterSpacing:"0.06em" }}>Ahmad Asif<span style={{ color:"var(--text)" }}>.</span></a>
 
       {/* Desktop pill nav */}
       <div className="nav-pill" style={{ position:"absolute", left:"50%", transform:"translateX(-50%)", display:"flex", alignItems:"center", gap:2, background:"rgba(12,18,35,0.88)", border:"1px solid rgba(255,255,255,0.09)", borderRadius:50, padding:"5px 6px", backdropFilter:"blur(16px)", boxShadow:"0 4px 28px rgba(0,0,0,0.5)" }}>
