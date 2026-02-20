@@ -1,8 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 
-// ─────────────────────────────────────────────
-//  GLOBAL STYLES — ALL ORIGINAL ANIMATIONS INTACT + responsive layer added
-// ─────────────────────────────────────────────
 const GLOBAL_STYLE = `
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -22,7 +19,6 @@ body { font-family: var(--font-body); background: var(--bg); color: var(--text);
 ::selection { background: var(--accent); color: var(--bg); }
 a { color: inherit; text-decoration: none; }
 
-/* ── ALL ORIGINAL KEYFRAMES — UNTOUCHED ── */
 @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 @keyframes slide-up { from{opacity:0;transform:translateY(60px)} to{opacity:1;transform:translateY(0)} }
@@ -85,11 +81,6 @@ a { color: inherit; text-decoration: none; }
 @keyframes quote-spark { 0%{opacity:0;transform:translate(-50%,-50%) scale(0)} 40%{opacity:1} 100%{opacity:0;transform:translate(calc(-50% + var(--sx)),calc(-50% + var(--sy))) scale(1.5)} }
 @keyframes rail-diamond-idle { 0%,100%{transform:rotate(45deg) scale(1)} 50%{transform:rotate(45deg) scale(1.2)} }
 
-/* ══════════════════════════════════════════════════
-   RESPONSIVE ADDITIONS ONLY — nothing above changed
-   ══════════════════════════════════════════════════ */
-
-/* Hamburger button — hidden by default, shown on tablet/mobile */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -109,7 +100,6 @@ a { color: inherit; text-decoration: none; }
 .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
 .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* Mobile drawer */
 .mobile-drawer {
   position: fixed;
   inset: 0;
@@ -141,14 +131,12 @@ a { color: inherit; text-decoration: none; }
 }
 .mob-link:hover, .mob-link.active { color: var(--accent); transform: translateX(6px); }
 
-/* ── TABLET ≤ 1024px ── */
 @media (max-width: 1024px) {
   .nav-pill    { display: none !important; }
   .nav-socials { display: none !important; }
   .hamburger   { display: flex !important; }
   .side-rail   { display: none !important; }
 
-  /* Hero: stack vertically */
   .hero-inner {
     flex-direction: column !important;
     align-items: center !important;
@@ -169,20 +157,15 @@ a { color: inherit; text-decoration: none; }
   }
   .hero-center-img { width: 220px !important; height: 220px !important; }
 
-  /* About: single column */
   .about-grid { grid-template-columns: 1fr !important; }
   .about-left  { max-width: 420px; margin: 0 auto; }
   .stats-grid  { grid-template-columns: repeat(4,1fr) !important; }
   .skills-inner{ grid-template-columns: repeat(5,1fr) !important; }
 
-  /* Hide outer orbit ring */
   .orbit-outer { display: none !important; }
-
-  /* Testimonial thumbnail row */
   .testi-thumbs { display: none !important; }
 }
 
-/* ── MOBILE ≤ 768px ── */
 @media (max-width: 768px) {
   body { cursor: auto !important; }
   .custom-cursor { display: none !important; }
@@ -190,38 +173,49 @@ a { color: inherit; text-decoration: none; }
 
   section { padding-left: 5% !important; padding-right: 5% !important; }
 
-  /* Hero */
-  .hero-inner { padding-top: 88px !important; gap: 32px !important; }
-  .hero-orbit-wrap { width: 260px !important; height: 260px !important; }
+  /* ── HERO MOBILE FIX: image first, tight gap, no phantom height ── */
+  .hero-inner {
+    padding-top: 70px !important;
+    gap: 12px !important;
+    padding-bottom: 32px !important;
+    min-height: 100svh !important;
+    justify-content: center !important;
+  }
+  /* Move orbit (image) above the text */
+  .hero-orbit-wrap {
+    width: 220px !important;
+    height: 220px !important;
+    min-height: 0 !important;
+    order: -1 !important;
+    flex: 0 0 auto !important;
+  }
+  .hero-text {
+    order: 1 !important;
+    flex: 0 0 auto !important;
+  }
   .hero-center-img { width: 180px !important; height: 180px !important; }
   .orbit-inner { display: none !important; }
   .hero-ctas { flex-direction: column !important; align-items: center !important; }
   .hero-ctas a { width: 100% !important; max-width: 280px !important; justify-content: center !important; }
 
-  /* About */
   .stats-grid  { grid-template-columns: repeat(2,1fr) !important; }
   .skills-inner{ grid-template-columns: repeat(3,1fr) !important; }
   .about-actions { flex-direction: column !important; }
   .about-actions a { width: 100% !important; justify-content: center !important; }
 
-  /* Grids */
   .projects-grid  { grid-template-columns: 1fr !important; }
   .services-grid  { grid-template-columns: 1fr !important; }
   .certs-grid     { grid-template-columns: repeat(2,1fr) !important; }
 
-  /* Testimonial */
   .testi-card  { padding: 24px 18px !important; }
   .testi-head  { flex-wrap: wrap !important; }
   .testi-linkedin { display: none !important; }
 
-  /* Contact */
   .contact-btns { flex-direction: column !important; align-items: center !important; }
   .contact-btns > * { width: 100% !important; max-width: 300px !important; justify-content: center !important; }
 
-  /* Footer */
   .footer-row { flex-direction: column !important; align-items: center !important; text-align: center !important; gap: 16px !important; }
 
-  /* Modal */
   .modal-wrap { padding: 12px !important; }
   .modal-box  { border-radius: 16px !important; max-height: 94dvh !important; }
   .modal-hd   { padding: 14px 16px !important; }
@@ -230,7 +224,6 @@ a { color: inherit; text-decoration: none; }
   .proj-btns  { flex-wrap: wrap !important; }
 }
 
-/* ── SMALL MOBILE ≤ 480px ── */
 @media (max-width: 480px) {
   .skills-inner { grid-template-columns: repeat(2,1fr) !important; }
   .certs-grid   { grid-template-columns: 1fr !important; }
@@ -239,9 +232,6 @@ a { color: inherit; text-decoration: none; }
 }
 `;
 
-// ─────────────────────────────────────────────
-//  DATA — 100% original, untouched
-// ─────────────────────────────────────────────
 const SKILLS_GRID = [
   { name:"Flutter",  img:"projects/aaa.png", color:"#00e5ff" },
   { name:"Dart",     icon:"🎯", color:"#00b4d8" },
@@ -256,14 +246,8 @@ const SKILLS_GRID = [
 ];
 
 const PROJECTS = [
-  { title:"Routelink", tag:"Ride Sharing", color:"#00e5ff", emoji:"🗺️",
-    preview:"/projects/RouteLink/logo.png",
-    images:["/projects/RouteLink/img1.jpg","/projects/RouteLink/img.jpg"],
-    github: null,
-    desc:"Ride-sharing app where drivers publish routes and passengers find them on a map, negotiate fares, and chat directly.",
-    longDesc:"Routelink is a comprehensive Flutter-based ride-sharing application that connects drivers and passengers through an intelligent route-matching platform, enabling direct fare negotiation and seamless communication for convenient carpooling experiences.\n\nUsers can publish or browse routes on an interactive map, chat directly with potential ride partners, negotiate fares in real-time, and track rides with live location updates. The app also features user profiles with ratings, route history, and safety features including emergency contacts and ride sharing capabilities.\n\nBuilt with Flutter, Firebase, Google Maps API, and Provider state management. Clean Material 3 UI, smooth animations, and responsive design — delivering an intuitive, secure, and community-driven transportation solution.",
-    tech:["Flutter","Firebase","Google Maps","Firestore","Provider","Push Notifications"] },
-  { title:"Ramadan Mubarak", tag:"Creative · Holiday", color:"#f5b942", emoji:"🌙",
+
+   { title:"Ramadan Mubarak", tag:"Creative · Holiday", color:"#f5b942", emoji:"🌙",
     preview:"/projects/ramadan-preview.png",
     images:[],
     github: "https://github.com/Ahmad-030/RamzanMubarak",
@@ -271,6 +255,27 @@ const PROJECTS = [
     desc:"An animated Ramadan greeting page with cinematic moon reveal, floating SVG lanterns, procedural star field, and golden title sequence.",
     longDesc:"A fully self-contained HTML page built to share Ramadan greetings in style. Features a cinematic zoom-in camera effect, procedurally generated star field with gold accent stars, animated crescent moon with pulsing halo, hand-crafted SVG lanterns with realistic drop-and-float physics, rising gold particles, and a staggered letter-wave text reveal.\n\nBuilt with pure HTML, CSS animations, and vanilla JavaScript — no frameworks, no dependencies. Includes ambient audio support and an elegant golden signature sign-off.\n\nAll animations are orchestrated on a timeline: stars → moon → lanterns (spring-drop) → golden 'Ramadan Mubarak' shimmer title → ornamental dividers → subtext. The entire experience runs at 60fps with GPU-accelerated CSS transforms and zero layout jank.",
     tech:["HTML5","CSS Animations","SVG","Vanilla JS","Web Audio API","Canvas"] },
+  { 
+    title:"Routelink", tag:"Ride Sharing", color:"#00e5ff", emoji:"🗺️",
+    preview:"/projects/RouteLink/logo.png",
+    images:["/projects/RouteLink/img1.jpg","/projects/RouteLink/img.jpg"],
+    github: null,
+    desc:"Ride-sharing app where drivers publish routes and passengers find them on a map, negotiate fares, and chat directly.",
+    longDesc:"Routelink is a comprehensive Flutter-based ride-sharing application that connects drivers and passengers through an intelligent route-matching platform, enabling direct fare negotiation and seamless communication for convenient carpooling experiences.\n\nUsers can publish or browse routes on an interactive map, chat directly with potential ride partners, negotiate fares in real-time, and track rides with live location updates. The app also features user profiles with ratings, route history, and safety features including emergency contacts and ride sharing capabilities.\n\nBuilt with Flutter, Firebase, Google Maps API, and Provider state management. Clean Material 3 UI, smooth animations, and responsive design — delivering an intuitive, secure, and community-driven transportation solution.",
+    tech:["Flutter","Firebase","Google Maps","Firestore","Provider","Push Notifications"] 
+  },
+    {
+  title: "DoRise",
+  tag: "Productivity",
+  color: "#667eea",
+  emoji: "✅",
+  preview: "/projects/DoRise/logo.png",
+  images: ["/projects/DoRise/logo.png","/projects/DoRise/img2.jpg", "/projects/DoRise/img1.jpg"],
+  github: null,
+  desc: "Gamified task manager where users earn XP, build streaks, and unlock achievements by completing daily tasks.",
+  longDesc: "DoRise is a Flutter-based productivity app that transforms everyday task management into an engaging, gamified experience — helping users build lasting habits through XP rewards, streaks, and achievement milestones.\n\nUsers can create tasks with priority levels, due dates, and daily/weekly recurrence. Each completed task earns XP toward leveling up, maintains streak counters, and can trigger achievement unlocks shown via in-app snackbars. A statistics screen with bar charts visualizes weekly activity, and an achievements screen tracks progress across five milestone badges.\n\nBuilt with Flutter, Hive for local storage, GetX for state management, and fl_chart for analytics. Clean Material 3 UI with light/dark mode, smooth animations, and a fully offline, permission-free experience.",
+  tech: ["Flutter", "Hive", "GetX", "fl_chart", "Google Fonts", "SharedPreferences"]
+},
   { title:"Sajdah", tag:"Islamic App", color:"#f50b0b", emoji:"🕌",
     preview:"/projects/Sajdah/aaa.png",
     images:["/projects/Sajdah/aaa.png"],
@@ -398,9 +403,6 @@ const CERTIFICATES = [
   { title:"Google Soft Skills",      issuer:"Google",               img:"projects/certificates/google.png",                           color:"#ec4899", year:"2023", badge:"⭐" },
 ];
 
-// ─────────────────────────────────────────────
-//  HOOKS
-// ─────────────────────────────────────────────
 function useReveal(threshold = 0.15) {
   const ref = useRef(null);
   const [v, setV] = useState(false);
@@ -412,7 +414,6 @@ function useReveal(threshold = 0.15) {
   return [ref, v];
 }
 
-// Simple hook — only used to drive structural layout differences, NOT to strip animations
 function useBreakpoint() {
   const [w, setW] = useState(typeof window !== "undefined" ? window.innerWidth : 1280);
   useEffect(() => {
@@ -423,9 +424,6 @@ function useBreakpoint() {
   return { isMobile: w <= 768, isTablet: w <= 1024, w };
 }
 
-// ─────────────────────────────────────────────
-//  SIDE RAIL — original, untouched
-// ─────────────────────────────────────────────
 const SECTIONS = [
   { id:"home",           label:"Home",           icon:"⌂", color:"#00e5ff" },
   { id:"about",          label:"About",          icon:"◈", color:"#7c3aed" },
@@ -535,9 +533,6 @@ function ContinuousRail({ activeSection }) {
   );
 }
 
-// ─────────────────────────────────────────────
-//  ANIMATED QUOTE BANNER — original, untouched
-// ─────────────────────────────────────────────
 function QuoteBanner() {
   const [ref, v] = useReveal(0.3);
   const [hov, setHov] = useState(false);
@@ -579,9 +574,6 @@ function QuoteBanner() {
   );
 }
 
-// ─────────────────────────────────────────────
-//  TYPEWRITER — original, untouched
-// ─────────────────────────────────────────────
 function Typewriter({ words }) {
   const [display, setDisplay] = useState("");
   const [wi, setWi] = useState(0);
@@ -602,9 +594,6 @@ function Typewriter({ words }) {
   return (<span style={{ color:"var(--accent)", borderRight:"3px solid var(--accent)", paddingRight:4, animation:"blink 1s step-end infinite" }}>{display}</span>);
 }
 
-// ─────────────────────────────────────────────
-//  CURSOR — original, untouched, hidden on mobile via CSS
-// ─────────────────────────────────────────────
 function Cursor() {
   const dot = useRef(null), ring = useRef(null);
   const [h, setH] = useState(false);
@@ -623,9 +612,6 @@ function Cursor() {
   </>);
 }
 
-// ─────────────────────────────────────────────
-//  PARTICLE CANVAS — original, untouched
-// ─────────────────────────────────────────────
 function ParticleCanvas() {
   const ref = useRef(null);
   useEffect(() => {
@@ -644,9 +630,6 @@ function ParticleCanvas() {
   return <canvas ref={ref} style={{ position:"fixed", inset:0, zIndex:0, pointerEvents:"none" }} />;
 }
 
-// ─────────────────────────────────────────────
-//  ORBIT ICON — original, untouched
-// ─────────────────────────────────────────────
 function OrbitIcon({ icon, img, color, radius, duration, clockwise=true, startAngle=0, size=48 }) {
   const anim = clockwise?"orbit-cw":"orbit-ccw", counter = clockwise?"counter-cw":"counter-ccw", dim = radius*2;
   return (
@@ -660,9 +643,6 @@ function OrbitIcon({ icon, img, color, radius, duration, clockwise=true, startAn
   );
 }
 
-// ─────────────────────────────────────────────
-//  ANIMATED COUNTER — original, untouched
-// ─────────────────────────────────────────────
 function AnimatedCounter({ target, suffix="" }) {
   const [count, setCount] = useState(0);
   const [ref, v] = useReveal(0.3);
@@ -675,9 +655,6 @@ function AnimatedCounter({ target, suffix="" }) {
   return <span ref={ref}>{count}{suffix}</span>;
 }
 
-// ─────────────────────────────────────────────
-//  ABOUT STAT CARD — original, untouched
-// ─────────────────────────────────────────────
 function AboutStatCard({ value, suffix, label, icon, delay=0 }) {
   const [ref, v] = useReveal(0.2); const [hov, setHov] = useState(false);
   return (
@@ -691,9 +668,6 @@ function AboutStatCard({ value, suffix, label, icon, delay=0 }) {
   );
 }
 
-// ─────────────────────────────────────────────
-//  SKILL GRID CARD — original, untouched
-// ─────────────────────────────────────────────
 function SkillGridCard({ name, icon, img, color, delay=0 }) {
   const [ref, v] = useReveal(0.05); const [hov, setHov] = useState(false);
   return (
@@ -708,9 +682,6 @@ function SkillGridCard({ name, icon, img, color, delay=0 }) {
   );
 }
 
-// ─────────────────────────────────────────────
-//  ABOUT PHOTO — original, untouched
-// ─────────────────────────────────────────────
 function AboutPhoto() {
   const [ref, v] = useReveal(0.2);
   return (
@@ -731,9 +702,6 @@ function AboutPhoto() {
   );
 }
 
-// ─────────────────────────────────────────────
-//  ABOUT RIGHT — original, untouched
-// ─────────────────────────────────────────────
 function AboutRight() {
   const [ref, v] = useReveal(0.1); const [btnRef, btnV] = useReveal(0.2);
   return (
@@ -772,9 +740,6 @@ function AboutRight() {
   );
 }
 
-// ─────────────────────────────────────────────
-//  PROJECT CARD — original, untouched
-// ─────────────────────────────────────────────
 function ProjectCard({ p, idx, onOpen, visible }) {
   const [hov, setHov] = useState(false);
   const isRamadan = p.title === "Ramadan Mubarak";
@@ -840,9 +805,6 @@ function ProjectCard({ p, idx, onOpen, visible }) {
   );
 }
 
-// ─────────────────────────────────────────────
-//  PROJECT MODAL — original, untouched
-// ─────────────────────────────────────────────
 function ProjectModal({ project, onClose }) {
   const [imgIdx, setImgIdx] = useState(0);
   useEffect(() => {
@@ -940,9 +902,6 @@ function ProjectModal({ project, onClose }) {
   );
 }
 
-// ─────────────────────────────────────────────
-//  SERVICE CARD — original, untouched
-// ─────────────────────────────────────────────
 function ServiceCard({ s, idx }) {
   const [ref, v] = useReveal(0.1); const [hov, setHov] = useState(false); const delay = idx*0.13;
   return (
@@ -961,9 +920,6 @@ function ServiceCard({ s, idx }) {
   );
 }
 
-// ─────────────────────────────────────────────
-//  SECTION HEADING — original, untouched
-// ─────────────────────────────────────────────
 function SectionHeading({ pre, main, accent, sub }) {
   const [ref, v] = useReveal(0.2);
   return (
@@ -977,9 +933,6 @@ function SectionHeading({ pre, main, accent, sub }) {
   );
 }
 
-// ─────────────────────────────────────────────
-//  TESTIMONIAL AVATAR — original, untouched
-// ─────────────────────────────────────────────
 function RecAvatar({ rec }) {
   return (
     <div style={{ width:56, height:56, borderRadius:"50%", flexShrink:0, background:`${rec.color}22`, border:`2px solid ${rec.color}88`, display:"flex", alignItems:"center", justifyContent:"center", fontFamily:"var(--font-display)", fontSize:24, color:rec.color, letterSpacing:"0.04em", boxShadow:`0 0 16px ${rec.color}44`, animation:"rec-float 4s ease-in-out infinite", overflow:"hidden", position:"relative" }}>
@@ -989,9 +942,6 @@ function RecAvatar({ rec }) {
   );
 }
 
-// ─────────────────────────────────────────────
-//  TESTIMONIALS SECTION — original, untouched
-// ─────────────────────────────────────────────
 function TestimonialsSection() {
   const [active, setActive] = useState(0);
   const [animating, setAnimating] = useState(false);
@@ -1095,9 +1045,6 @@ function TestimonialsSection() {
   );
 }
 
-// ─────────────────────────────────────────────
-//  CERTIFICATE CARD — original, untouched
-// ─────────────────────────────────────────────
 function CertCard({ c, idx }) {
   const [ref, v] = useReveal(0.08); const [hov, setHov] = useState(false); const [zoom, setZoom] = useState(false);
   return (<>
@@ -1143,9 +1090,6 @@ function CertCard({ c, idx }) {
   </>);
 }
 
-// ─────────────────────────────────────────────
-//  CERTIFICATIONS SECTION — original, untouched
-// ─────────────────────────────────────────────
 function CertificationsSection() {
   const [ref, v] = useReveal(0.1);
   return (
@@ -1169,9 +1113,6 @@ function CertificationsSection() {
   );
 }
 
-// ─────────────────────────────────────────────
-//  RIPPLE BUTTON — original, untouched
-// ─────────────────────────────────────────────
 function RippleButton({ children, href, onClick, bgColor, textColor, borderColor, style={} }) {
   const [ripples, setRipples] = useState([]);
   const btnRef = useRef(null);
@@ -1189,9 +1130,6 @@ function RippleButton({ children, href, onClick, bgColor, textColor, borderColor
   return (<button ref={btnRef} data-hover style={commonStyle} onClick={e => { createRipple(e); onClick&&onClick(e); }} onMouseEnter={hEnt} onMouseLeave={hLv}>{rippleEl}{children}</button>);
 }
 
-// ─────────────────────────────────────────────
-//  CONTACT SECTION — original, untouched
-// ─────────────────────────────────────────────
 function ContactSection({ copied, onCopyEmail }) {
   const [ref, v] = useReveal(0.15);
   const floatingEmojis = [
@@ -1240,9 +1178,6 @@ function ContactSection({ copied, onCopyEmail }) {
   );
 }
 
-// ─────────────────────────────────────────────
-//  SCROLL INDICATOR — original, untouched
-// ─────────────────────────────────────────────
 function ScrollIndicator() {
   const letters = "SCROLL".split("");
   const particles = Array.from({ length:6 }, (_,i) => ({ angle:(i/6)*360, delay:i*0.28, size:2.5+Math.random()*2 }));
@@ -1266,16 +1201,12 @@ function ScrollIndicator() {
   );
 }
 
-// ─────────────────────────────────────────────
-//  NAV — responsive hamburger added, everything else original
-// ─────────────────────────────────────────────
 function Nav({ activeSection }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { isTablet } = useBreakpoint();
 
   useEffect(() => { const fn = () => setScrolled(window.scrollY>40); window.addEventListener("scroll",fn); return () => window.removeEventListener("scroll",fn); }, []);
-  // close drawer on scroll
   useEffect(() => { const fn = () => { if(menuOpen) setMenuOpen(false); }; window.addEventListener("scroll",fn,{passive:true}); return ()=>window.removeEventListener("scroll",fn); }, [menuOpen]);
 
   const links = ["home","about","services","projects","testimonials","certifications","contact"];
@@ -1292,25 +1223,21 @@ function Nav({ activeSection }) {
     <nav style={{ position:"fixed", top:0, left:0, right:0, zIndex:1000, display:"flex", alignItems:"center", justifyContent:"space-between", padding:"0 28px", height:70, background:scrolled||menuOpen?"rgba(5,8,16,0.96)":"transparent", backdropFilter:scrolled?"blur(20px)":"none", borderBottom:scrolled?"1px solid var(--border)":"none", transition:"all 0.3s" }}>
       <a href="#home" onClick={e=>{e.preventDefault();handleLink("home");}} style={{ fontFamily:"var(--font-display)", fontSize:26, color:"var(--accent)", zIndex:1100, flexShrink:0, letterSpacing:"0.06em" }}>Ahmad Asif<span style={{ color:"var(--text)" }}>.</span></a>
 
-      {/* Desktop pill nav */}
       <div className="nav-pill" style={{ position:"absolute", left:"50%", transform:"translateX(-50%)", display:"flex", alignItems:"center", gap:2, background:"rgba(12,18,35,0.88)", border:"1px solid rgba(255,255,255,0.09)", borderRadius:50, padding:"5px 6px", backdropFilter:"blur(16px)", boxShadow:"0 4px 28px rgba(0,0,0,0.5)" }}>
         {links.map(l => { const active = activeSection===l; return (<a key={l} href={`#${l}`} onClick={e=>{e.preventDefault();handleLink(l);}} data-hover style={{ padding:"7px 16px", borderRadius:50, fontSize:13, fontWeight:active?700:400, textTransform:"capitalize", color:active?"var(--bg)":"var(--muted)", background:active?"var(--accent)":"transparent", boxShadow:active?"0 0 14px rgba(0,229,255,0.45)":"none", transition:"all 0.22s", whiteSpace:"nowrap" }}>{l}</a>); })}
       </div>
 
-      {/* Desktop socials */}
       <div className="nav-socials" style={{ display:"flex", alignItems:"center", gap:6, zIndex:1100, flexShrink:0 }}>
         <a href="https://github.com/Ahmad-030" target="_blank" rel="noreferrer" data-hover style={socialStyle} onMouseEnter={onSocHover} onMouseLeave={onSocLeave}><GithubSvg /></a>
         <a href="https://www.linkedin.com/in/ahmadasif030/" target="_blank" rel="noreferrer" data-hover style={socialStyle} onMouseEnter={onSocHover} onMouseLeave={onSocLeave}><LinkedInSvg /></a>
         <a href="https://www.instagram.com/_ahmad.builds/" target="_blank" rel="noreferrer" data-hover style={socialStyle} onMouseEnter={onSocHover} onMouseLeave={onSocLeave}><InstaSvg /></a>
       </div>
 
-      {/* Hamburger — CSS shows it only on tablet/mobile */}
       <button className={`hamburger${menuOpen?" open":""}`} onClick={() => setMenuOpen(o=>!o)} aria-label="Toggle menu" style={{ display:"none" }}>
         <span/><span/><span/>
       </button>
     </nav>
 
-    {/* Full-screen mobile drawer */}
     <div className={`mobile-drawer${menuOpen?" open":""}`}>
       <button onClick={() => setMenuOpen(false)} style={{ position:"absolute", top:22, right:22, width:40, height:40, borderRadius:"50%", background:"rgba(255,255,255,0.06)", border:"1px solid rgba(255,255,255,0.12)", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", fontSize:20, color:"var(--muted)", zIndex:10 }}>✕</button>
       {links.map((l,i) => (
@@ -1328,9 +1255,6 @@ function Nav({ activeSection }) {
   </>);
 }
 
-// ─────────────────────────────────────────────
-//  PROJECTS SECTION — original, untouched
-// ─────────────────────────────────────────────
 function ProjectsSection({ onOpen }) {
   const [showAll, setShowAll] = useState(false);
   const [visibleCards, setVisibleCards] = useState(new Set([0, 1, 2, 3]));
@@ -1393,9 +1317,6 @@ function ProjectsSection({ onOpen }) {
   );
 }
 
-// ─────────────────────────────────────────────
-//  MAIN PORTFOLIO — layout wrapper gets responsive classes
-// ─────────────────────────────────────────────
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState("home");
   const [showSplash, setShowSplash] = useState(true);
@@ -1454,9 +1375,8 @@ export default function Portfolio() {
       <section id="home" style={{ minHeight:"100svh", display:"flex", alignItems:"center", padding:"0 8%", position:"relative", overflow:"hidden" }}>
         <div style={{ position:"absolute", top:"20%", left:"5%", width:500, height:500, borderRadius:"50%", background:"radial-gradient(circle,rgba(0,229,255,0.06) 0%,transparent 70%)", pointerEvents:"none" }} />
 
-        {/* Inner flex — gets responsive class */}
         <div className="hero-inner" style={{ display:"flex", alignItems:"center", width:"100%", gap:0, zIndex:1 }}>
-          {/* Hero text */}
+          {/* Hero text — order:1 on mobile (pushed below image via CSS) */}
           <div className="hero-text" style={{ flex:1, maxWidth:560, animation:"slide-up 1s ease forwards", zIndex:1 }}>
             <p style={{ color:"var(--muted)", fontSize:18, marginBottom:4 }}>Hi, I'm 👋</p>
             <h1 style={{ fontFamily:"var(--font-display)", fontSize:"clamp(56px,10vw,120px)", lineHeight:0.95, marginBottom:16, letterSpacing:"0.02em" }}>
@@ -1474,23 +1394,20 @@ export default function Portfolio() {
             </div>
           </div>
 
-          {/* Hero orbit */}
-          <div className="hero-orbit-wrap" style={{ flex:1, display:"flex", alignItems:"center", justifyContent:"center", position:"relative", minHeight:560, zIndex:1 }}>
-            {/* Inner orbit ring — hidden on mobile via CSS */}
+          {/* Hero orbit — order:-1 on mobile (CSS moves it above text), NO minHeight */}
+          <div className="hero-orbit-wrap" style={{ flex:1, display:"flex", alignItems:"center", justifyContent:"center", position:"relative", zIndex:1 }}>
             <div className="orbit-inner">
               <OrbitIcon img="/projects/aaa.png" color="#00e5ff" radius={195} duration={14} clockwise={true} startAngle={0} size={50} />
               <OrbitIcon img="/projects/firebase.png" color="#f97316" radius={195} duration={14} clockwise={true} startAngle={90} size={50} />
               <OrbitIcon img="/projects/java.png" color="#22c55e" radius={195} duration={14} clockwise={true} startAngle={180} size={50} />
               <OrbitIcon img="/projects/xml.png" color="#7c3aed" radius={195} duration={14} clockwise={true} startAngle={270} size={50} />
             </div>
-            {/* Outer orbit ring — hidden on tablet via CSS */}
             <div className="orbit-outer">
               <OrbitIcon img="/projects/mongo.png" color="#22c55e" radius={245} duration={20} clockwise={false} startAngle={45} size={46} />
               <OrbitIcon img="/projects/node.png" color="#00e5ff" radius={245} duration={20} clockwise={false} startAngle={135} size={46} />
               <OrbitIcon img="/projects/figma.png" color="#ec4899" radius={245} duration={20} clockwise={false} startAngle={225} size={46} />
               <OrbitIcon img="/projects/api.png" color="#f59e0b" radius={245} duration={20} clockwise={false} startAngle={315} size={46} />
             </div>
-            {/* Center photo */}
             <div style={{ position:"relative", zIndex:4 }}>
               <div className="hero-center-img" style={{ width:300, height:300, borderRadius:"50%", overflow:"hidden", animation:"glow-pulse 3s ease-in-out infinite, float 5s ease-in-out infinite", background:"var(--bg2)" }}>
                 <img src="/projects/image.png" alt="Ahmad Asif" style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center top" }} onError={e => { e.target.style.display="none"; const p=e.target.parentNode; p.style.display="flex"; p.style.alignItems="center"; p.style.justifyContent="center"; p.style.fontSize="90px"; p.innerHTML="👨‍💻"; }} />
