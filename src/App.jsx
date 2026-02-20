@@ -246,8 +246,7 @@ const SKILLS_GRID = [
 ];
 
 const PROJECTS = [
-
-   { title:"Ramadan Mubarak", tag:"Creative · Holiday", color:"#f5b942", emoji:"🌙",
+  { title:"Ramadan Mubarak", tag:"Creative · Holiday", color:"#f5b942", emoji:"🌙",
     preview:"/projects/ramadan-preview.png",
     images:[],
     github: "https://github.com/Ahmad-030/RamzanMubarak",
@@ -857,19 +856,21 @@ function ProjectModal({ project, onClose }) {
               </div>
             </div>
           ) : p.images.length > 0 ? (
-            <div style={{ position:"relative", borderRadius:14, overflow:"hidden", background:"rgba(0,0,0,0.5)", border:"1px solid rgba(255,255,255,0.07)" }}>
-              <div style={{ height:300, display:"flex", alignItems:"center", justifyContent:"center" }}>
-                <img src={p.images[imgIdx]} alt={`${p.title} screenshot`} style={{ maxWidth:"100%", maxHeight:"100%", objectFit:"contain" }}
-                  onError={e => { e.target.style.display="none"; e.target.parentNode.style.fontSize="70px"; e.target.parentNode.innerHTML=p.emoji; }} />
+            <div style={{ position:"relative", borderRadius:14, background:"rgba(0,0,0,0.5)", border:"1px solid rgba(255,255,255,0.07)", overflow:"visible" }}>
+              {/* Image frame — explicit height so img percentage resolves correctly */}
+              <div style={{ width:"100%", height:"min(340px, 42vw, 42vh)", minHeight:200, borderRadius:14, overflow:"hidden", background:"rgba(0,0,0,0.4)", display:"flex", alignItems:"center", justifyContent:"center", position:"relative" }}>
+                <img key={imgIdx} src={p.images[imgIdx]} alt={`${p.title} screenshot`}
+                  style={{ display:"block", maxWidth:"100%", maxHeight:"100%", width:"auto", height:"auto", objectFit:"contain", objectPosition:"center", borderRadius:10 }}
+                  onError={e => { e.target.style.display="none"; const par=e.target.parentNode; par.innerHTML=`<div style='font-size:70px;display:flex;align-items:center;justify-content:center;width:100%;height:100%'>${p.emoji}</div>`; }} />
+                {p.images.length > 1 && (<>
+                  <button onClick={() => setImgIdx(i => (i-1+p.images.length)%p.images.length)} data-hover
+                    style={{ position:"absolute", left:10, top:"50%", transform:"translateY(-50%)", width:34, height:34, borderRadius:"50%", background:"rgba(5,8,20,0.85)", border:"1px solid rgba(255,255,255,0.15)", cursor:"pointer", fontSize:18, color:"var(--text)", display:"flex", alignItems:"center", justifyContent:"center", zIndex:2 }}>‹</button>
+                  <button onClick={() => setImgIdx(i => (i+1)%p.images.length)} data-hover
+                    style={{ position:"absolute", right:10, top:"50%", transform:"translateY(-50%)", width:34, height:34, borderRadius:"50%", background:"rgba(5,8,20,0.85)", border:"1px solid rgba(255,255,255,0.15)", cursor:"pointer", fontSize:18, color:"var(--text)", display:"flex", alignItems:"center", justifyContent:"center", zIndex:2 }}>›</button>
+                </>)}
               </div>
-              {p.images.length > 1 && (<>
-                <button onClick={() => setImgIdx(i => (i-1+p.images.length)%p.images.length)} data-hover
-                  style={{ position:"absolute", left:10, top:"50%", transform:"translateY(-50%)", width:34, height:34, borderRadius:"50%", background:"rgba(5,8,20,0.85)", border:"1px solid rgba(255,255,255,0.15)", cursor:"pointer", fontSize:18, color:"var(--text)", display:"flex", alignItems:"center", justifyContent:"center" }}>‹</button>
-                <button onClick={() => setImgIdx(i => (i+1)%p.images.length)} data-hover
-                  style={{ position:"absolute", right:10, top:"50%", transform:"translateY(-50%)", width:34, height:34, borderRadius:"50%", background:"rgba(5,8,20,0.85)", border:"1px solid rgba(255,255,255,0.15)", cursor:"pointer", fontSize:18, color:"var(--text)", display:"flex", alignItems:"center", justifyContent:"center" }}>›</button>
-              </>)}
               {p.images.length > 1 && (
-                <div style={{ position:"absolute", bottom:10, left:"50%", transform:"translateX(-50%)", display:"flex", gap:6 }}>
+                <div style={{ display:"flex", justifyContent:"center", gap:6, paddingTop:10, paddingBottom:2 }}>
                   {p.images.map((_,i) => (<button key={i} onClick={() => setImgIdx(i)} data-hover style={{ width:i===imgIdx?22:7, height:7, borderRadius:4, background:i===imgIdx?p.color:"rgba(255,255,255,0.25)", border:"none", cursor:"pointer", transition:"all 0.3s", padding:0 }} />))}
                 </div>
               )}
@@ -880,8 +881,8 @@ function ProjectModal({ project, onClose }) {
           {p.images.length > 1 && (
             <div style={{ display:"flex", gap:8, overflowX:"auto", paddingBottom:4 }}>
               {p.images.map((img, i) => (
-                <div key={i} onClick={() => setImgIdx(i)} data-hover style={{ flexShrink:0, width:80, height:58, borderRadius:10, overflow:"hidden", border:`2px solid ${i===imgIdx?p.color:"transparent"}`, cursor:"pointer", transition:"border-color 0.2s", background:"rgba(0,0,0,0.4)" }}>
-                  <img src={img} alt="" style={{ width:"100%", height:"100%", objectFit:"cover" }} onError={e => { e.target.parentNode.innerHTML=`<div style='width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:22px'>${p.emoji}</div>`; }} />
+                <div key={i} onClick={() => setImgIdx(i)} data-hover style={{ flexShrink:0, width:80, height:58, borderRadius:10, overflow:"hidden", border:`2px solid ${i===imgIdx?p.color:"transparent"}`, cursor:"pointer", transition:"border-color 0.2s", background:"rgba(0,0,0,0.4)", display:"flex", alignItems:"center", justifyContent:"center" }}>
+                  <img src={img} alt="" style={{ width:"100%", height:"100%", objectFit:"contain" }} onError={e => { e.target.parentNode.innerHTML=`<div style='width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:22px'>${p.emoji}</div>`; }} />
                 </div>
               ))}
             </div>
