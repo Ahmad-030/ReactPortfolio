@@ -254,34 +254,66 @@ const PROJECTS = [
     desc:"An animated Ramadan greeting page with cinematic moon reveal, floating SVG lanterns, procedural star field, and golden title sequence.",
     longDesc:"A fully self-contained HTML page built to share Ramadan greetings in style. Features a cinematic zoom-in camera effect, procedurally generated star field with gold accent stars, animated crescent moon with pulsing halo, hand-crafted SVG lanterns with realistic drop-and-float physics, rising gold particles, and a staggered letter-wave text reveal.\n\nBuilt with pure HTML, CSS animations, and vanilla JavaScript — no frameworks, no dependencies. Includes ambient audio support and an elegant golden signature sign-off.\n\nAll animations are orchestrated on a timeline: stars → moon → lanterns (spring-drop) → golden 'Ramadan Mubarak' shimmer title → ornamental dividers → subtext. The entire experience runs at 60fps with GPU-accelerated CSS transforms and zero layout jank.",
     tech:["HTML5","CSS Animations","SVG","Vanilla JS","Web Audio API","Canvas"] },
-  { 
-    title:"Routelink", tag:"Ride Sharing", color:"#00e5ff", emoji:"🗺️",
-    preview:"/projects/RouteLink/logo.png",
-    images:["/projects/RouteLink/img1.jpg","/projects/RouteLink/img.jpg"],
-    github: null,
-    desc:"Ride-sharing app where drivers publish routes and passengers find them on a map, negotiate fares, and chat directly.",
-    longDesc:"Routelink is a comprehensive Flutter-based ride-sharing application that connects drivers and passengers through an intelligent route-matching platform, enabling direct fare negotiation and seamless communication for convenient carpooling experiences.\n\nUsers can publish or browse routes on an interactive map, chat directly with potential ride partners, negotiate fares in real-time, and track rides with live location updates. The app also features user profiles with ratings, route history, and safety features including emergency contacts and ride sharing capabilities.\n\nBuilt with Flutter, Firebase, Google Maps API, and Provider state management. Clean Material 3 UI, smooth animations, and responsive design — delivering an intuitive, secure, and community-driven transportation solution.",
-    tech:["Flutter","Firebase","Google Maps","Firestore","Provider","Push Notifications"] 
-  },
-    {
-  title: "DoRise",
-  tag: "Productivity",
-  color: "#667eea",
-  emoji: "✅",
-  preview: "/projects/DoRise/logo.png",
-  images: ["/projects/DoRise/logo.png","/projects/DoRise/img2.jpg", "/projects/DoRise/img1.jpg"],
+  {
+  title: "Gravix",
+  tag: "Game · Platformer",
+  color: "#00FFEE",
+  emoji: "🎮",
+  preview: "/projects/gravix/a.png",
+  images: ["/projects/gravix/a.png", ],
   github: null,
-  desc: "Gamified task manager where users earn XP, build streaks, and unlock achievements by completing daily tasks.",
-  longDesc: "DoRise is a Flutter-based productivity app that transforms everyday task management into an engaging, gamified experience — helping users build lasting habits through XP rewards, streaks, and achievement milestones.\n\nUsers can create tasks with priority levels, due dates, and daily/weekly recurrence. Each completed task earns XP toward leveling up, maintains streak counters, and can trigger achievement unlocks shown via in-app snackbars. A statistics screen with bar charts visualizes weekly activity, and an achievements screen tracks progress across five milestone badges.\n\nBuilt with Flutter, Hive for local storage, GetX for state management, and fl_chart for analytics. Clean Material 3 UI with light/dark mode, smooth animations, and a fully offline, permission-free experience.",
-  tech: ["Flutter", "Hive", "GetX", "fl_chart", "Google Fonts", "SharedPreferences"]
+  desc: "Precision gravity-flip platformer with 60 hand-crafted levels across 6 worlds, built entirely in pure Flutter with no game engine.",
+  longDesc:
+    "Gravix is a skill-based precision platformer where you tap to flip gravity, dodge razor-sharp spikes, collect coins, and escape through a glowing vault door — all while racing the clock.\n\n60 hand-crafted levels span 6 distinct worlds with escalating difficulty: The Vault, The Abyss, The Singularity, The Matrix, The Inferno, and The Void. Each world introduces tighter platforms, faster physics, and more punishing spike layouts.\n\nBuilt entirely with Flutter's CustomPainter and Canvas API — no game engine. Features a custom physics engine, particle system, combo multipliers, per-level best-time tracking, star ratings, death counters, animated world-transition banners, and haptic feedback throughout.",
+  tech: [
+    "Flutter",
+    "Dart",
+    "CustomPainter",
+    "Canvas API",
+    "Custom Physics",
+    "SharedPreferences",
+    "Ticker / AnimationController",
+    "HapticFeedback",
+  ],
 },
-  { title:"Sajdah", tag:"Islamic App", color:"#f50b0b", emoji:"🕌",
-    preview:"/projects/Sajdah/aaa.png",
-    images:["/projects/Sajdah/aaa.png"],
-    github: "https://github.com/Ahmad-030/Sajdah",
-    desc:"Modern Islamic prayer companion with GPS prayer times, live Qibla compass, and smart notifications.",
-    longDesc:"Sajdah is a modern Islamic prayer companion app built with Flutter to help Muslims stay connected to their spiritual routine. Experience intelligent location detection, accurate prayer times powered by the Adhan package, and smart notifications that work seamlessly in the background.\n\nTrack live countdowns to each prayer, find the Qibla direction with a real-time compass, and customize reminders to fit your schedule. With support for multiple calculation methods, dark/light themes, and a sleek Material Design interface — Sajdah makes maintaining your prayer schedule effortless and beautiful.",
-    tech:["Flutter","GPS","Adhan Package","Compass API","Firebase","Background Services"] },
+    {
+    title: "LetterLoo",
+    tag: "Education · Kids",
+    color: "#ff0000",
+    emoji: "✏️",
+    preview: "/projects/Letterloo/a.png",
+    images: ["/projects/Letterloo/b.png"],
+    github: null,
+    desc: "Interactive ABC learning app for kids featuring letter tracing, matching games, sorting challenges, and a storybook.",
+    longDesc: "LetterLoo is an interactive educational application designed to help children aged 3–6 learn the alphabet through engaging games and activities. With a colorful, animated interface and a child-friendly design, it makes early learning fun, accessible, and effective.\n\nThe app features four core learning activities: guided letter tracing with real-time progress tracking, a letter-to-object matching game with 20 progressive levels, an alphabetical sorting challenge using drag-and-drop, and an illustrated ABC storybook. Progress is saved automatically so kids can continue right where they left off.",
+    tech: ["Flutter", "SharedPreferences", "CustomPainter", "audioplayers", "Animations"]
+  },
+  {
+    title: "Smart Invoice Pro",
+    tag: "Invoice · Productivity",
+    color: "#f73a63",
+    emoji: "🧾",
+    preview: "/projects/smartinvoice/a.jpeg",
+    images: ["/projects/smartinvoice/a.jpeg","/projects/smartinvoice/b.jpeg",],
+    github: "https://github.com/Ahmad-030/SmartInvoiceProApp",
+    desc: "Professional invoice management app with PDF generation, WhatsApp integration, and real-time analytics dashboard.",
+    longDesc: "Smart Invoice Pro is a full-featured invoice and billing management app built for freelancers and small businesses. Create professional invoices in seconds, auto-send them via WhatsApp, and track payments — all from one clean dashboard.\n\nFeatures include a revenue analytics dashboard with monthly breakdowns, PDF invoice generation and sharing, unpaid bill tracking, n8n webhook integration for automation, dark/light theme support, and persistent local storage. Built with Flutter Riverpod for scalable state management.",
+    tech: ["Flutter", "Riverpod", "PDF Generation", "WhatsApp API", "n8n Webhook", "SharedPreferences", "fl_chart"]
+  },
+  {
+    title: "EduTrack",
+    tag: "Education · Management",
+    color: "#eb2825",
+    emoji: "🏫",
+    preview: "/projects/edutrack/a.png",
+    images: ["/projects/edutrack/a.png","/projects/edutrack/b.png", "/projects/edutrack/c.png"],
+    github: null,
+    desc: "Smart school management app for admins and teachers — students, attendance, fees, and analytics in one place.",
+    longDesc: "EduTrack is a comprehensive school management platform built for admins and teachers. Admins can manage teachers, classes, and students, while teachers get their own dedicated dashboard to mark attendance and manage fees for their assigned class.\n\nFeatures include role-based authentication (Admin & Teacher), real-time Firebase Firestore sync, daily attendance marking with full history, monthly fee tracking with bulk actions, PDF-less invoicing via WhatsApp, an animated onboarding flow, and a polished splash screen. All data is stored securely in the cloud and synced in real-time.",
+    tech: ["Flutter", "Firebase Auth", "Cloud Firestore", "SharedPreferences", "WebView", "Riverpod-free"]
+  },
+
+
   { title:"BloodDonation", tag:"Social Impact", color:"#02751e", emoji:"🩸",
     preview:"/projects/BloodDonation/bd1.png",
     images:["/projects/BloodDonation/bd1.png","/projects/BloodDonation/bd2.png","/projects/BloodDonation/bd3.png"],
@@ -289,6 +321,7 @@ const PROJECTS = [
     desc:"Connects blood donors and receivers through real-time chat, smart filters, and emergency hospital locator.",
     longDesc:"The Blood Donation App is a comprehensive Flutter-based platform that bridges the gap between donors and receivers through real-time communication, smart search filters, and a location-based hospital locator.\n\nUsers can register as donors or receivers, post and manage blood requests, chat directly, and locate nearby hospitals with live distance and contact information.\n\nBuilt with Flutter, Firebase, Provider, and OpenStreetMap. Clean Material 3 UI, smooth animations, and responsive design — ensuring an intuitive and impactful user experience that promotes life-saving blood donations.",
     tech:["Flutter","Firebase","OpenStreetMap","Real-time Chat","Provider"] },
+
   { title:"Seed Disease", tag:"AI · AgriTech", color:"#4522c5", emoji:"🌱",
     preview:"/projects/seeddisease/green.png",
     images:["/projects/seeddisease/geen2.png","/projects/seeddisease/green.png"],
@@ -296,76 +329,126 @@ const PROJECTS = [
     desc:"AI-powered crop health app helping farmers detect diseases and weeds instantly using on-device TensorFlow Lite.",
     longDesc:"Seed Disease is a comprehensive Flutter-based mobile application that empowers farmers to detect crop diseases and weeds in real-time, providing actionable treatment recommendations and secure cloud storage for scan history.\n\nUsers can capture images via camera or gallery, receive instant AI-powered diagnoses, access fungicide/herbicide guidance, and view preventive measures. Supports bilingual interaction (English / اردو) and offline functionality for rural areas.\n\nBuilt with Flutter, TensorFlow Lite, Firebase, and REST APIs. Clean Material 3 UI, smooth animations, and responsive design — bridging cutting-edge AI technology with grassroots agriculture.",
     tech:["Flutter","TensorFlow Lite","Firebase","ML","Offline Mode","Bilingual"] },
-  { title:"Spin Wheel", tag:"Entertainment", color:"#e8f80b", emoji:"🎰",
-    preview:"/projects/SpinWheel/aaa.png",
-    images:["/projects/SpinWheel/aaa.png"],
-    github: "https://github.com/Ahmad-030/SpinWheel",
-    desc:"Interactive decision-making app where users create personalized spin reels with custom text or images.",
-    longDesc:"Spin Wheel is a vibrant and interactive Flutter app that transforms decision-making into a fun and visually engaging experience. Users can create their own spin reels by adding custom text or image options, displayed in a sleek animated list.\n\nA lively Lottie animation sets the tone, with a built-in Dark/Light mode toggle. The winning result is revealed with elegant fade and bounce animations, and a 'Spin Again' option automatically excludes previous results for fair play.\n\nDesigned with clean architecture, responsive layouts, and glassmorphism-inspired visuals — showcasing mastery in Flutter animations, UI design, and theme management.",
-    tech:["Flutter","Lottie","Animations","Dark/Light Themes","Glassmorphism"] },
+{
+  title: "DoRise",
+  tag: "Productivity",
+  color: "#fbff00",
+  emoji: "✅",
+  preview: "/projects/DoRise/img2.jpg",
+  images: ["/projects/DoRise/logo.png","/projects/DoRise/img2.jpg", "/projects/DoRise/img1.jpg"],
+  github: null,
+  desc: "Gamified task manager where users earn XP, build streaks, and unlock achievements by completing daily tasks.",
+  longDesc: "DoRise is a Flutter-based productivity app that transforms everyday task management into an engaging, gamified experience — helping users build lasting habits through XP rewards, streaks, and achievement milestones.\n\nUsers can create tasks with priority levels, due dates, and daily/weekly recurrence. Each completed task earns XP toward leveling up, maintains streak counters, and can trigger achievement unlocks shown via in-app snackbars. A statistics screen with bar charts visualizes weekly activity, and an achievements screen tracks progress across five milestone badges.\n\nBuilt with Flutter, Hive for local storage, GetX for state management, and fl_chart for analytics. Clean Material 3 UI with light/dark mode, smooth animations, and a fully offline, permission-free experience.",
+  tech: ["Flutter", "Hive", "GetX", "fl_chart", "Google Fonts", "SharedPreferences"]
+},
+
   { title:"AlignNix", tag:"Game", color:"#b910ab", emoji:"🧩",
     preview:"/projects/AlignNix/aa.png",
     images:["/projects/AlignNix/aa.png"],
     github: null,
     desc:"Modern reimagining of classic Tetris with smooth controls, elegant UI, and fluid animations.",
     longDesc:"Align Nix is a modern reimagining of the timeless Tetris puzzle game — redesigned for today's players using Flutter. Experience the perfect blend of nostalgia and innovation with smooth controls, elegant UI, and fluid animations.\n\nAlign colorful blocks, clear rows, and climb the leaderboard as you test your reflexes and spatial skills. Whether you're chasing high scores or just relaxing with quick rounds, Align Nix delivers endless fun and a sleek, modern feel — blending nostalgia with innovation.",
-    tech:["Flutter","Game Logic","Animations","Leaderboard","Score Tracking"] },
-  { title:"TextSnap", tag:"OCR · Productivity", color:"#f97316", emoji:"📷",
+    tech:["Flutter","Game Logic","Animations","Leaderboard","Score Tracking"]
+   },
+        { 
+    title:"Routelink", tag:"Ride Sharing", color:"#00e5ff", emoji:"🗺️",
+    preview:"/projects/RouteLink/img1.jpg",
+    images:["/projects/RouteLink/img1.jpg","/projects/RouteLink/img.jpg"],
+    github: null,
+    desc:"Ride-sharing app where drivers publish routes and passengers find them on a map, negotiate fares, and chat directly.",
+    longDesc:"Routelink is a comprehensive Flutter-based ride-sharing application that connects drivers and passengers through an intelligent route-matching platform, enabling direct fare negotiation and seamless communication for convenient carpooling experiences.\n\nUsers can publish or browse routes on an interactive map, chat directly with potential ride partners, negotiate fares in real-time, and track rides with live location updates. The app also features user profiles with ratings, route history, and safety features including emergency contacts and ride sharing capabilities.\n\nBuilt with Flutter, Firebase, Google Maps API, and Provider state management. Clean Material 3 UI, smooth animations, and responsive design — delivering an intuitive, secure, and community-driven transportation solution.",
+    tech:["Flutter","Firebase","Google Maps","Firestore","Provider","Push Notifications"] 
+  }, 
+  { 
+    title:"Sajdah", tag:"Islamic App", color:"#f50b0b", emoji:"🕌",
+    preview:"/projects/Sajdah/aaa.png",
+    images:["/projects/Sajdah/aaa.png"],
+    github: "https://github.com/Ahmad-030/Sajdah",
+    desc:"Modern Islamic prayer companion with GPS prayer times, live Qibla compass, and smart notifications.",
+    longDesc:"Sajdah is a modern Islamic prayer companion app built with Flutter to help Muslims stay connected to their spiritual routine. Experience intelligent location detection, accurate prayer times powered by the Adhan package, and smart notifications that work seamlessly in the background.\n\nTrack live countdowns to each prayer, find the Qibla direction with a real-time compass, and customize reminders to fit your schedule. With support for multiple calculation methods, dark/light themes, and a sleek Material Design interface — Sajdah makes maintaining your prayer schedule effortless and beautiful.",
+    tech:["Flutter","GPS","Adhan Package","Compass API","Firebase","Background Services"] 
+  },
+    {
+      title:"Spin Wheel", tag:"Entertainment", color:"#e8f80b", emoji:"🎰",
+    preview:"/projects/SpinWheel/aaa.png",
+    images:["/projects/SpinWheel/aaa.png"],
+    github: "https://github.com/Ahmad-030/SpinWheel",
+    desc:"Interactive decision-making app where users create personalized spin reels with custom text or images.",
+    longDesc:"Spin Wheel is a vibrant and interactive Flutter app that transforms decision-making into a fun and visually engaging experience. Users can create their own spin reels by adding custom text or image options, displayed in a sleek animated list.\n\nA lively Lottie animation sets the tone, with a built-in Dark/Light mode toggle. The winning result is revealed with elegant fade and bounce animations, and a 'Spin Again' option automatically excludes previous results for fair play.\n\nDesigned with clean architecture, responsive layouts, and glassmorphism-inspired visuals — showcasing mastery in Flutter animations, UI design, and theme management.",
+    tech:["Flutter","Lottie","Animations","Dark/Light Themes","Glassmorphism"] 
+  },
+  { 
+    title:"TextSnap", tag:"OCR · Productivity", color:"#f97316", emoji:"📷",
     preview:"/projects/Textsnap/textsnap.jpg",
     images:["/projects/Textsnap/textsnap.jpg","/projects/Textsnap/snap.png"],
     github: null,
     desc:"Smart OCR app that instantly extracts editable text from images, documents, and screenshots.",
     longDesc:"TextSnap is a smart OCR (Optical Character Recognition) app that lets you instantly extract text from images, documents, and screenshots. With a clean interface and powerful recognition engine, it converts printed or handwritten text into editable, shareable, and searchable digital content.\n\nWhether you're scanning notes, capturing signboards, or digitizing documents, TextSnap makes text extraction fast, accurate, and effortless. Multi-language support, high recognition accuracy, and copy/share functionality.",
-    tech:["Flutter","ML Kit","OCR","Multi-language","Camera & Gallery"] },
-  { title:"TechNest", tag:"E-Commerce", color:"#d40606", emoji:"💻",
+    tech:["Flutter","ML Kit","OCR","Multi-language","Camera & Gallery"] 
+  },
+    {
+       title:"TechNest", tag:"E-Commerce", color:"#d40606", emoji:"💻",
     preview:"/projects/Technest/tech.jpeg",
     images:["/projects/Technest/tech.jpeg","/projects/Technest/techa.jpeg","/projects/Technest/aab.jpeg"],
     github: null,
     desc:"E-commerce app for computer peripherals with sleek UI, product catalog, and secure checkout.",
     longDesc:"TechNest is an e-commerce app designed for computer enthusiasts, offering a wide range of peripherals and accessories with a seamless shopping experience.\n\nAdvanced search and filter options, wishlist, shopping cart, and secure checkout. Order tracking to ensure a smooth and reliable tech shopping experience.\n\nBuilt with Flutter and Node.js + MongoDB backend.",
-    tech:["Flutter","Node.js","MongoDB","Payments","REST APIs","Search & Filter"] },
+    tech:["Flutter","Node.js","MongoDB","Payments","REST APIs","Search & Filter"] 
+  },
+
   { title:"Rao Jewellery", tag:"E-Commerce", color:"#d97706", emoji:"💍",
     preview:"/projects/RAO/1.jpeg",
     images:["/projects/RAO/1.jpeg","/projects/RAO/2.jpeg","/projects/RAO/3.jpeg","/projects/RAO/4.jpeg"],
     github: null,
     desc:"Luxury jewelry shopping app showcasing gold, silver, and diamond collections with elegant UI.",
     longDesc:"Rao Jewelers is a dedicated jewelry e-commerce app designed to provide customers with a luxurious yet convenient shopping experience. The app features an extensive collection of gold, silver, diamond, and custom-designed jewelry, beautifully showcased with high-quality images and detailed descriptions.\n\nUsers can easily browse by category, apply filters for style or price, add favorites to their wishlist, and complete purchases with secure payment gateways, order tracking, and personalized recommendations.",
-    tech:["Flutter","Firebase","Secure Payments","Wishlist","Order Tracking","UI/UX"] },
-  { title:"Food Delivery", tag:"Food & Lifestyle", color:"#f43f5e", emoji:"🍕",
+    tech:["Flutter","Firebase","Secure Payments","Wishlist","Order Tracking","UI/UX"] 
+  },
+  { 
+    title:"Food Delivery", tag:"Food & Lifestyle", color:"#f43f5e", emoji:"🍕",
     preview:"/projects/food/1.jpeg",
     images:["/projects/food/1.jpeg","/projects/food/2.jpeg","/projects/food/3.jpeg"],
     github: "https://github.com/Ahmad-030/fooddeliveryapp",
     desc:"Seamless food ordering and delivery app with modern UI and real-time order tracking.",
     longDesc:"A Flutter-based mobile application designed for seamless food ordering and delivery. The app includes a modern UI/UX, restaurant catalog with detailed food items, cart and checkout flow with delivery fee calculation, real-time order tracking screen, and a polished user profile section.\n\nWhether you're craving pizza, sushi, or something special, the app offers an easy-to-use platform for fast and efficient food delivery with a focus on seamless ordering and personalized experiences.\n\nBuilt with Flutter and Firebase.",
-    tech:["Flutter","Firebase","Real-time Tracking","Maps","Cart & Checkout"] },
-  { title:"Smart Vision", tag:"AI · Accessibility", color:"#ff0000", emoji:"👁️",
+    tech:["Flutter","Firebase","Real-time Tracking","Maps","Cart & Checkout"] 
+  },
+  { 
+    title:"Smart Vision", tag:"AI · Accessibility", color:"#ff0000", emoji:"👁️",
     preview:"/projects/SmartVision/11.jpg",
     images:["/projects/SmartVision/11.jpg"],
     github: null,
     desc:"Visual intelligence app combining voice commands, object detection, and currency recognition via Gemini AI.",
     longDesc:"Smart Vision is a cutting-edge visual intelligence tool that combines voice commands, object detection, and currency recognition using Gemini AI. It allows users to capture images and receive instant insights about objects, currencies, and more.\n\nDesigned for accessibility — empowering visually impaired users with voice-guided interactions. A Flutter-powered app that puts AI-driven visual intelligence at your fingertips.",
-    tech:["Flutter","Gemini AI","Voice Commands","Object Detection","Currency Recognition"] },
-  { title:"My Notes", tag:"Full-Stack", color:"#8400ff", emoji:"📝",
+    tech:["Flutter","Gemini AI","Voice Commands","Object Detection","Currency Recognition"] 
+  },
+  { 
+    title:"My Notes", tag:"Full-Stack", color:"#8400ff", emoji:"📝",
     preview:"/projects/notes/1.jpg",
     images:["/projects/notes/1.jpg"],
     github: "https://github.com/Ahmad-030/notepadapp",
     desc:"Notes app with MongoDB backend for secure cloud storage, offline support, and seamless sync.",
     longDesc:"The Notes App is a simple, intuitive, and powerful tool for organizing and managing your personal notes. Built with Flutter and using MongoDB as the backend, the app ensures seamless synchronization of your notes across devices.\n\nUsers can create, edit, and delete notes with ease, featuring a minimalist interface designed for efficient note-taking. Integrates custom database handling, ensuring secure and reliable storage. Offline support with automatic sync when connected to the internet.",
-    tech:["Flutter","Node.js","MongoDB","REST APIs","Offline Sync"] },
-  { title:"VoiceWave", tag:"AI · Voice", color:"#ec4899", emoji:"🎙️",
+    tech:["Flutter","Node.js","MongoDB","REST APIs","Offline Sync"] 
+  },
+  { 
+    title:"VoiceWave", tag:"AI · Voice", color:"#ec4899", emoji:"🎙️",
     preview:"/projects/voicewave/xyz.jpg",
     images:["/projects/voicewave/xyz.jpg"],
     github: null,
     desc:"Voice-to-text app with audio recording, playback, and AI transcription via AssemblyAI.",
     longDesc:"The Voice-to-Text App is a modern, user-friendly tool designed for recording, managing, and transcribing audio seamlessly. Built with Flutter and powered by the AssemblyAI API, the app transforms voice recordings into accurate text while maintaining an intuitive flow.\n\nUsers can record audio with custom titles, play back saved files, and generate instant transcriptions with one click. Featuring JSON-based local persistence for secure offline storage of recordings and titles. Clean design and smooth navigation deliver a polished, accessible speech recognition experience.",
-    tech:["Flutter","AssemblyAI","Audio Recording","JSON Storage","Playback"] },
-  { title:"NovelNook", tag:"E-Commerce", color:"#e90e0e", emoji:"📚",
+    tech:["Flutter","AssemblyAI","Audio Recording","JSON Storage","Playback"]
+   },
+  { 
+    title:"NovelNook", tag:"E-Commerce", color:"#e90e0e", emoji:"📚",
     preview:"/projects/novelnook/front1.png",
     images:["/projects/novelnook/front1.png","/projects/novelnook/novelnook1.png"],
     github: null,
     desc:"Modern mobile bookstore for browsing and purchasing novels with a smooth shopping experience.",
     longDesc:"NovelNook is a modern mobile bookstore app that allows users to explore a wide range of novels, add favorites to their wishlist, and seamlessly purchase books through a simple cart and checkout system.\n\nIntuitive design, smooth navigation, book catalog with detailed info, search and filtering, wishlist management, shopping cart, and secure checkout — combining an enjoyable reading and shopping experience.",
-    tech:["Flutter","Firebase","Search & Filter","Wishlist","Cart","Checkout"] },
+    tech:["Flutter","Firebase","Search & Filter","Wishlist","Cart","Checkout"]
+   },
   { title:"My Tasks", tag:"Productivity", color:"#14b8a6", emoji:"✅",
     preview:"/projects/Mytasks/aa.png",
     images:["/projects/Mytasks/aa.png"],
@@ -1312,7 +1395,7 @@ function ProjectsSection({ onOpen }) {
           <div style={{ position:"absolute", inset:0, background:"linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.06) 50%,transparent 60%)", borderRadius:50, pointerEvents:"none" }} />
           {showAll ? (<><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"/></svg>Show Less</>) : (<><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>View All {hiddenCount} More Projects<span style={{ background:"rgba(0,229,255,0.2)", color:"var(--accent)", borderRadius:50, padding:"2px 8px", fontSize:12, fontWeight:800, minWidth:24, textAlign:"center" }}>{hiddenCount}</span></>)}
         </button>
-        {!showAll && <p style={{ color:"var(--muted)", fontSize:12, marginTop:4, opacity:0.7 }}>Including Ramadan Mubarak, Rao Jewellery, Food Delivery &amp; more ✦</p>}
+        {!showAll && <p style={{ color:"var(--muted)", fontSize:12, marginTop:4, opacity:0.7 }}>Including RouteLink, Rao Jewellery, Food Delivery &amp; more ✦</p>}
       </div>
     </section>
   );
