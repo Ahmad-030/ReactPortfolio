@@ -809,14 +809,20 @@ function AboutRight() {
         </div>
       </div>
       <div className="about-actions" ref={btnRef} style={{ display:"flex", gap:14, flexWrap:"wrap", opacity:btnV?1:0, transform:btnV?"translateY(0)":"translateY(20px)", transition:"all 0.6s ease 0.35s" }}>
-        <a href="#contact" data-hover style={{ display:"inline-flex", alignItems:"center", gap:8, background:"linear-gradient(135deg,var(--accent),#0099bb)", color:"var(--bg)", padding:"12px 24px", borderRadius:50, fontWeight:700, fontSize:14, boxShadow:"0 6px 24px rgba(0,229,255,0.35)" }}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
-          Get In Touch
-        </a>
-        <a href="#projects" data-hover style={{ display:"inline-flex", alignItems:"center", gap:8, background:"rgba(0,229,255,0.07)", color:"var(--accent)", padding:"12px 24px", borderRadius:50, fontWeight:700, fontSize:14, border:"1px solid rgba(0,229,255,0.4)" }}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-          View Projects
-        </a>
+        <a href="#contact" data-hover
+  style={{ display:"inline-flex", alignItems:"center", gap:8, background:"linear-gradient(135deg,var(--accent),#0099bb)", color:"var(--bg)", padding:"12px 24px", borderRadius:50, fontWeight:700, fontSize:14, boxShadow:"0 6px 24px rgba(0,229,255,0.35)", transition:"transform 0.2s ease, box-shadow 0.2s ease" }}
+  onMouseEnter={e => { e.currentTarget.style.transform="translateY(-3px) scale(1.05)"; e.currentTarget.style.boxShadow="0 14px 40px rgba(0,229,255,0.55)"; }}
+  onMouseLeave={e => { e.currentTarget.style.transform="translateY(0) scale(1)"; e.currentTarget.style.boxShadow="0 6px 24px rgba(0,229,255,0.35)"; }}>
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+  Get In Touch
+</a>
+<a href="#projects" data-hover
+  style={{ display:"inline-flex", alignItems:"center", gap:8, background:"rgba(0,229,255,0.07)", color:"var(--accent)", padding:"12px 24px", borderRadius:50, fontWeight:700, fontSize:14, border:"1px solid rgba(0,229,255,0.4)", transition:"transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease" }}
+  onMouseEnter={e => { e.currentTarget.style.transform="translateY(-3px) scale(1.05)"; e.currentTarget.style.background="rgba(0,229,255,0.18)"; e.currentTarget.style.boxShadow="0 10px 32px rgba(0,229,255,0.3)"; }}
+  onMouseLeave={e => { e.currentTarget.style.transform="translateY(0) scale(1)"; e.currentTarget.style.background="rgba(0,229,255,0.07)"; e.currentTarget.style.boxShadow="none"; }}>
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+  View Projects
+</a>
       </div>
     </div>
   );
@@ -1473,9 +1479,15 @@ export default function Portfolio() {
               Passionate <strong style={{ color:"var(--text)" }}>Full-Stack Developer</strong> specializing in <strong style={{ color:"var(--accent)" }}>Flutter & Dart</strong>, Node.js, MongoDB, Firebase, and AI integration.
             </p>
             <div className="hero-ctas" style={{ display:"flex", gap:16, flexWrap:"wrap", marginBottom:40 }}>
-              <a href="#projects" data-hover style={{ display:"inline-flex", alignItems:"center", gap:8, background:"linear-gradient(135deg,var(--accent),#7c3aed)", color:"var(--bg)", padding:"14px 28px", borderRadius:50, fontWeight:700, fontSize:15, boxShadow:"0 8px 32px rgba(0,229,255,0.3)" }}>View Projects →</a>
-              <a href="#contact" data-hover style={{ display:"inline-flex", alignItems:"center", background:"transparent", color:"var(--text)", padding:"14px 28px", borderRadius:50, fontWeight:600, fontSize:15, border:"1px solid var(--border)" }}>Hire Me</a>
-            </div>
+             <a href="#projects" data-hover
+  style={{ display:"inline-flex", alignItems:"center", gap:8, background:"linear-gradient(135deg,var(--accent),#7c3aed)", color:"var(--bg)", padding:"14px 28px", borderRadius:50, fontWeight:700, fontSize:15, boxShadow:"0 8px 32px rgba(0,229,255,0.3)", transition:"transform 0.2s ease, box-shadow 0.2s ease" }}
+  onMouseEnter={e => { e.currentTarget.style.transform="translateY(-3px) scale(1.04)"; e.currentTarget.style.boxShadow="0 16px 48px rgba(0,229,255,0.55)"; }}
+  onMouseLeave={e => { e.currentTarget.style.transform="translateY(0) scale(1)"; e.currentTarget.style.boxShadow="0 8px 32px rgba(0,229,255,0.3)"; }}>View Projects →</a>
+<a href="#contact" data-hover
+  style={{ display:"inline-flex", alignItems:"center", background:"transparent", color:"var(--text)", padding:"14px 28px", borderRadius:50, fontWeight:600, fontSize:15, border:"1px solid var(--border)", transition:"transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease" }}
+  onMouseEnter={e => { e.currentTarget.style.transform="translateY(-3px) scale(1.04)"; e.currentTarget.style.borderColor="rgba(0,229,255,0.6)"; e.currentTarget.style.color="var(--accent)"; e.currentTarget.style.boxShadow="0 8px 24px rgba(0,229,255,0.2)"; }}
+  onMouseLeave={e => { e.currentTarget.style.transform="translateY(0) scale(1)"; e.currentTarget.style.borderColor="var(--border)"; e.currentTarget.style.color="var(--text)"; e.currentTarget.style.boxShadow="none"; }}>Hire Me</a>
+   </div>
           </div>
 
           {/* Hero orbit — order:-1 on mobile (CSS moves it above text), NO minHeight */}
