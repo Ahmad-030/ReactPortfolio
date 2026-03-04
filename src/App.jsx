@@ -17,7 +17,8 @@ body { font-family: var(--font-body); background: var(--bg); color: var(--text);
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
 ::selection { background: var(--accent); color: var(--bg); }
-a { color: inherit; text-decoration: none; }
+a { color: inherit; text-decoration: none; cursor: none; }
+button { cursor: none; }
 
 @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
@@ -677,21 +678,123 @@ function Typewriter({ words }) {
 }
 
 function Cursor() {
-  const dot = useRef(null), ring = useRef(null);
+  const spotlight = useRef(null);
+  const ring = useRef(null);
+  const dot = useRef(null);
   const [h, setH] = useState(false);
-  const pos = useRef({ x:0, y:0 }), rp = useRef({ x:0, y:0 }), raf = useRef(null);
+  const pos = useRef({ x: -300, y: -300 });
+  const smooth = useRef({ x: -300, y: -300 });
+  const raf = useRef(null);
+  const hRef = useRef(false);
+
   useEffect(() => {
-    const mv = e => { pos.current = { x:e.clientX, y:e.clientY }; if (dot.current) dot.current.style.transform = `translate(${e.clientX-4}px,${e.clientY-4}px)`; };
-    const tk = () => { rp.current.x += (pos.current.x-rp.current.x)*0.12; rp.current.y += (pos.current.y-rp.current.y)*0.12; if (ring.current) ring.current.style.transform = `translate(${rp.current.x-20}px,${rp.current.y-20}px)`; raf.current = requestAnimationFrame(tk); };
+    const mv = e => {
+      pos.current = { x: e.clientX, y: e.clientY };
+      if (dot.current) {
+        const s = hRef.current ? 5 : 3;
+        dot.current.style.transform = `translate(${e.clientX - s}px,${e.clientY - s}px)`;
+      }
+    };
+
+    const tick = () => {
+      smooth.current.x += (pos.current.x - smooth.current.x) * 0.08;
+      smooth.current.y += (pos.current.y - smooth.current.y) * 0.08;
+      const isHov = hRef.current;
+      const size = isHov ? 380 : 280;
+      const half = size / 2;
+      const tx = `translate(${smooth.current.x - half}px,${smooth.current.y - half}px)`;
+      if (spotlight.current) {
+        spotlight.current.style.transform = tx;
+        spotlight.current.style.width = `${size}px`;
+        spotlight.current.style.height = `${size}px`;
+        spotlight.current.style.background = isHov
+          ? "radial-gradient(circle, rgba(0,229,255,0.14) 0%, rgba(0,229,255,0.05) 40%, transparent 68%)"
+          : "radial-gradient(circle, rgba(0,229,255,0.08) 0%, rgba(0,229,255,0.025) 42%, transparent 70%)";
+      }
+      if (ring.current) {
+        ring.current.style.transform = tx;
+        ring.current.style.width = `${size}px`;
+        ring.current.style.height = `${size}px`;
+        ring.current.style.borderColor = isHov ? "rgba(0,229,255,0.22)" : "rgba(0,229,255,0.06)";
+      }
+      raf.current = requestAnimationFrame(tick);
+    };
+
+    const onEnter = () => { hRef.current = true; setH(true); };
+    const onLeave = () => { hRef.current = false; setH(false); };
+
     window.addEventListener("mousemove", mv);
-    document.querySelectorAll("a,button,[data-hover]").forEach(el => { el.addEventListener("mouseenter", () => setH(true)); el.addEventListener("mouseleave", () => setH(false)); });
-    raf.current = requestAnimationFrame(tk);
-    return () => { window.removeEventListener("mousemove", mv); cancelAnimationFrame(raf.current); };
+    document.querySelectorAll("a,button,[data-hover]").forEach(el => {
+      el.addEventListener("mouseenter", onEnter);
+      el.addEventListener("mouseleave", onLeave);
+    });
+    raf.current = requestAnimationFrame(tick);
+
+    return () => {
+      window.removeEventListener("mousemove", mv);
+      cancelAnimationFrame(raf.current);
+    };
   }, []);
-  return (<>
-    <div className="custom-cursor" ref={dot} style={{ position:"fixed", top:0, left:0, width:8, height:8, background:"var(--accent)", borderRadius:"50%", pointerEvents:"none", zIndex:9999 }} />
-    <div className="custom-cursor" ref={ring} style={{ position:"fixed", top:0, left:0, width:h?56:40, height:h?56:40, border:`2px solid ${h?"var(--accent)":"rgba(0,229,255,0.4)"}`, borderRadius:"50%", pointerEvents:"none", zIndex:9998, transition:"all 0.25s" }} />
-  </>);
+
+  return (
+    <>
+      {/* Soft spotlight glow blob */}
+      <div
+        className="custom-cursor"
+        ref={spotlight}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: 280,
+          height: 280,
+          borderRadius: "50%",
+          pointerEvents: "none",
+          zIndex: 9996,
+          mixBlendMode: "screen",
+          willChange: "transform",
+        }}
+      />
+      {/* Outer ring */}
+      <div
+        className="custom-cursor"
+        ref={ring}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: 280,
+          height: 280,
+          borderRadius: "50%",
+          border: "1px solid rgba(0,229,255,0.06)",
+          pointerEvents: "none",
+          zIndex: 9997,
+          willChange: "transform",
+        }}
+      />
+      {/* Sharp center dot */}
+      <div
+        className="custom-cursor"
+        ref={dot}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: h ? 10 : 6,
+          height: h ? 10 : 6,
+          background: "var(--accent)",
+          borderRadius: "50%",
+          pointerEvents: "none",
+          zIndex: 9999,
+          boxShadow: h
+            ? "0 0 0 3px rgba(0,229,255,0.2), 0 0 18px rgba(0,229,255,0.9)"
+            : "0 0 12px rgba(0,229,255,0.7)",
+          transition: "width 0.15s ease, height 0.15s ease, box-shadow 0.15s ease",
+          willChange: "transform",
+        }}
+      />
+    </>
+  );
 }
 
 function ParticleCanvas() {
