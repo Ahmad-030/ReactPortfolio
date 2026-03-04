@@ -1631,9 +1631,9 @@ export default function Portfolio() {
             <AboutPhoto />
             <div className="stats-grid" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
               <AboutStatCard value={3} suffix="+" label="Years Experience" icon="📅" delay={0.1} />
-              <AboutStatCard value={20} suffix="+" label="Projects Delivered" icon="💼" delay={0.2} />
+              <AboutStatCard value={30} suffix="+" label="Projects Delivered" icon="💼" delay={0.2} />
               <AboutStatCard value={50} suffix="+" label="MVPs Built" icon="📱" delay={0.3} />
-              <AboutStatCard value={20} suffix="+" label="Happy Clients" icon="😊" delay={0.4} />
+              <AboutStatCard value={25} suffix="+" label="Happy Clients" icon="😊" delay={0.4} />
             </div>
           </div>
           <AboutRight />
